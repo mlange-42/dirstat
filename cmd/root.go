@@ -15,8 +15,9 @@ var rootCmd = &cobra.Command{
 	Long:  `Shows statistics about directory contents.`,
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		exclude := map[string]bool{
-			".git": true,
+		exclude := []string{
+			".git",
+			"*.py",
 		}
 		tree, err := crawl.Walk(args[0], exclude)
 		if err != nil {

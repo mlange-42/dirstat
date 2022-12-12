@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"sort"
 
+	"github.com/gobwas/glob"
 	"github.com/mlange42/dirstat/tree"
 )
 
@@ -14,8 +15,12 @@ import (
 type FileTree = tree.Tree[TreeEntry]
 
 // NewFileTree creates a new FileTree
-func NewFileTree() *FileTree {
-	t := tree.New(TreeEntry{})
+func NewFileTree(name string, size int64) *FileTree {
+	t := tree.New(TreeEntry{
+		Name:  name,
+		Size:  size,
+		Count: 1,
+	})
 	return t
 }
 
@@ -23,11 +28,16 @@ func NewFileTree() *FileTree {
 type TreeEntry struct {
 	Name  string
 	Count int
-	Size  int
+	Size  int64
 }
 
 // Walk searches through a directory tree
-func Walk(dir string, exclude map[string]bool) (*tree.Tree[TreeEntry], error) {
+func Walk(dir string, exclude []string) (*tree.Tree[TreeEntry], error) {
+	excludeGlobs := make([]glob.Glob, 0, len(exclude))
+	for _, g := range exclude {
+		excludeGlobs = append(excludeGlobs, glob.MustCompile(g))
+	}
+
 	dir = path.Clean(dir)
 	//fsMap := map[string]fs.FileInfo{}
 
@@ -36,14 +46,16 @@ func Walk(dir string, exclude map[string]bool) (*tree.Tree[TreeEntry], error) {
 			if err != nil {
 				return nil, err
 			}
-			if _, ok := exclude[d.Name()]; ok {
-				return nil, fs.SkipDir
+			for _, g := range excludeGlobs {
+				if g.Match(d.Name()) {
+					return nil, fs.SkipDir
+				}
 			}
-			_, err = d.Info()
+			info, err := d.Info()
 			if err != nil {
 				return nil, err
 			}
-			subTree := NewFileTree()
+			subTree := NewFileTree(info.Name(), info.Size())
 			if parent != nil {
 				parent.AddTree(subTree)
 			}
@@ -86,7 +98,7 @@ func (d *statDirEntry) Info() (fs.FileInfo, error) { return d.info, nil }
 func walkDir[T any](path string, d fs.DirEntry, parent *tree.Tree[T], depth int, walkDirFn WalkDirFunc[T]) (*tree.Tree[T], error) {
 	t, err := walkDirFn(path, d, parent, depth, nil)
 	if err != nil || !d.IsDir() {
-		if err == filepath.SkipDir && d.IsDir() {
+		if err == filepath.SkipDir {
 			// Successfully skipped directory.
 			err = nil
 		}
