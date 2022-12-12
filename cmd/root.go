@@ -15,11 +15,15 @@ var rootCmd = &cobra.Command{
 	Long:  `Shows statistics about directory contents.`,
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		exclude := []string{
-			".git",
-			"*.py",
+		exclude, err := cmd.Flags().GetStringSlice("exclude")
+		if err != nil {
+			panic(err)
 		}
-		tree, err := crawl.Walk(args[0], exclude)
+		depth, err := cmd.Flags().GetInt("depth")
+		if err != nil {
+			panic(err)
+		}
+		tree, err := crawl.Walk(args[0], exclude, depth)
 		if err != nil {
 			panic(err)
 		}
@@ -37,4 +41,6 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.Flags().IntP("depth", "d", 2, "Depth of the file tree.")
+	rootCmd.Flags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns.")
 }
