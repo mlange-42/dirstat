@@ -50,12 +50,6 @@ var runCmd = &cobra.Command{
 				panic(err)
 			}
 			fmt.Println(string(tt[:]))
-			t := crawl.NewDir("root")
-			err = json.Unmarshal(tt, &t)
-			if err != nil {
-				panic(err)
-			}
-			fmt.Println(t)
 		}
 	},
 }

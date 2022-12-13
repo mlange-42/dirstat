@@ -61,9 +61,9 @@ func (e ExtensionEntry) String() string {
 func (e FileEntry) String() string {
 	if e.IsDir {
 		return fmt.Sprintf("-%s %d kB (%d) %v", e.Name, e.Size/1024, e.Count, e.Extensions)
-	} else {
-		return fmt.Sprintf(" %s %d kB (%d)", e.Name, e.Size/1024, e.Count)
+		//return fmt.Sprintf("-%s %d kB (%d)", e.Name, e.Size/1024, e.Count)
 	}
+	return fmt.Sprintf(" %s %d kB (%d)", e.Name, e.Size/1024, e.Count)
 }
 
 // AddExtensions adds extensions
