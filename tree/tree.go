@@ -1,10 +1,5 @@
 package tree
 
-import (
-	"fmt"
-	"strings"
-)
-
 // Tree is a tree data structure
 type Tree[T any] struct {
 	Children []*Tree[T] `json:"children"`
@@ -39,15 +34,5 @@ func (t *Tree[T]) Aggregate(fn func(parent, child T)) {
 
 // String converts the tree to a multiline string
 func (t *Tree[T]) String() string {
-	sb := strings.Builder{}
-	t.toString(&sb, 0)
-	return sb.String()
-}
-
-func (t *Tree[T]) toString(sb *strings.Builder, depth int) {
-	fmt.Fprint(sb, strings.Repeat(" ", depth*2))
-	fmt.Fprintf(sb, "%v\n", t.Value)
-	for _, child := range t.Children {
-		child.toString(sb, depth+1)
-	}
+	return PlainPrinter[T]{}.Print(t)
 }

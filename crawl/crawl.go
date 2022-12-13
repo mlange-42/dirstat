@@ -1,6 +1,7 @@
 package crawl
 
 import (
+	"fmt"
 	"io/fs"
 	"os"
 	"path"
@@ -11,35 +12,22 @@ import (
 	"github.com/mlange42/dirstat/tree"
 )
 
-// FileTree is a tree with TreeEntry data
-type FileTree = tree.Tree[*tree.FileEntry]
-
-// NewDir creates a new FileTree with a directory entry
-func NewDir(name string) *FileTree {
-	e := tree.NewFileEntry(name, 0, true)
-	t := tree.New(&e)
-	return t
-}
-
-// NewFile creates a new FileTree with a file entry
-func NewFile(name string, size int64) *FileTree {
-	e := tree.NewFileEntry(name, size, false)
-	t := tree.New(&e)
-	return t
-}
-
 // Walk searches through a directory tree
-func Walk(dir string, exclude []string, maxDepth int) (*FileTree, error) {
+func Walk(dir string, exclude []string, maxDepth int) (*tree.FileTree, error) {
 	excludeGlobs := make([]glob.Glob, 0, len(exclude))
 	for _, g := range exclude {
 		excludeGlobs = append(excludeGlobs, glob.MustCompile(g))
 	}
 
 	dir = path.Clean(dir)
-	//fsMap := map[string]fs.FileInfo{}
+	info, err := os.Stat(dir)
+	if os.IsNotExist(err) || !info.IsDir() {
+		return nil, fmt.Errorf("%s is not a directory", dir)
+	}
+	anyFound := false
 
 	t, err := WalkDir(dir,
-		func(path string, d fs.DirEntry, parent *FileTree, depth int, err error) (*FileTree, error) {
+		func(path string, d fs.DirEntry, parent *tree.FileTree, depth int, err error) (*tree.FileTree, error) {
 			if err != nil {
 				return nil, err
 			}
@@ -52,6 +40,7 @@ func Walk(dir string, exclude []string, maxDepth int) (*FileTree, error) {
 			if err != nil {
 				return nil, err
 			}
+			anyFound = true
 
 			if !info.IsDir() {
 				v := parent.Value
@@ -68,22 +57,24 @@ func Walk(dir string, exclude []string, maxDepth int) (*FileTree, error) {
 			if maxDepth >= 0 && depth > maxDepth {
 				return parent, nil
 			}
-			var subTree *FileTree
+			var subTree *tree.FileTree
 			if info.IsDir() {
-				subTree = NewDir(info.Name())
+				subTree = tree.NewDir(info.Name())
 			} else {
-				subTree = NewFile(info.Name(), info.Size())
+				subTree = tree.NewFile(info.Name(), info.Size())
 			}
 
-			if parent == nil {
-				subTree.Value.Name = "<root>"
-			} else {
+			if parent != nil {
 				parent.AddTree(subTree)
 			}
 			return subTree, nil
 		})
 	if err != nil {
 		return nil, err
+	}
+
+	if !anyFound {
+		return nil, fmt.Errorf("Nothing found in directoy %s", dir)
 	}
 
 	t.Aggregate(func(parent, child *tree.FileEntry) {

@@ -1,14 +1,11 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 
 	"github.com/mlange42/dirstat/crawl"
+	"github.com/mlange42/dirstat/tree"
 	"github.com/spf13/cobra"
 )
 
@@ -27,30 +24,42 @@ var runCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		format, err := cmd.Flags().GetString("format")
+
+		format := "json"
+		pl, err := cmd.Flags().GetBool("plain")
 		if err != nil {
 			panic(err)
 		}
-		if _, ok := map[string]bool{"plain": true, "json": true}[format]; !ok {
-			fmt.Printf("Format option '%s' unknown. Must be one of [plain json]\n", format)
-			os.Exit(1)
+		if pl {
+			format = "plain"
+		}
+
+		tm, err := cmd.Flags().GetBool("treemap")
+		if err != nil {
+			panic(err)
+		}
+		if tm {
+			format = "treemap"
 		}
 
 		t, err := crawl.Walk(args[0], exclude, depth)
 		if err != nil {
-			panic(err)
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
 		}
+
+		var printer tree.Printer[*tree.FileEntry]
 
 		switch format {
 		case "plain":
-			fmt.Println(t)
+			printer = tree.PlainPrinter[*tree.FileEntry]{}
+			fmt.Println(printer.Print(t))
 		case "json":
-			tt, err := json.MarshalIndent(t, "", "    ")
-			if err != nil {
-				panic(err)
-			}
-			fmt.Println(string(tt[:]))
+			printer = tree.JSONPrinter[*tree.FileEntry]{}
+		case "treemap":
+			printer = tree.TreemapPrinter{ByExtension: true}
 		}
+		fmt.Println(printer.Print(t))
 	},
 }
 
@@ -58,6 +67,10 @@ func init() {
 	runCmd.Flags().IntP("depth", "d", 2, "Depth of the file tree.")
 	runCmd.Flags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns.")
 	runCmd.Flags().StringP("format", "f", "json", "Output format. One of [plain json].")
+
+	runCmd.Flags().Bool("plain", false, "Output as plain directory tree.")
+	runCmd.Flags().Bool("treemap", false, "Output as treemap csv.")
+	runCmd.MarkFlagsMutuallyExclusive("plain", "treemap")
 
 	rootCmd.AddCommand(runCmd)
 }

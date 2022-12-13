@@ -1,6 +1,3 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -9,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/mlange42/dirstat/crawl"
+	"github.com/mlange42/dirstat/tree"
 	"github.com/spf13/cobra"
 )
 
@@ -23,7 +20,7 @@ var showCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		t := crawl.NewDir("root")
+		t := tree.NewDir("root")
 		err = json.Unmarshal(bytes, &t)
 		if err != nil {
 			panic(err)

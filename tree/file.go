@@ -2,6 +2,23 @@ package tree
 
 import "fmt"
 
+// FileTree is a tree with TreeEntry data
+type FileTree = Tree[*FileEntry]
+
+// NewDir creates a new FileTree with a directory entry
+func NewDir(name string) *FileTree {
+	e := NewFileEntry(name, 0, true)
+	t := New(&e)
+	return t
+}
+
+// NewFile creates a new FileTree with a file entry
+func NewFile(name string, size int64) *FileTree {
+	e := NewFileEntry(name, size, false)
+	t := New(&e)
+	return t
+}
+
 // FileEntry is a file tree entry
 type FileEntry struct {
 	Name       string                     `json:"name"`
