@@ -1,7 +1,6 @@
 package crawl
 
 import (
-	"fmt"
 	"io/fs"
 	"os"
 	"path"
@@ -13,37 +12,24 @@ import (
 )
 
 // FileTree is a tree with TreeEntry data
-type FileTree = tree.Tree[TreeEntry]
+type FileTree = tree.Tree[tree.FileDirEntry]
 
-// NewFileTree creates a new FileTree
-func NewFileTree(name string, size int64, isDir bool) *FileTree {
-	t := tree.New(TreeEntry{
-		Name:  name,
-		Size:  size,
-		Count: 0,
-		IsDir: isDir,
-	})
+// NewDir creates a new FileTree with a directory entry
+func NewDir(name string) *FileTree {
+	e := tree.NewDirEntry(name)
+	t := tree.New[tree.FileDirEntry](&e)
 	return t
 }
 
-// TreeEntry is a file tree entry
-type TreeEntry struct {
-	Name  string
-	Count int
-	Size  int64
-	IsDir bool
-}
-
-func (e TreeEntry) String() string {
-	pref := " "
-	if e.IsDir {
-		pref = "-"
-	}
-	return fmt.Sprintf("%s%-16s %9d kB (%d)", pref, e.Name, e.Size/1024, e.Count)
+// NewFile creates a new FileTree with a file entry
+func NewFile(name string, size int64) *FileTree {
+	e := tree.NewFileEntry(name, size)
+	t := tree.New[tree.FileDirEntry](&e)
+	return t
 }
 
 // Walk searches through a directory tree
-func Walk(dir string, exclude []string, maxDepth int) (*tree.Tree[TreeEntry], error) {
+func Walk(dir string, exclude []string, maxDepth int) (*FileTree, error) {
 	excludeGlobs := make([]glob.Glob, 0, len(exclude))
 	for _, g := range exclude {
 		excludeGlobs = append(excludeGlobs, glob.MustCompile(g))
@@ -68,12 +54,16 @@ func Walk(dir string, exclude []string, maxDepth int) (*tree.Tree[TreeEntry], er
 			}
 
 			if maxDepth >= 0 && depth > maxDepth {
-				parent.Value.Count++
-				parent.Value.Size += info.Size()
+				parent.Value.Add(info.Size())
 				return parent, nil
 			}
+			var subTree *FileTree
+			if info.IsDir() {
+				subTree = NewDir(info.Name())
+			} else {
+				subTree = NewFile(info.Name(), info.Size())
+			}
 
-			subTree := NewFileTree(info.Name(), info.Size(), info.IsDir())
 			if parent != nil {
 				parent.AddTree(subTree)
 			}
