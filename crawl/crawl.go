@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"path"
 	"path/filepath"
 	"sort"
 
@@ -19,11 +18,6 @@ func Walk(dir string, exclude []string, maxDepth int) (*tree.FileTree, error) {
 		excludeGlobs = append(excludeGlobs, glob.MustCompile(g))
 	}
 
-	dir = path.Clean(dir)
-	info, err := os.Stat(dir)
-	if os.IsNotExist(err) || !info.IsDir() {
-		return nil, fmt.Errorf("%s is not a directory", dir)
-	}
 	anyFound := false
 
 	t, err := WalkDir(dir,
