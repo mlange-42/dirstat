@@ -89,7 +89,7 @@ func Walk(dir string, exclude []string, maxDepth int) (*FileTree, error) {
 		switch c := child.(type) {
 		case *tree.FileEntry:
 		case *tree.DirEntry:
-			p.AddMulti(c.Size(), c.Count())
+			p.AddMulti(c.GetSize(), c.GetCount())
 			p.AddExtensions(c.Extensions)
 		}
 	})

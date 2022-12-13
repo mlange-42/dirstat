@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -23,11 +24,34 @@ var rootCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		tree, err := crawl.Walk(args[0], exclude, depth)
+		writeOutput := cmd.Flags().Changed("output")
+		output := ""
+		if writeOutput {
+			output, err = cmd.Flags().GetString("output")
+		}
+
+		t, err := crawl.Walk(args[0], exclude, depth)
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println(tree)
+		fmt.Println(t)
+
+		if writeOutput {
+			tt, _ := json.MarshalIndent(t, "", "    ")
+			f, err := os.Create(output)
+			if err != nil {
+				panic(err)
+			}
+			defer f.Close()
+			_, err = f.WriteString(string(tt[:]))
+			if err != nil {
+				panic(err)
+			}
+		}
+
+		//var ttt crawl.FileTree
+		//_ = json.Unmarshal(tt, ttt)
+		//fmt.Println(t)
 	},
 }
 
@@ -43,4 +67,5 @@ func Execute() {
 func init() {
 	rootCmd.Flags().IntP("depth", "d", 2, "Depth of the file tree.")
 	rootCmd.Flags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns.")
+	rootCmd.Flags().StringP("output", "o", "", "Output file for JSON tree.")
 }

@@ -1,0 +1,3858 @@
+{
+    "children": [
+        {
+            "children": [
+                {
+                    "children": null,
+                    "value": {
+                        "name": ".gitignore",
+                        "size": 7,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": [
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "root.go",
+                                "size": 1658,
+                                "count": 1
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": "cmd",
+                        "size": 1658,
+                        "count": 1,
+                        "extensions": {
+                            ".go": {
+                                "name": ".go",
+                                "size": 1658,
+                                "count": 1
+                            }
+                        }
+                    }
+                },
+                {
+                    "children": [
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "crawl.go",
+                                "size": 4465,
+                                "count": 1
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": "crawl",
+                        "size": 4465,
+                        "count": 1,
+                        "extensions": {
+                            ".go": {
+                                "name": ".go",
+                                "size": 4465,
+                                "count": 1
+                            }
+                        }
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "dirstat.exe",
+                        "size": 4864512,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "go.mod",
+                        "size": 239,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "go.sum",
+                        "size": 1158,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "main.go",
+                        "size": 87,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "test.json",
+                        "size": 4179,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": [
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "file.go",
+                                "size": 1956,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "tree.go",
+                                "size": 1125,
+                                "count": 1
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": "tree",
+                        "size": 3081,
+                        "count": 2,
+                        "extensions": {
+                            ".go": {
+                                "name": ".go",
+                                "size": 3081,
+                                "count": 2
+                            }
+                        }
+                    }
+                }
+            ],
+            "value": {
+                "name": "dirstat",
+                "size": 4879386,
+                "count": 10,
+                "extensions": {
+                    ".exe": {
+                        "name": ".exe",
+                        "size": 4864512,
+                        "count": 1
+                    },
+                    ".gitignore": {
+                        "name": ".gitignore",
+                        "size": 7,
+                        "count": 1
+                    },
+                    ".go": {
+                        "name": ".go",
+                        "size": 9291,
+                        "count": 5
+                    },
+                    ".json": {
+                        "name": ".json",
+                        "size": 4179,
+                        "count": 1
+                    },
+                    ".mod": {
+                        "name": ".mod",
+                        "size": 239,
+                        "count": 1
+                    },
+                    ".sum": {
+                        "name": ".sum",
+                        "size": 1158,
+                        "count": 1
+                    }
+                }
+            }
+        },
+        {
+            "children": [
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "ci.yml",
+                                        "size": 3084,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "workflows",
+                                "size": 3084,
+                                "count": 1,
+                                "extensions": {
+                                    ".yml": {
+                                        "name": ".yml",
+                                        "size": 3084,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": ".github",
+                        "size": 3084,
+                        "count": 1,
+                        "extensions": {
+                            ".yml": {
+                                "name": ".yml",
+                                "size": 3084,
+                                "count": 1
+                            }
+                        }
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": ".gitignore",
+                        "size": 28,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "CONTRIBUTE.md",
+                        "size": 6956,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "Dockerfile",
+                        "size": 122,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "LICENSE",
+                        "size": 1558,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "Makefile",
+                        "size": 1914,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "README.md",
+                        "size": 16256,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "SUPPORT_MATRIX.md",
+                        "size": 936,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "arrays.go",
+                                        "size": 359,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 534,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "arrays",
+                                "size": 893,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 359,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 534,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "cgo.go",
+                                        "size": 1029,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 430,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "cgo",
+                                "size": 1459,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 1029,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 430,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "consts.go",
+                                        "size": 514,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 665,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "consts",
+                                "size": 1179,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 514,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 665,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "cpkg.go",
+                                        "size": 1003,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "run.go",
+                                        "size": 437,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "cpkg",
+                                "size": 1440,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 1440,
+                                        "count": 2
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "cstrings.go",
+                                        "size": 936,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 2202,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "cstrings",
+                                "size": 3138,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 936,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 2202,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "empty.go",
+                                        "size": 425,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 323,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "empty",
+                                "size": 748,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 425,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 323,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": [
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "test.cpython-36.pyc",
+                                                "size": 1686,
+                                                "count": 1
+                                            }
+                                        }
+                                    ],
+                                    "value": {
+                                        "name": "__pycache__",
+                                        "size": 1686,
+                                        "count": 1,
+                                        "extensions": {
+                                            ".pyc": {
+                                                "name": ".pyc",
+                                                "size": 1686,
+                                                "count": 1
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "funcs.go",
+                                        "size": 1424,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 2425,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "funcs",
+                                "size": 5535,
+                                "count": 3,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 1424,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 2425,
+                                        "count": 1
+                                    },
+                                    ".pyc": {
+                                        "name": ".pyc",
+                                        "size": 1686,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "gopyerrors.go",
+                                        "size": 616,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 366,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "gopyerrors",
+                                "size": 982,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 616,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 366,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "gopygc.go",
+                                        "size": 789,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 1416,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "gopygc",
+                                "size": 2205,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 789,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 1416,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "strings.go",
+                                        "size": 260,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 356,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "gostrings",
+                                "size": 616,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 260,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 356,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "LICENSE",
+                                        "size": 1514,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "MANIFEST.in",
+                                        "size": 55,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "Makefile",
+                                        "size": 566,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "README.md",
+                                        "size": 8,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": [
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "Makefile",
+                                                "size": 1340,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "__init__.py",
+                                                "size": 0,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": [
+                                                {
+                                                    "children": null,
+                                                    "value": {
+                                                        "name": "__init__.cpython-39.pyc",
+                                                        "size": 139,
+                                                        "count": 1
+                                                    }
+                                                }
+                                            ],
+                                            "value": {
+                                                "name": "__pycache__",
+                                                "size": 139,
+                                                "count": 1,
+                                                "extensions": {
+                                                    ".pyc": {
+                                                        "name": ".pyc",
+                                                        "size": 139,
+                                                        "count": 1
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "_hi.cp39-win_amd64.h",
+                                                "size": 12955,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "_hi.cp39-win_amd64.pyd",
+                                                "size": 3580608,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "build.py",
+                                                "size": 12008,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "go.py",
+                                                "size": 46891,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "hi.c",
+                                                "size": 83588,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "hi.go",
+                                                "size": 28050,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "hi_go.h",
+                                                "size": 12955,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "sedE3Q53q",
+                                                "size": 83588,
+                                                "count": 1
+                                            }
+                                        }
+                                    ],
+                                    "value": {
+                                        "name": "hi",
+                                        "size": 3862122,
+                                        "count": 11,
+                                        "extensions": {
+                                            "": {
+                                                "name": "",
+                                                "size": 84928,
+                                                "count": 2
+                                            },
+                                            ".c": {
+                                                "name": ".c",
+                                                "size": 83588,
+                                                "count": 1
+                                            },
+                                            ".go": {
+                                                "name": ".go",
+                                                "size": 28050,
+                                                "count": 1
+                                            },
+                                            ".h": {
+                                                "name": ".h",
+                                                "size": 25910,
+                                                "count": 2
+                                            },
+                                            ".py": {
+                                                "name": ".py",
+                                                "size": 58899,
+                                                "count": 3
+                                            },
+                                            ".pyc": {
+                                                "name": ".pyc",
+                                                "size": 139,
+                                                "count": 1
+                                            },
+                                            ".pyd": {
+                                                "name": ".pyd",
+                                                "size": 3580608,
+                                                "count": 1
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "hi.go",
+                                        "size": 4236,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "setup.py",
+                                        "size": 595,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 6165,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "hi",
+                                "size": 3875261,
+                                "count": 18,
+                                "extensions": {
+                                    "": {
+                                        "name": "",
+                                        "size": 87008,
+                                        "count": 4
+                                    },
+                                    ".c": {
+                                        "name": ".c",
+                                        "size": 83588,
+                                        "count": 1
+                                    },
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 32286,
+                                        "count": 2
+                                    },
+                                    ".h": {
+                                        "name": ".h",
+                                        "size": 25910,
+                                        "count": 1
+                                    },
+                                    ".in": {
+                                        "name": ".in",
+                                        "size": 55,
+                                        "count": 1
+                                    },
+                                    ".md": {
+                                        "name": ".md",
+                                        "size": 8,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 65659,
+                                        "count": 5
+                                    },
+                                    ".pyc": {
+                                        "name": ".pyc",
+                                        "size": 139,
+                                        "count": 1
+                                    },
+                                    ".pyd": {
+                                        "name": ".pyd",
+                                        "size": 3580608,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "iface.go",
+                                        "size": 987,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 703,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "iface",
+                                "size": 1690,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 987,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 703,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "lot.go",
+                                        "size": 816,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 631,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "lot",
+                                "size": 1447,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 816,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 631,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "maps.go",
+                                        "size": 729,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 1580,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "maps",
+                                "size": 2309,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 729,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 1580,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "named.go",
+                                        "size": 1487,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 3280,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "named",
+                                "size": 4767,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 1487,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 3280,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "osfile.go",
+                                        "size": 631,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 942,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "osfile",
+                                "size": 1573,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 631,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 942,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": [
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "mypkg.go",
+                                                "size": 266,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "test.py",
+                                                "size": 348,
+                                                "count": 1
+                                            }
+                                        }
+                                    ],
+                                    "value": {
+                                        "name": "mypkg",
+                                        "size": 614,
+                                        "count": 2,
+                                        "extensions": {
+                                            ".go": {
+                                                "name": ".go",
+                                                "size": 266,
+                                                "count": 1
+                                            },
+                                            ".py": {
+                                                "name": ".py",
+                                                "size": 348,
+                                                "count": 1
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "package",
+                                "size": 614,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 266,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 348,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "html.go",
+                                        "size": 533,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 547,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "text.go",
+                                        "size": 918,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "pkgconflict",
+                                "size": 1998,
+                                "count": 3,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 1451,
+                                        "count": 2
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 547,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "pointers.go",
+                                        "size": 596,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 564,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "pointers",
+                                "size": 1160,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 596,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 564,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "pyerrors.go",
+                                        "size": 837,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 697,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "pyerrors",
+                                "size": 1534,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 837,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 697,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "rename.go",
+                                        "size": 1082,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 815,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "rename",
+                                "size": 1897,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 1082,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 815,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "seqs.go",
+                                        "size": 398,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 1099,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "seqs",
+                                "size": 1497,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 398,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 1099,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "simple.go",
+                                        "size": 515,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 728,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "simple",
+                                "size": 1243,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 515,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 728,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sliceptr.go",
+                                        "size": 781,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 409,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "sliceptr",
+                                "size": 1190,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 781,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 409,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "slices.go",
+                                        "size": 1097,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 1471,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "slices",
+                                "size": 2568,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 1097,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 1471,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "LICENSE",
+                                        "size": 1519,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "MANIFEST.in",
+                                        "size": 55,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "Makefile",
+                                        "size": 596,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "README.md",
+                                        "size": 13,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "setup.py",
+                                        "size": 600,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": [
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "Makefile",
+                                                "size": 1420,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "__init__.py",
+                                                "size": 0,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": [
+                                                {
+                                                    "children": null,
+                                                    "value": {
+                                                        "name": "__init__.cpython-39.pyc",
+                                                        "size": 149,
+                                                        "count": 1
+                                                    }
+                                                }
+                                            ],
+                                            "value": {
+                                                "name": "__pycache__",
+                                                "size": 149,
+                                                "count": 1,
+                                                "extensions": {
+                                                    ".pyc": {
+                                                        "name": ".pyc",
+                                                        "size": 149,
+                                                        "count": 1
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "_structs.cp39-win_amd64.h",
+                                                "size": 12970,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "_structs.cp39-win_amd64.pyd",
+                                                "size": 3581153,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "build.py",
+                                                "size": 12033,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "go.py",
+                                                "size": 47936,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "sedrX9W3m",
+                                                "size": 85223,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "structs.c",
+                                                "size": 85223,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "structs.go",
+                                                "size": 28065,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "structs_go.h",
+                                                "size": 12970,
+                                                "count": 1
+                                            }
+                                        }
+                                    ],
+                                    "value": {
+                                        "name": "structs",
+                                        "size": 3867142,
+                                        "count": 11,
+                                        "extensions": {
+                                            "": {
+                                                "name": "",
+                                                "size": 86643,
+                                                "count": 2
+                                            },
+                                            ".c": {
+                                                "name": ".c",
+                                                "size": 85223,
+                                                "count": 1
+                                            },
+                                            ".go": {
+                                                "name": ".go",
+                                                "size": 28065,
+                                                "count": 1
+                                            },
+                                            ".h": {
+                                                "name": ".h",
+                                                "size": 25940,
+                                                "count": 2
+                                            },
+                                            ".py": {
+                                                "name": ".py",
+                                                "size": 59969,
+                                                "count": 3
+                                            },
+                                            ".pyc": {
+                                                "name": ".pyc",
+                                                "size": 149,
+                                                "count": 1
+                                            },
+                                            ".pyd": {
+                                                "name": ".pyd",
+                                                "size": 3581153,
+                                                "count": 1
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "structs.go",
+                                        "size": 534,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 1945,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "structs",
+                                "size": 3872404,
+                                "count": 18,
+                                "extensions": {
+                                    "": {
+                                        "name": "",
+                                        "size": 88758,
+                                        "count": 4
+                                    },
+                                    ".c": {
+                                        "name": ".c",
+                                        "size": 85223,
+                                        "count": 1
+                                    },
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 28599,
+                                        "count": 2
+                                    },
+                                    ".h": {
+                                        "name": ".h",
+                                        "size": 25940,
+                                        "count": 1
+                                    },
+                                    ".in": {
+                                        "name": ".in",
+                                        "size": 55,
+                                        "count": 1
+                                    },
+                                    ".md": {
+                                        "name": ".md",
+                                        "size": 13,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 62514,
+                                        "count": 5
+                                    },
+                                    ".pyc": {
+                                        "name": ".pyc",
+                                        "size": 149,
+                                        "count": 1
+                                    },
+                                    ".pyd": {
+                                        "name": ".pyd",
+                                        "size": 3581153,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "encoding.go",
+                                        "size": 337,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 1304,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "unicode",
+                                "size": 1641,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 337,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 1304,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 1110,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "variadic.go",
+                                        "size": 1177,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "variadic",
+                                "size": 2287,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 1177,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 1110,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "test.py",
+                                        "size": 1579,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "vars.go",
+                                        "size": 618,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "vars",
+                                "size": 2197,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 618,
+                                        "count": 1
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 1579,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": [
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "wrapper_code.go",
+                                                "size": 501,
+                                                "count": 1
+                                            }
+                                        }
+                                    ],
+                                    "value": {
+                                        "name": "pywrapper",
+                                        "size": 501,
+                                        "count": 1,
+                                        "extensions": {
+                                            ".go": {
+                                                "name": ".go",
+                                                "size": 501,
+                                                "count": 1
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "real_code.go",
+                                        "size": 336,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "wrapper",
+                                "size": 837,
+                                "count": 2,
+                                "extensions": {
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 837,
+                                        "count": 2
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": "_examples",
+                        "size": 7798309,
+                        "count": 94,
+                        "extensions": {
+                            "": {
+                                "name": "",
+                                "size": 175766,
+                                "count": 5
+                            },
+                            ".c": {
+                                "name": ".c",
+                                "size": 168811,
+                                "count": 2
+                            },
+                            ".go": {
+                                "name": ".go",
+                                "size": 83319,
+                                "count": 35
+                            },
+                            ".h": {
+                                "name": ".h",
+                                "size": 51850,
+                                "count": 2
+                            },
+                            ".in": {
+                                "name": ".in",
+                                "size": 110,
+                                "count": 2
+                            },
+                            ".md": {
+                                "name": ".md",
+                                "size": 21,
+                                "count": 2
+                            },
+                            ".py": {
+                                "name": ".py",
+                                "size": 154697,
+                                "count": 36
+                            },
+                            ".pyc": {
+                                "name": ".pyc",
+                                "size": 1974,
+                                "count": 3
+                            },
+                            ".pyd": {
+                                "name": ".pyd",
+                                "size": 7161761,
+                                "count": 2
+                            }
+                        }
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "appveyor.yml",
+                        "size": 1214,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": [
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "bind.go",
+                                "size": 1403,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "doc.go",
+                                "size": 262,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "gen.go",
+                                "size": 24181,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "gen_func.go",
+                                "size": 12035,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "gen_map.go",
+                                "size": 12481,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "gen_slice.go",
+                                "size": 12385,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "gen_struct.go",
+                                "size": 10336,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "gen_type.go",
+                                "size": 6515,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "gen_varconst.go",
+                                "size": 4136,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "package.go",
+                                "size": 13619,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "printer.go",
+                                "size": 1566,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "printer_test.go",
+                                "size": 1017,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "stdtypes.go",
+                                "size": 9791,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "symbols.go",
+                                "size": 34435,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "types.go",
+                                "size": 12912,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "utils.go",
+                                "size": 8001,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "utils_test.go",
+                                "size": 2722,
+                                "count": 1
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": "bind",
+                        "size": 167797,
+                        "count": 17,
+                        "extensions": {
+                            ".go": {
+                                "name": ".go",
+                                "size": 167797,
+                                "count": 17
+                            }
+                        }
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "cmd_build.go",
+                        "size": 9163,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "cmd_exe.go",
+                        "size": 6067,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "cmd_gen.go",
+                        "size": 3166,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "cmd_pkg.go",
+                        "size": 6840,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "dirs.go",
+                        "size": 529,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "doc.go",
+                        "size": 684,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "gen.go",
+                        "size": 3948,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "go.mod",
+                        "size": 444,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "go.sum",
+                        "size": 1369,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "gopy.py",
+                        "size": 1739,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": [
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "handle.go",
+                                "size": 5313,
+                                "count": 1
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": "gopyh",
+                        "size": 5313,
+                        "count": 1,
+                        "extensions": {
+                            ".go": {
+                                "name": ".go",
+                                "size": 5313,
+                                "count": 1
+                            }
+                        }
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "main.go",
+                        "size": 2198,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "main_darwin.go",
+                        "size": 380,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "main_test.go",
+                        "size": 28694,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "main_unix.go",
+                        "size": 345,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "main_unix_test.go",
+                        "size": 1602,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "main_windows.go",
+                        "size": 372,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "main_windows_test.go",
+                        "size": 1811,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "pkgsetup.go",
+                        "size": 4573,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "python.go",
+                        "size": 917,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "version.go",
+                        "size": 257,
+                        "count": 1
+                    }
+                }
+            ],
+            "value": {
+                "name": "gopy",
+                "size": 8078585,
+                "count": 141,
+                "extensions": {
+                    "": {
+                        "name": "",
+                        "size": 179360,
+                        "count": 8
+                    },
+                    ".c": {
+                        "name": ".c",
+                        "size": 168811,
+                        "count": 1
+                    },
+                    ".gitignore": {
+                        "name": ".gitignore",
+                        "size": 28,
+                        "count": 1
+                    },
+                    ".go": {
+                        "name": ".go",
+                        "size": 327975,
+                        "count": 70
+                    },
+                    ".h": {
+                        "name": ".h",
+                        "size": 51850,
+                        "count": 1
+                    },
+                    ".in": {
+                        "name": ".in",
+                        "size": 110,
+                        "count": 1
+                    },
+                    ".md": {
+                        "name": ".md",
+                        "size": 24169,
+                        "count": 5
+                    },
+                    ".mod": {
+                        "name": ".mod",
+                        "size": 444,
+                        "count": 1
+                    },
+                    ".py": {
+                        "name": ".py",
+                        "size": 156436,
+                        "count": 37
+                    },
+                    ".pyc": {
+                        "name": ".pyc",
+                        "size": 1974,
+                        "count": 1
+                    },
+                    ".pyd": {
+                        "name": ".pyd",
+                        "size": 7161761,
+                        "count": 1
+                    },
+                    ".sum": {
+                        "name": ".sum",
+                        "size": 1369,
+                        "count": 1
+                    },
+                    ".yml": {
+                        "name": ".yml",
+                        "size": 4298,
+                        "count": 2
+                    }
+                }
+            }
+        },
+        {
+            "children": [
+                {
+                    "children": null,
+                    "value": {
+                        "name": ".gitignore",
+                        "size": 7,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": [
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "config.go",
+                                "size": 258,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "ecs.go",
+                                "size": 448,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "world.go",
+                                "size": 1658,
+                                "count": 1
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": "ecs",
+                        "size": 2364,
+                        "count": 3,
+                        "extensions": {
+                            ".go": {
+                                "name": ".go",
+                                "size": 2364,
+                                "count": 3
+                            }
+                        }
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "go.mod",
+                        "size": 745,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "go.sum",
+                        "size": 3758,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "gopy_ecs.exe",
+                        "size": 8601600,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "main.go",
+                        "size": 425,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": [
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "components.go",
+                                "size": 527,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "grid.go",
+                                "size": 1141,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "gui.go",
+                                "size": 848,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "model.go",
+                                "size": 762,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "res_entity_grid.go",
+                                "size": 385,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "sys_entity_grid_drawer.go",
+                                "size": 1596,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "sys_entity_initializer.go",
+                                "size": 578,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "sys_random_walk.go",
+                                "size": 920,
+                                "count": 1
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": "model",
+                        "size": 6757,
+                        "count": 8,
+                        "extensions": {
+                            ".go": {
+                                "name": ".go",
+                                "size": 6757,
+                                "count": 8
+                            }
+                        }
+                    }
+                },
+                {
+                    "children": [
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "LICENSE",
+                                "size": 1517,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "MANIFEST.in",
+                                "size": 55,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "Makefile",
+                                "size": 668,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "README.md",
+                                "size": 11,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "Makefile",
+                                        "size": 1472,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "__init__.py",
+                                        "size": 0,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "_model.cp39-win_amd64.h",
+                                        "size": 16576,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "_model.cp39-win_amd64.pyd",
+                                        "size": 14597424,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "build.py",
+                                        "size": 15633,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "go.py",
+                                        "size": 49373,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "model.c",
+                                        "size": 112952,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "model.go",
+                                        "size": 47519,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "model.py",
+                                        "size": 14797,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "model_go.h",
+                                        "size": 16576,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedfTO7LB",
+                                        "size": 112952,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "model",
+                                "size": 14985274,
+                                "count": 11,
+                                "extensions": {
+                                    "": {
+                                        "name": "",
+                                        "size": 114424,
+                                        "count": 2
+                                    },
+                                    ".c": {
+                                        "name": ".c",
+                                        "size": 112952,
+                                        "count": 1
+                                    },
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 47519,
+                                        "count": 1
+                                    },
+                                    ".h": {
+                                        "name": ".h",
+                                        "size": 33152,
+                                        "count": 2
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 79803,
+                                        "count": 4
+                                    },
+                                    ".pyd": {
+                                        "name": ".pyd",
+                                        "size": 14597424,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "setup.py",
+                                "size": 598,
+                                "count": 1
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": "out",
+                        "size": 14988123,
+                        "count": 16,
+                        "extensions": {
+                            "": {
+                                "name": "",
+                                "size": 116609,
+                                "count": 4
+                            },
+                            ".c": {
+                                "name": ".c",
+                                "size": 112952,
+                                "count": 1
+                            },
+                            ".go": {
+                                "name": ".go",
+                                "size": 47519,
+                                "count": 1
+                            },
+                            ".h": {
+                                "name": ".h",
+                                "size": 33152,
+                                "count": 1
+                            },
+                            ".in": {
+                                "name": ".in",
+                                "size": 55,
+                                "count": 1
+                            },
+                            ".md": {
+                                "name": ".md",
+                                "size": 11,
+                                "count": 1
+                            },
+                            ".py": {
+                                "name": ".py",
+                                "size": 80401,
+                                "count": 5
+                            },
+                            ".pyd": {
+                                "name": ".pyd",
+                                "size": 14597424,
+                                "count": 1
+                            }
+                        }
+                    }
+                }
+            ],
+            "value": {
+                "name": "gopy_ecs",
+                "size": 23603779,
+                "count": 32,
+                "extensions": {
+                    "": {
+                        "name": "",
+                        "size": 116609,
+                        "count": 1
+                    },
+                    ".c": {
+                        "name": ".c",
+                        "size": 112952,
+                        "count": 1
+                    },
+                    ".exe": {
+                        "name": ".exe",
+                        "size": 8601600,
+                        "count": 1
+                    },
+                    ".gitignore": {
+                        "name": ".gitignore",
+                        "size": 7,
+                        "count": 1
+                    },
+                    ".go": {
+                        "name": ".go",
+                        "size": 57065,
+                        "count": 13
+                    },
+                    ".h": {
+                        "name": ".h",
+                        "size": 33152,
+                        "count": 1
+                    },
+                    ".in": {
+                        "name": ".in",
+                        "size": 55,
+                        "count": 1
+                    },
+                    ".md": {
+                        "name": ".md",
+                        "size": 11,
+                        "count": 1
+                    },
+                    ".mod": {
+                        "name": ".mod",
+                        "size": 745,
+                        "count": 1
+                    },
+                    ".py": {
+                        "name": ".py",
+                        "size": 80401,
+                        "count": 1
+                    },
+                    ".pyd": {
+                        "name": ".pyd",
+                        "size": 14597424,
+                        "count": 1
+                    },
+                    ".sum": {
+                        "name": ".sum",
+                        "size": 3758,
+                        "count": 1
+                    }
+                }
+            }
+        },
+        {
+            "children": [
+                {
+                    "children": null,
+                    "value": {
+                        "name": ".gitignore",
+                        "size": 16,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "go.mod",
+                        "size": 49,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "go.sum",
+                        "size": 0,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "main.go",
+                        "size": 32,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": [
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "functions.go",
+                                "size": 477,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "structs.go",
+                                "size": 1669,
+                                "count": 1
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": "pybind",
+                        "size": 2146,
+                        "count": 2,
+                        "extensions": {
+                            ".go": {
+                                "name": ".go",
+                                "size": 2146,
+                                "count": 2
+                            }
+                        }
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "pybind_test.exe",
+                        "size": 1218048,
+                        "count": 1
+                    }
+                }
+            ],
+            "value": {
+                "name": "pybind_test",
+                "size": 1220291,
+                "count": 7,
+                "extensions": {
+                    ".exe": {
+                        "name": ".exe",
+                        "size": 1218048,
+                        "count": 1
+                    },
+                    ".gitignore": {
+                        "name": ".gitignore",
+                        "size": 16,
+                        "count": 1
+                    },
+                    ".go": {
+                        "name": ".go",
+                        "size": 2178,
+                        "count": 3
+                    },
+                    ".mod": {
+                        "name": ".mod",
+                        "size": 49,
+                        "count": 1
+                    },
+                    ".sum": {
+                        "name": ".sum",
+                        "size": 0,
+                        "count": 1
+                    }
+                }
+            }
+        },
+        {
+            "children": [
+                {
+                    "children": null,
+                    "value": {
+                        "name": "go.mod",
+                        "size": 821,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "go.sum",
+                        "size": 3557,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": [
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "LICENSE",
+                                "size": 1517,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "MANIFEST.in",
+                                "size": 55,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "Makefile",
+                                "size": 668,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "README.md",
+                                "size": 11,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "Makefile",
+                                        "size": 1472,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "__init__.py",
+                                        "size": 0,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": [
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "__init__.cpython-39.pyc",
+                                                "size": 133,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "go.cpython-39.pyc",
+                                                "size": 53621,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "model.cpython-39.pyc",
+                                                "size": 17254,
+                                                "count": 1
+                                            }
+                                        }
+                                    ],
+                                    "value": {
+                                        "name": "__pycache__",
+                                        "size": 71008,
+                                        "count": 3,
+                                        "extensions": {
+                                            ".pyc": {
+                                                "name": ".pyc",
+                                                "size": 71008,
+                                                "count": 3
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "_model.cp39-win_amd64.h",
+                                        "size": 16621,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "_model.cp39-win_amd64.pyd",
+                                        "size": 14604904,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "build.py",
+                                        "size": 15708,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "go.py",
+                                        "size": 49373,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "model.c",
+                                        "size": 113783,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "model.go",
+                                        "size": 47741,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "model.py",
+                                        "size": 14895,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "model_go.h",
+                                        "size": 16621,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sed5fRYbv",
+                                        "size": 113783,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sed5osAVV",
+                                        "size": 113106,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sed9lHWbd",
+                                        "size": 113937,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sed9whNQo",
+                                        "size": 113106,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedAk7ADK",
+                                        "size": 113937,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedKZUnPO",
+                                        "size": 111450,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedKyiv1k",
+                                        "size": 113937,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedMcYFGs",
+                                        "size": 113937,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedPCp06X",
+                                        "size": 113937,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedRIGa7g",
+                                        "size": 113937,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedTiGBwW",
+                                        "size": 113937,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedXFj3uf",
+                                        "size": 113106,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedns3gXf",
+                                        "size": 113937,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedu343YR",
+                                        "size": 113783,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedwVgcMW",
+                                        "size": 113937,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedzK0kjV",
+                                        "size": 113106,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "model",
+                                "size": 16768999,
+                                "count": 29,
+                                "extensions": {
+                                    "": {
+                                        "name": "",
+                                        "size": 1818345,
+                                        "count": 17
+                                    },
+                                    ".c": {
+                                        "name": ".c",
+                                        "size": 113783,
+                                        "count": 1
+                                    },
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 47741,
+                                        "count": 1
+                                    },
+                                    ".h": {
+                                        "name": ".h",
+                                        "size": 33242,
+                                        "count": 2
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 79976,
+                                        "count": 4
+                                    },
+                                    ".pyc": {
+                                        "name": ".pyc",
+                                        "size": 71008,
+                                        "count": 1
+                                    },
+                                    ".pyd": {
+                                        "name": ".pyd",
+                                        "size": 14604904,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "setup.py",
+                                "size": 598,
+                                "count": 1
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": "out",
+                        "size": 16771848,
+                        "count": 34,
+                        "extensions": {
+                            "": {
+                                "name": "",
+                                "size": 1820530,
+                                "count": 19
+                            },
+                            ".c": {
+                                "name": ".c",
+                                "size": 113783,
+                                "count": 1
+                            },
+                            ".go": {
+                                "name": ".go",
+                                "size": 47741,
+                                "count": 1
+                            },
+                            ".h": {
+                                "name": ".h",
+                                "size": 33242,
+                                "count": 1
+                            },
+                            ".in": {
+                                "name": ".in",
+                                "size": 55,
+                                "count": 1
+                            },
+                            ".md": {
+                                "name": ".md",
+                                "size": 11,
+                                "count": 1
+                            },
+                            ".py": {
+                                "name": ".py",
+                                "size": 80574,
+                                "count": 5
+                            },
+                            ".pyc": {
+                                "name": ".pyc",
+                                "size": 71008,
+                                "count": 1
+                            },
+                            ".pyd": {
+                                "name": ".pyd",
+                                "size": 14604904,
+                                "count": 1
+                            }
+                        }
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "test.py",
+                        "size": 316,
+                        "count": 1
+                    }
+                }
+            ],
+            "value": {
+                "name": "test",
+                "size": 16776542,
+                "count": 37,
+                "extensions": {
+                    "": {
+                        "name": "",
+                        "size": 1820530,
+                        "count": 1
+                    },
+                    ".c": {
+                        "name": ".c",
+                        "size": 113783,
+                        "count": 1
+                    },
+                    ".go": {
+                        "name": ".go",
+                        "size": 47741,
+                        "count": 1
+                    },
+                    ".h": {
+                        "name": ".h",
+                        "size": 33242,
+                        "count": 1
+                    },
+                    ".in": {
+                        "name": ".in",
+                        "size": 55,
+                        "count": 1
+                    },
+                    ".md": {
+                        "name": ".md",
+                        "size": 11,
+                        "count": 1
+                    },
+                    ".mod": {
+                        "name": ".mod",
+                        "size": 821,
+                        "count": 1
+                    },
+                    ".py": {
+                        "name": ".py",
+                        "size": 80890,
+                        "count": 6
+                    },
+                    ".pyc": {
+                        "name": ".pyc",
+                        "size": 71008,
+                        "count": 1
+                    },
+                    ".pyd": {
+                        "name": ".pyd",
+                        "size": 14604904,
+                        "count": 1
+                    },
+                    ".sum": {
+                        "name": ".sum",
+                        "size": 3557,
+                        "count": 1
+                    }
+                }
+            }
+        },
+        {
+            "children": [
+                {
+                    "children": null,
+                    "value": {
+                        "name": "go.mod",
+                        "size": 178,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": null,
+                    "value": {
+                        "name": "go.sum",
+                        "size": 169,
+                        "count": 1
+                    }
+                },
+                {
+                    "children": [
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "LICENSE",
+                                "size": 1518,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "MANIFEST.in",
+                                "size": 55,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "Makefile",
+                                "size": 680,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "README.md",
+                                "size": 12,
+                                "count": 1
+                            }
+                        },
+                        {
+                            "children": [
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "Makefile",
+                                        "size": 1494,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "__init__.py",
+                                        "size": 0,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": [
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "__init__.cpython-39.pyc",
+                                                "size": 136,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "go.cpython-39.pyc",
+                                                "size": 51840,
+                                                "count": 1
+                                            }
+                                        },
+                                        {
+                                            "children": null,
+                                            "value": {
+                                                "name": "pybind.cpython-39.pyc",
+                                                "size": 8008,
+                                                "count": 1
+                                            }
+                                        }
+                                    ],
+                                    "value": {
+                                        "name": "__pycache__",
+                                        "size": 59984,
+                                        "count": 3,
+                                        "extensions": {
+                                            ".pyc": {
+                                                "name": ".pyc",
+                                                "size": 59984,
+                                                "count": 3
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "_pybind.cp39-win_amd64.h",
+                                        "size": 14521,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "_pybind.cp39-win_amd64.pyd",
+                                        "size": 3705364,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "build.py",
+                                        "size": 13685,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "go.py",
+                                        "size": 47772,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "pybind.c",
+                                        "size": 98102,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "pybind.go",
+                                        "size": 35303,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "pybind.py",
+                                        "size": 7160,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "pybind_go.h",
+                                        "size": 14521,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedOIc8KL",
+                                        "size": 98102,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sednFBL2h",
+                                        "size": 98102,
+                                        "count": 1
+                                    }
+                                },
+                                {
+                                    "children": null,
+                                    "value": {
+                                        "name": "sedoO89Oe",
+                                        "size": 98102,
+                                        "count": 1
+                                    }
+                                }
+                            ],
+                            "value": {
+                                "name": "pybind",
+                                "size": 4292212,
+                                "count": 16,
+                                "extensions": {
+                                    "": {
+                                        "name": "",
+                                        "size": 295800,
+                                        "count": 4
+                                    },
+                                    ".c": {
+                                        "name": ".c",
+                                        "size": 98102,
+                                        "count": 1
+                                    },
+                                    ".go": {
+                                        "name": ".go",
+                                        "size": 35303,
+                                        "count": 1
+                                    },
+                                    ".h": {
+                                        "name": ".h",
+                                        "size": 29042,
+                                        "count": 2
+                                    },
+                                    ".py": {
+                                        "name": ".py",
+                                        "size": 68617,
+                                        "count": 4
+                                    },
+                                    ".pyc": {
+                                        "name": ".pyc",
+                                        "size": 59984,
+                                        "count": 1
+                                    },
+                                    ".pyd": {
+                                        "name": ".pyd",
+                                        "size": 3705364,
+                                        "count": 1
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "children": null,
+                            "value": {
+                                "name": "setup.py",
+                                "size": 599,
+                                "count": 1
+                            }
+                        }
+                    ],
+                    "value": {
+                        "name": "out",
+                        "size": 4295076,
+                        "count": 21,
+                        "extensions": {
+                            "": {
+                                "name": "",
+                                "size": 297998,
+                                "count": 6
+                            },
+                            ".c": {
+                                "name": ".c",
+                                "size": 98102,
+                                "count": 1
+                            },
+                            ".go": {
+                                "name": ".go",
+                                "size": 35303,
+                                "count": 1
+                            },
+                            ".h": {
+                                "name": ".h",
+                                "size": 29042,
+                                "count": 1
+                            },
+                            ".in": {
+                                "name": ".in",
+                                "size": 55,
+                                "count": 1
+                            },
+                            ".md": {
+                                "name": ".md",
+                                "size": 12,
+                                "count": 1
+                            },
+                            ".py": {
+                                "name": ".py",
+                                "size": 69216,
+                                "count": 5
+                            },
+                            ".pyc": {
+                                "name": ".pyc",
+                                "size": 59984,
+                                "count": 1
+                            },
+                            ".pyd": {
+                                "name": ".pyd",
+                                "size": 3705364,
+                                "count": 1
+                            }
+                        }
+                    }
+                }
+            ],
+            "value": {
+                "name": "test_2",
+                "size": 4295423,
+                "count": 23,
+                "extensions": {
+                    "": {
+                        "name": "",
+                        "size": 297998,
+                        "count": 1
+                    },
+                    ".c": {
+                        "name": ".c",
+                        "size": 98102,
+                        "count": 1
+                    },
+                    ".go": {
+                        "name": ".go",
+                        "size": 35303,
+                        "count": 1
+                    },
+                    ".h": {
+                        "name": ".h",
+                        "size": 29042,
+                        "count": 1
+                    },
+                    ".in": {
+                        "name": ".in",
+                        "size": 55,
+                        "count": 1
+                    },
+                    ".md": {
+                        "name": ".md",
+                        "size": 12,
+                        "count": 1
+                    },
+                    ".mod": {
+                        "name": ".mod",
+                        "size": 178,
+                        "count": 1
+                    },
+                    ".py": {
+                        "name": ".py",
+                        "size": 69216,
+                        "count": 1
+                    },
+                    ".pyc": {
+                        "name": ".pyc",
+                        "size": 59984,
+                        "count": 1
+                    },
+                    ".pyd": {
+                        "name": ".pyd",
+                        "size": 3705364,
+                        "count": 1
+                    },
+                    ".sum": {
+                        "name": ".sum",
+                        "size": 169,
+                        "count": 1
+                    }
+                }
+            }
+        }
+    ],
+    "value": {
+        "name": "..",
+        "size": 58854006,
+        "count": 250,
+        "extensions": {
+            "": {
+                "name": "",
+                "size": 2414497,
+                "count": 4
+            },
+            ".c": {
+                "name": ".c",
+                "size": 493648,
+                "count": 4
+            },
+            ".exe": {
+                "name": ".exe",
+                "size": 14684160,
+                "count": 3
+            },
+            ".gitignore": {
+                "name": ".gitignore",
+                "size": 58,
+                "count": 4
+            },
+            ".go": {
+                "name": ".go",
+                "size": 479553,
+                "count": 89
+            },
+            ".h": {
+                "name": ".h",
+                "size": 147286,
+                "count": 4
+            },
+            ".in": {
+                "name": ".in",
+                "size": 275,
+                "count": 4
+            },
+            ".json": {
+                "name": ".json",
+                "size": 4179,
+                "count": 1
+            },
+            ".md": {
+                "name": ".md",
+                "size": 24203,
+                "count": 4
+            },
+            ".mod": {
+                "name": ".mod",
+                "size": 2476,
+                "count": 6
+            },
+            ".py": {
+                "name": ".py",
+                "size": 386943,
+                "count": 9
+            },
+            ".pyc": {
+                "name": ".pyc",
+                "size": 132966,
+                "count": 3
+            },
+            ".pyd": {
+                "name": ".pyd",
+                "size": 40069453,
+                "count": 4
+            },
+            ".sum": {
+                "name": ".sum",
+                "size": 10011,
+                "count": 6
+            },
+            ".yml": {
+                "name": ".yml",
+                "size": 4298,
+                "count": 1
+            }
+        }
+    }
+}

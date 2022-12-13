@@ -7,8 +7,8 @@ import (
 
 // Tree is a tree data structure
 type Tree[T any] struct {
-	Children []*Tree[T]
-	Value    T
+	Children []*Tree[T] `json:"children"`
+	Value    T          `json:"value"`
 }
 
 // New creates a new tree
