@@ -57,7 +57,7 @@ func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 	} else {
 		path += "/" + t.Value.Name
 	}
-	fmt.Fprintf(sb, "%s,%d,%d\n", path, t.Value.Size, t.Value.Count)
+	fmt.Fprintf(sb, "%s,%d,%d\n", strings.Replace(path, ",", "-", -1), t.Value.Size, t.Value.Count)
 	if p.ByExtension && t.Value.IsDir && len(t.Children) == 0 {
 		for _, info := range t.Value.Extensions {
 			p := path + "/" + info.Name
