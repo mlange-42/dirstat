@@ -20,25 +20,27 @@ type FileEntry struct {
 // NewFileEntry creates a new FileEntry
 func NewFileEntry(name string, size int64) FileEntry {
 	return FileEntry{
-		name: name,
-		size: size,
+		name:  name,
+		size:  size,
+		count: 1,
 	}
 }
 
 // DirEntry is a directory tree entry
 type DirEntry struct {
 	FileEntry
-	Extensions map[string]FileEntry
+	Extensions map[string]*FileEntry
 }
 
 // NewDirEntry creates a new FileEntry
 func NewDirEntry(name string) DirEntry {
 	return DirEntry{
 		FileEntry{
-			name: name,
-			size: 0,
+			name:  name,
+			size:  0,
+			count: 0,
 		},
-		map[string]FileEntry{},
+		map[string]*FileEntry{},
 	}
 }
 
@@ -57,10 +59,28 @@ func (e *FileEntry) Add(size int64) {
 	e.size += size
 }
 
+// AddMulti adds size and a count
+func (e *FileEntry) AddMulti(size int64, count int) {
+	e.count += count
+	e.size += size
+}
+
 func (e FileEntry) String() string {
-	return fmt.Sprintf(" %-16s %9d kB", e.Name(), e.Size()/1024)
+	return fmt.Sprintf(" %s %d kB (%d)", e.Name(), e.Size()/1024, e.Count())
 }
 
 func (e DirEntry) String() string {
-	return fmt.Sprintf("-%-16s %9d kB (%d)", e.Name(), e.Size()/1024, e.Count())
+	return fmt.Sprintf("-%s %d kB (%d) %v", e.Name(), e.Size()/1024, e.Count(), e.Extensions)
+}
+
+// AddExtensions adds extensions
+func (e *DirEntry) AddExtensions(ext map[string]*FileEntry) {
+	for k, v := range ext {
+		if inf, ok := e.Extensions[k]; ok {
+			inf.AddMulti(v.Size(), v.Count())
+		} else {
+			fe := NewFileEntry(k, v.Size())
+			e.Extensions[k] = &fe
+		}
+	}
 }

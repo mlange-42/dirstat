@@ -28,6 +28,14 @@ func (t *Tree[T]) AddTree(child *Tree[T]) {
 	t.Children = append(t.Children, child)
 }
 
+// Aggregate aggregates tree branches
+func (t *Tree[T]) Aggregate(fn func(parent, child T)) {
+	for _, child := range t.Children {
+		child.Aggregate(fn)
+		fn(t.Value, child.Value)
+	}
+}
+
 // String converts the tree to a multiline string
 func (t *Tree[T]) String() string {
 	sb := strings.Builder{}

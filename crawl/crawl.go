@@ -53,8 +53,19 @@ func Walk(dir string, exclude []string, maxDepth int) (*FileTree, error) {
 				return nil, err
 			}
 
+			if !info.IsDir() {
+				v := parent.Value.(*tree.DirEntry)
+				ext := filepath.Ext(info.Name())
+				if inf, ok := v.Extensions[ext]; ok {
+					inf.Add(info.Size())
+				} else {
+					e := tree.NewFileEntry(ext, info.Size())
+					v.Extensions[ext] = &e
+				}
+				v.Add(info.Size())
+			}
+
 			if maxDepth >= 0 && depth > maxDepth {
-				parent.Value.Add(info.Size())
 				return parent, nil
 			}
 			var subTree *FileTree
@@ -72,6 +83,17 @@ func Walk(dir string, exclude []string, maxDepth int) (*FileTree, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	t.Aggregate(func(parent, child tree.FileDirEntry) {
+		p := parent.(*tree.DirEntry)
+		switch c := child.(type) {
+		case *tree.FileEntry:
+		case *tree.DirEntry:
+			p.AddMulti(c.Size(), c.Count())
+			p.AddExtensions(c.Extensions)
+		}
+	})
+
 	return t, nil
 }
 
