@@ -14,7 +14,8 @@ type Tree[T any] struct {
 // New creates a new tree
 func New[T any](value T) *Tree[T] {
 	return &Tree[T]{
-		Value: value,
+		Children: make([]*Tree[T], 0, 0),
+		Value:    value,
 	}
 }
 

@@ -2,56 +2,39 @@ package tree
 
 import "fmt"
 
-// FileDirEntry is a file or directory tree entry
-type FileDirEntry interface {
-	GetName() string
-	GetSize() int64
-	GetCount() int
-	Add(size int64)
-}
-
 // FileEntry is a file tree entry
 type FileEntry struct {
+	Name       string                     `json:"name"`
+	IsDir      bool                       `json:"is_dir"`
+	Size       int64                      `json:"size"`
+	Count      int                        `json:"count"`
+	Extensions map[string]*ExtensionEntry `json:"extensions"`
+}
+
+// ExtensionEntry is a file tree entry for extensions
+type ExtensionEntry struct {
 	Name  string `json:"name"`
 	Size  int64  `json:"size"`
 	Count int    `json:"count"`
 }
 
 // NewFileEntry creates a new FileEntry
-func NewFileEntry(name string, size int64) FileEntry {
+func NewFileEntry(name string, size int64, isDir bool) FileEntry {
+	count := 0
+	var ext map[string]*ExtensionEntry = nil
+	if !isDir {
+		count = 1
+	} else {
+		ext = map[string]*ExtensionEntry{}
+	}
 	return FileEntry{
-		Name:  name,
-		Size:  size,
-		Count: 1,
+		Name:       name,
+		IsDir:      isDir,
+		Size:       size,
+		Count:      count,
+		Extensions: ext,
 	}
 }
-
-// DirEntry is a directory tree entry
-type DirEntry struct {
-	FileEntry
-	Extensions map[string]*FileEntry `json:"extensions"`
-}
-
-// NewDirEntry creates a new FileEntry
-func NewDirEntry(name string) DirEntry {
-	return DirEntry{
-		FileEntry{
-			Name:  name,
-			Size:  0,
-			Count: 0,
-		},
-		map[string]*FileEntry{},
-	}
-}
-
-// GetName returns the name of the entry
-func (e FileEntry) GetName() string { return e.Name }
-
-// GetSize returns the size of the entry
-func (e FileEntry) GetSize() int64 { return e.Size }
-
-// GetCount returns the count of the entry
-func (e FileEntry) GetCount() int { return e.Count }
 
 // Add adds size and a count of one
 func (e *FileEntry) Add(size int64) {
@@ -65,21 +48,31 @@ func (e *FileEntry) AddMulti(size int64, count int) {
 	e.Size += size
 }
 
-func (e FileEntry) String() string {
-	return fmt.Sprintf(" %s %d kB (%d)", e.GetName(), e.GetSize()/1024, e.GetCount())
+// AddMulti adds size and a count
+func (e *ExtensionEntry) AddMulti(size int64, count int) {
+	e.Count += count
+	e.Size += size
 }
 
-func (e DirEntry) String() string {
-	return fmt.Sprintf("-%s %d kB (%d) %v", e.GetName(), e.GetSize()/1024, e.GetCount(), e.Extensions)
+func (e ExtensionEntry) String() string {
+	return fmt.Sprintf("%d kB (%d)", e.Size/1024, e.Count)
+}
+
+func (e FileEntry) String() string {
+	if e.IsDir {
+		return fmt.Sprintf("-%s %d kB (%d) %v", e.Name, e.Size/1024, e.Count, e.Extensions)
+	} else {
+		return fmt.Sprintf(" %s %d kB (%d)", e.Name, e.Size/1024, e.Count)
+	}
 }
 
 // AddExtensions adds extensions
-func (e *DirEntry) AddExtensions(ext map[string]*FileEntry) {
+func (e *FileEntry) AddExtensions(ext map[string]*ExtensionEntry) {
 	for k, v := range ext {
 		if inf, ok := e.Extensions[k]; ok {
-			inf.AddMulti(v.GetSize(), v.GetCount())
+			inf.AddMulti(v.Size, v.Count)
 		} else {
-			fe := NewFileEntry(k, v.GetSize())
+			fe := ExtensionEntry{k, v.Size, 1}
 			e.Extensions[k] = &fe
 		}
 	}

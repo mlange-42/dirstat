@@ -12,19 +12,19 @@ import (
 )
 
 // FileTree is a tree with TreeEntry data
-type FileTree = tree.Tree[tree.FileDirEntry]
+type FileTree = tree.Tree[*tree.FileEntry]
 
 // NewDir creates a new FileTree with a directory entry
 func NewDir(name string) *FileTree {
-	e := tree.NewDirEntry(name)
-	t := tree.New[tree.FileDirEntry](&e)
+	e := tree.NewFileEntry(name, 0, true)
+	t := tree.New(&e)
 	return t
 }
 
 // NewFile creates a new FileTree with a file entry
 func NewFile(name string, size int64) *FileTree {
-	e := tree.NewFileEntry(name, size)
-	t := tree.New[tree.FileDirEntry](&e)
+	e := tree.NewFileEntry(name, size, false)
+	t := tree.New(&e)
 	return t
 }
 
@@ -54,12 +54,12 @@ func Walk(dir string, exclude []string, maxDepth int) (*FileTree, error) {
 			}
 
 			if !info.IsDir() {
-				v := parent.Value.(*tree.DirEntry)
+				v := parent.Value
 				ext := filepath.Ext(info.Name())
 				if inf, ok := v.Extensions[ext]; ok {
-					inf.Add(info.Size())
+					inf.AddMulti(info.Size(), 1)
 				} else {
-					e := tree.NewFileEntry(ext, info.Size())
+					e := tree.ExtensionEntry{Name: ext, Size: info.Size(), Count: 1}
 					v.Extensions[ext] = &e
 				}
 				v.Add(info.Size())
@@ -75,7 +75,9 @@ func Walk(dir string, exclude []string, maxDepth int) (*FileTree, error) {
 				subTree = NewFile(info.Name(), info.Size())
 			}
 
-			if parent != nil {
+			if parent == nil {
+				subTree.Value.Name = "<root>"
+			} else {
 				parent.AddTree(subTree)
 			}
 			return subTree, nil
@@ -84,13 +86,10 @@ func Walk(dir string, exclude []string, maxDepth int) (*FileTree, error) {
 		return nil, err
 	}
 
-	t.Aggregate(func(parent, child tree.FileDirEntry) {
-		p := parent.(*tree.DirEntry)
-		switch c := child.(type) {
-		case *tree.FileEntry:
-		case *tree.DirEntry:
-			p.AddMulti(c.GetSize(), c.GetCount())
-			p.AddExtensions(c.Extensions)
+	t.Aggregate(func(parent, child *tree.FileEntry) {
+		if child.IsDir {
+			parent.AddMulti(child.Size, child.Count)
+			parent.AddExtensions(child.Extensions)
 		}
 	})
 
