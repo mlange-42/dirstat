@@ -12,7 +12,7 @@ import (
 )
 
 // Walk searches through a directory tree
-func Walk(dir string, exclude []string, maxDepth int) (*tree.FileTree, error) {
+func Walk(dir string, exclude []string, maxDepth int) (*tree.FileTree, error)   {
 	excludeGlobs := make([]glob.Glob, 0, len(exclude))
 	for _, g := range exclude {
 		excludeGlobs = append(excludeGlobs, glob.MustCompile(g))
