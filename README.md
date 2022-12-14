@@ -1,4 +1,4 @@
-# go-dirstat
+# dirstat
 
 A command line tool for analyzing and visualizing disk usage.
 
@@ -7,7 +7,7 @@ A command line tool for analyzing and visualizing disk usage.
 Using Go:
 
 ```shell
-go install github.com/mlange-42/go-dirstat@latest
+go install github.com/mlange-42/dirstat@latest
 ```
 
 ## Usage

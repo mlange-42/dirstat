@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mlange-42/go-dirstat/util"
+	"github.com/mlange-42/dirstat/util"
 )
 
 // Printer interface
