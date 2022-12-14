@@ -1,4 +1,4 @@
-module github.com/mlange42/dirstat
+module github.com/mlange-42/go-dirstat
 
 go 1.19
 

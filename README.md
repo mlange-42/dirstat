@@ -7,7 +7,7 @@ A command line tool for analyzing and visualizing disk usage.
 Using Go:
 
 ```shell
-go install github.com/mlange-42/go-dirstat
+go install github.com/mlange-42/go-dirstat@latest
 ```
 
 ## Usage
