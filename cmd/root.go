@@ -7,7 +7,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/mlange42/dirstat/crawl"
+	"github.com/mlange42/dirstat/filesys"
 	"github.com/mlange42/dirstat/tree"
 	"github.com/spf13/cobra"
 )
@@ -78,7 +78,7 @@ func runRootCommand(cmd *cobra.Command, args []string) (*tree.FileTree, error) {
 }
 
 func treeFromDir(dir string, exclude []string, depth int) (*tree.FileTree, error) {
-	t, err := crawl.Walk(dir, exclude, depth)
+	t, err := filesys.Walk(dir, exclude, depth)
 	if err != nil {
 		return nil, err
 	}

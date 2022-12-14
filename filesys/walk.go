@@ -1,4 +1,4 @@
-package crawl
+package filesys
 
 import (
 	"fmt"
@@ -20,7 +20,7 @@ func Walk(dir string, exclude []string, maxDepth int) (*tree.FileTree, error) {
 
 	anyFound := false
 
-	t, err := WalkDir(dir,
+	t, err := walkDir(dir,
 		func(path string, d fs.DirEntry, parent *tree.FileTree, depth int, err error) (*tree.FileTree, error) {
 			if err != nil {
 				return nil, err
@@ -81,14 +81,14 @@ func Walk(dir string, exclude []string, maxDepth int) (*tree.FileTree, error) {
 	return t, nil
 }
 
-// WalkDir recursively descends path, calling walkDirFn.
-func WalkDir[T any](root string, fn WalkDirFunc[T]) (*tree.Tree[T], error) {
+// walkDir recursively descends path, calling walkDirFn.
+func walkDir[T any](root string, fn WalkDirFunc[T]) (*tree.Tree[T], error) {
 	info, err := os.Lstat(root)
 	var t *tree.Tree[T] = nil
 	if err != nil {
 		t, err = fn(root, nil, nil, 0, err)
 	} else {
-		t, err = walkDir(root, &statDirEntry{info}, nil, 0, fn)
+		t, err = walkDirRecursive(root, &statDirEntry{info}, nil, 0, fn)
 	}
 	if err == filepath.SkipDir {
 		return t, nil
@@ -108,8 +108,8 @@ func (d *statDirEntry) IsDir() bool                { return d.info.IsDir() }
 func (d *statDirEntry) Type() fs.FileMode          { return d.info.Mode().Type() }
 func (d *statDirEntry) Info() (fs.FileInfo, error) { return d.info, nil }
 
-// walkDir recursively descends path, calling walkDirFn.
-func walkDir[T any](path string, d fs.DirEntry, parent *tree.Tree[T], depth int, walkDirFn WalkDirFunc[T]) (*tree.Tree[T], error) {
+// walkDirRecursive recursively descends path, calling walkDirFn.
+func walkDirRecursive[T any](path string, d fs.DirEntry, parent *tree.Tree[T], depth int, walkDirFn WalkDirFunc[T]) (*tree.Tree[T], error) {
 	t, err := walkDirFn(path, d, parent, depth, nil)
 	if err != nil || !d.IsDir() {
 		if err == filepath.SkipDir {
@@ -133,7 +133,7 @@ func walkDir[T any](path string, d fs.DirEntry, parent *tree.Tree[T], depth int,
 
 	for _, d1 := range dirs {
 		path1 := filepath.Join(path, d1.Name())
-		_, err := walkDir(path1, d1, t, depth+1, walkDirFn)
+		_, err := walkDirRecursive(path1, d1, t, depth+1, walkDirFn)
 		if err != nil {
 			if err == filepath.SkipDir {
 				break

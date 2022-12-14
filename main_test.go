@@ -3,11 +3,11 @@ package main
 import (
 	"testing"
 
-	"github.com/mlange42/dirstat/crawl"
+	"github.com/mlange42/dirstat/filesys"
 )
 
 func TestRun(*testing.T) {
-	t, _ := crawl.Walk("..", []string{".git"}, -1)
+	t, _ := filesys.Walk("..", []string{".git"}, -1)
 
 	_ = t.Value
 }
