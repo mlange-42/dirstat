@@ -44,6 +44,7 @@ func (p PlainPrinter[T]) print(t *Tree[T], sb *strings.Builder, depth int) {
 // TreemapPrinter prints a tree in treemap CSV format
 type TreemapPrinter struct {
 	ByExtension bool
+	ByCount     bool
 }
 
 // Print prints a FileTree
@@ -55,29 +56,50 @@ func (p TreemapPrinter) Print(t *FileTree) string {
 
 func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 	if len(path) == 0 {
-		path = fmt.Sprintf("%s (%s)", t.Value.Name, util.FormatBytes(t.Value.Size))
+		path = fmt.Sprintf(
+			"%s (%s | %s)", t.Value.Name,
+			util.FormatUnits(t.Value.Size, "B"),
+			util.FormatUnits(int64(t.Value.Count), ""),
+		)
 	} else {
-		path = fmt.Sprintf("%s/%s (%s)", path, t.Value.Name, util.FormatBytes(t.Value.Size))
+		path = fmt.Sprintf(
+			"%s/%s (%s | %s)", path, t.Value.Name,
+			util.FormatUnits(t.Value.Size, "B"),
+			util.FormatUnits(int64(t.Value.Count), ""),
+		)
+	}
+
+	var v1, v2 int64
+	if p.ByCount {
+		v1, v2 = int64(t.Value.Count), t.Value.Size
+	} else {
+		v1, v2 = t.Value.Size, int64(t.Value.Count)
 	}
 
 	fmt.Fprintf(
 		sb,
 		"%s,%d,%d\n",
 		strings.Replace(path, ",", "-", -1),
-		t.Value.Size,
-		t.Value.Count,
+		v1,
+		v2,
 	)
 
 	if p.ByExtension && t.Value.IsDir && len(t.Children) == 0 {
 		for _, info := range t.Value.Extensions {
-			p := path + "/" + info.Name
+			pth := path + "/" + info.Name
+			if p.ByCount {
+				v1, v2 = int64(info.Count), info.Size
+			} else {
+				v1, v2 = info.Size, int64(info.Count)
+			}
 			fmt.Fprintf(
 				sb,
-				"%s (%s),%d,%d\n",
-				strings.Replace(p, ",", "-", -1),
-				util.FormatBytes(info.Size),
-				info.Size,
-				info.Count,
+				"%s (%s | %s),%d,%d\n",
+				strings.Replace(pth, ",", "-", -1),
+				util.FormatUnits(info.Size, "B"),
+				util.FormatUnits(int64(info.Count), ""),
+				v1,
+				v2,
 			)
 		}
 		return

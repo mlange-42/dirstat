@@ -76,14 +76,14 @@ func (e *ExtensionEntry) AddMulti(size int64, count int) {
 }
 
 func (e ExtensionEntry) String() string {
-	return fmt.Sprintf("%s (%d)", util.FormatBytes(e.Size), e.Count)
+	return fmt.Sprintf("%s (%s)", util.FormatUnits(e.Size, "B"), util.FormatUnits(int64(e.Count), ""))
 }
 
 func (e FileEntry) String() string {
 	if e.IsDir {
-		return fmt.Sprintf("-%s %s (%d) %v", e.Name, util.FormatBytes(e.Size), e.Count, e.Extensions)
+		return fmt.Sprintf("-%s %s (%s) %v", e.Name, util.FormatUnits(e.Size, "B"), util.FormatUnits(int64(e.Count), ""), e.Extensions)
 	}
-	return fmt.Sprintf(" %s %s (%d)", e.Name, util.FormatBytes(e.Size), e.Count)
+	return fmt.Sprintf(" %s %s (%s)", e.Name, util.FormatUnits(e.Size, "B"), util.FormatUnits(int64(e.Count), ""))
 }
 
 // AddExtensions adds extensions

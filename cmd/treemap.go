@@ -32,12 +32,20 @@ var treemapCmd = &cobra.Command{
 			panic(err)
 		}
 
+		byCount, err := cmd.Flags().GetBool("count")
+		if err != nil {
+			panic(err)
+		}
+
 		svg, err := cmd.Flags().GetBool("svg")
 		if err != nil {
 			panic(err)
 		}
 
-		printer := tree.TreemapPrinter{ByExtension: byExt}
+		printer := tree.TreemapPrinter{
+			ByExtension: byExt,
+			ByCount:     byCount,
+		}
 		str := printer.Print(t)
 		if !svg {
 			fmt.Print(str)
@@ -111,6 +119,7 @@ func toSvg(s string) ([]byte, error) {
 
 func init() {
 	treemapCmd.Flags().BoolP("extensions", "x", false, "Group deepest directory level by file extensions.")
+	treemapCmd.Flags().BoolP("count", "c", false, "Size boxes by file count instead of disk memory.")
 	treemapCmd.Flags().Bool("svg", false, "Directly greates SVG output with default treemap settings.")
 
 	rootCmd.AddCommand(treemapCmd)
