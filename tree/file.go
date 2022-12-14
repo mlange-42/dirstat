@@ -3,7 +3,7 @@ package tree
 import (
 	"fmt"
 
-	"github.com/mlange42/dirstat/util"
+	"github.com/mlange-42/go-dirstat/util"
 )
 
 // FileTree is a tree with TreeEntry data

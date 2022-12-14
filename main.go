@@ -1,6 +1,6 @@
 package main
 
-import "github.com/mlange42/dirstat/cmd"
+import "github.com/mlange-42/go-dirstat/cmd"
 
 func main() {
 	cmd.Execute()
