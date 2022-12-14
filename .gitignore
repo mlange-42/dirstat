@@ -1,1 +1,5 @@
-*.exe
+/out/
+/*.exe
+/*.json
+/*.csv
+/*.svg
