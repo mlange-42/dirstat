@@ -149,7 +149,10 @@ func walkDir[T any](path string, d fs.DirEntry, parent *tree.Tree[T], depth int,
 func readDir(dirname string) ([]fs.DirEntry, error) {
 	f, err := os.Open(dirname)
 	if err != nil {
-		return nil, err
+		if _, ok := err.(*os.PathError); ok {
+			return []fs.DirEntry{}, nil
+		}
+		panic(err)
 	}
 	dirs, err := f.ReadDir(-1)
 	f.Close()

@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	"github.com/mlange42/dirstat/util"
 )
 
 // Printer interface
@@ -53,15 +55,30 @@ func (p TreemapPrinter) Print(t *FileTree) string {
 
 func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 	if len(path) == 0 {
-		path = t.Value.Name
+		path = fmt.Sprintf("%s (%s)", t.Value.Name, util.FormatBytes(t.Value.Size))
 	} else {
-		path += "/" + t.Value.Name
+		path = fmt.Sprintf("%s/%s (%s)", path, t.Value.Name, util.FormatBytes(t.Value.Size))
 	}
-	fmt.Fprintf(sb, "%s,%d,%d\n", strings.Replace(path, ",", "-", -1), t.Value.Size, t.Value.Count)
+
+	fmt.Fprintf(
+		sb,
+		"%s,%d,%d\n",
+		strings.Replace(path, ",", "-", -1),
+		t.Value.Size,
+		t.Value.Count,
+	)
+
 	if p.ByExtension && t.Value.IsDir && len(t.Children) == 0 {
 		for _, info := range t.Value.Extensions {
 			p := path + "/" + info.Name
-			fmt.Fprintf(sb, "%s,%d,%d\n", p, info.Size, info.Count)
+			fmt.Fprintf(
+				sb,
+				"%s (%s),%d,%d\n",
+				strings.Replace(p, ",", "-", -1),
+				util.FormatBytes(info.Size),
+				info.Size,
+				info.Count,
+			)
 		}
 		return
 	}

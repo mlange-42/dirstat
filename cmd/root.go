@@ -23,8 +23,12 @@ Path can be a directory or a JSON file of a previously generated directory tree.
 		t, err := runRootCommand(cmd, args)
 
 		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
+			if d, _ := cmd.Flags().GetBool("debug"); d {
+				panic(err)
+			} else {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(1)
+			}
 		}
 
 		printer := tree.JSONPrinter[*tree.FileEntry]{}
@@ -106,4 +110,5 @@ func init() {
 	rootCmd.PersistentFlags().StringP("path", "p", ".", "Path to scan or JSON file to load.")
 	rootCmd.PersistentFlags().IntP("depth", "d", 2, "Depth of the file tree.")
 	rootCmd.PersistentFlags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns.")
+	rootCmd.PersistentFlags().Bool("debug", false, "Debug mode with error traces.")
 }

@@ -19,8 +19,12 @@ var treemapCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		t, err := runRootCommand(cmd, args)
 		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
+			if d, _ := cmd.Flags().GetBool("debug"); d {
+				panic(err)
+			} else {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(1)
+			}
 		}
 
 		byExt, err := cmd.Flags().GetBool("extensions")
@@ -56,7 +60,7 @@ func toSvg(s string) ([]byte, error) {
 	}
 
 	treemap.SetNamesFromPaths(tree)
-	treemap.CollapseLongPaths(tree)
+	//treemap.CollapseLongPaths(tree)
 
 	sizeImputer := treemap.SumSizeImputer{EmptyLeafSize: 1}
 	sizeImputer.ImputeSize(*tree)

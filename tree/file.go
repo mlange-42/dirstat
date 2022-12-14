@@ -1,6 +1,10 @@
 package tree
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/mlange42/dirstat/util"
+)
 
 // FileTree is a tree with TreeEntry data
 type FileTree = Tree[*FileEntry]
@@ -72,15 +76,14 @@ func (e *ExtensionEntry) AddMulti(size int64, count int) {
 }
 
 func (e ExtensionEntry) String() string {
-	return fmt.Sprintf("%d kB (%d)", e.Size/1024, e.Count)
+	return fmt.Sprintf("%s (%d)", util.FormatBytes(e.Size), e.Count)
 }
 
 func (e FileEntry) String() string {
 	if e.IsDir {
-		return fmt.Sprintf("-%s %d kB (%d) %v", e.Name, e.Size/1024, e.Count, e.Extensions)
-		//return fmt.Sprintf("-%s %d kB (%d)", e.Name, e.Size/1024, e.Count)
+		return fmt.Sprintf("-%s %s (%d) %v", e.Name, util.FormatBytes(e.Size), e.Count, e.Extensions)
 	}
-	return fmt.Sprintf(" %s %d kB (%d)", e.Name, e.Size/1024, e.Count)
+	return fmt.Sprintf(" %s %s (%d)", e.Name, util.FormatBytes(e.Size), e.Count)
 }
 
 // AddExtensions adds extensions
