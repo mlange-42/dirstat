@@ -7,8 +7,8 @@ import (
 	"path"
 	"strings"
 
-	"github.com/mlange-42/go-dirstat/filesys"
-	"github.com/mlange-42/go-dirstat/tree"
+	"github.com/mlange-42/dirstat/filesys"
+	"github.com/mlange-42/dirstat/tree"
 	"github.com/spf13/cobra"
 )
 

@@ -8,7 +8,7 @@ import (
 	"sort"
 
 	"github.com/gobwas/glob"
-	"github.com/mlange-42/go-dirstat/tree"
+	"github.com/mlange-42/dirstat/tree"
 )
 
 // Walk searches through a directory tree

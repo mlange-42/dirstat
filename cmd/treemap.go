@@ -5,7 +5,7 @@ import (
 	"image/color"
 	"os"
 
-	"github.com/mlange-42/go-dirstat/tree"
+	"github.com/mlange-42/dirstat/tree"
 	"github.com/nikolaydubina/treemap"
 	"github.com/nikolaydubina/treemap/parser"
 	"github.com/nikolaydubina/treemap/render"
