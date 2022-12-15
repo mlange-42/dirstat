@@ -1,4 +1,5 @@
 /out/
+/dirstat
 /*.exe
 /*.json
 /*.csv
