@@ -6,11 +6,15 @@ A command line tool for analyzing and visualizing disk usage.
 
 ## Installation
 
-Using Go:
+**Using Go:**
 
 ```shell
 go install github.com/mlange-42/dirstat@latest
 ```
+
+**Without Go:**
+
+Download binaries for your OS from the [Releases](https://github.com/mlange-42/dirstat/releases/).
 
 ## Usage
 
