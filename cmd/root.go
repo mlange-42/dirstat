@@ -94,6 +94,7 @@ func treeFromJSON(file string, exclude []string, depth int) (*tree.FileTree, err
 	if err != nil {
 		return nil, err
 	}
+	t.Crop(depth)
 	return t, nil
 }
 

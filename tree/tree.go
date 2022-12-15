@@ -32,6 +32,17 @@ func (t *Tree[T]) Aggregate(fn func(parent, child T)) {
 	}
 }
 
+// Crop reduces the tree to a given depth
+func (t *Tree[T]) Crop(depth int) {
+	if depth <= 0 {
+		t.Children = nil
+		return
+	}
+	for _, child := range t.Children {
+		child.Crop(depth - 1)
+	}
+}
+
 // String converts the tree to a multiline string
 func (t *Tree[T]) String() string {
 	return PlainPrinter[T]{}.Print(t)
