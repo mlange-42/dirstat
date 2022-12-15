@@ -92,7 +92,7 @@ func (e *FileEntry) AddExtensions(ext map[string]*ExtensionEntry) {
 		if inf, ok := e.Extensions[k]; ok {
 			inf.AddMulti(v.Size, v.Count)
 		} else {
-			fe := ExtensionEntry{k, v.Size, 1}
+			fe := ExtensionEntry{k, v.Size, v.Count}
 			e.Extensions[k] = &fe
 		}
 	}
