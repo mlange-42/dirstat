@@ -129,7 +129,7 @@ func toSvg(s string, flags *svgFlags) ([]byte, error) {
 	case flags.ColorBorder == "dark":
 		borderColor = grey
 	}
-	fmt.Fprintln(os.Stderr, flags)
+
 	uiBuilder := render.UITreeMapBuilder{
 		Colorer:     colorer,
 		BorderColor: borderColor,

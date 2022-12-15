@@ -12,7 +12,7 @@ import (
 )
 
 // Walk searches through a directory tree
-func Walk(dir string, exclude []string, maxDepth int) (*tree.FileTree, error) {
+func Walk(dir string, exclude []string, maxDepth int, progres chan<- int64, done chan<- *tree.FileTree, erro chan<- error) {
 	excludeGlobs := make([]glob.Glob, 0, len(exclude))
 	for _, g := range exclude {
 		excludeGlobs = append(excludeGlobs, glob.MustCompile(g))
@@ -23,6 +23,7 @@ func Walk(dir string, exclude []string, maxDepth int) (*tree.FileTree, error) {
 	t, err := walkDir(dir,
 		func(path string, d fs.DirEntry, parent *tree.FileTree, depth int, err error) (*tree.FileTree, error) {
 			if err != nil {
+				erro <- err
 				return nil, err
 			}
 			for _, g := range excludeGlobs {
@@ -48,6 +49,8 @@ func Walk(dir string, exclude []string, maxDepth int) (*tree.FileTree, error) {
 				v.Add(info.Size())
 			}
 
+			progres <- info.Size()
+
 			if maxDepth >= 0 && depth > maxDepth {
 				return parent, nil
 			}
@@ -63,12 +66,15 @@ func Walk(dir string, exclude []string, maxDepth int) (*tree.FileTree, error) {
 			}
 			return subTree, nil
 		})
+
 	if err != nil {
-		return nil, err
+		erro <- err
+		return
 	}
 
 	if !anyFound {
-		return nil, fmt.Errorf("Nothing found in directoy %s", dir)
+		erro <- fmt.Errorf("Nothing found in directoy %s", dir)
+		return
 	}
 
 	t.Aggregate(func(parent, child *tree.FileEntry) {
@@ -78,7 +84,7 @@ func Walk(dir string, exclude []string, maxDepth int) (*tree.FileTree, error) {
 		}
 	})
 
-	return t, nil
+	done <- t
 }
 
 // walkDir recursively descends path, calling walkDirFn.
