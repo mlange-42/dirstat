@@ -8,30 +8,6 @@ on:
     types: [ created ]
 
 jobs:
-  build-windows:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: '1.19.x'
-      - name: Install dependencies
-        run: go get .
-      - name: Build
-        run: GOOS=windows GOARCH=amd64 go build .
-      - name: Compress binaries
-        run: |
-          tar -czf $REPO$.tar.gz $REPO$.exe
-        shell: bash
-      - name: Upload binaries
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: $REPO$.tar.gz
-          asset_name: ${{ env.REPO }}-${{ env.RELEASE_VERSION }}-windows-amd64.tar.gz
-          tag: ${{ github.ref }}
-
   build-linux:
     runs-on: ubuntu-latest
     steps:
@@ -56,6 +32,30 @@ jobs:
           asset_name: ${{ env.REPO }}-${{ env.RELEASE_VERSION }}-linux-amd64.tar.gz
           tag: ${{ github.ref }}
 
+  build-windows:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.19.x'
+      - name: Install dependencies
+        run: go get .
+      - name: Build
+        run: GOOS=windows GOARCH=amd64 go build .
+      - name: Compress binaries
+        run: |
+          tar -czf $REPO$.tar.gz $REPO$.exe
+        shell: bash
+      - name: Upload binaries
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: $REPO$.tar.gz
+          asset_name: ${{ env.REPO }}-${{ env.RELEASE_VERSION }}-windows-amd64.tar.gz
+          tag: ${{ github.ref }}
+
   build-macos:
     runs-on: ubuntu-latest
     steps:
@@ -67,7 +67,7 @@ jobs:
       - name: Install dependencies
         run: go get .
       - name: Build
-        run: GOOS=macos GOARCH=amd64 go build .
+        run: GOOS=darwin GOARCH=amd64 go build .
       - name: Compress binaries
         run: |
           tar -czf $REPO$.tar.gz $REPO$
