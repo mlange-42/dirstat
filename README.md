@@ -1,5 +1,7 @@
 # dirstat
 
+[![Tests](https://github.com/mlange-42/dirstat/actions/workflows/tests.yml/badge.svg)](https://github.com/mlange-42/dirstat/actions/workflows/tests.yml)
+
 A command line tool for analyzing and visualizing disk usage.
 
 ## Installation
