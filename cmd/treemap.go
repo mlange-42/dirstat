@@ -37,7 +37,7 @@ var treemapCmd = &cobra.Command{
 			panic(err)
 		}
 
-		svg, err := cmd.Flags().GetBool("svg")
+		csv, err := cmd.Flags().GetBool("csv")
 		if err != nil {
 			panic(err)
 		}
@@ -47,12 +47,14 @@ var treemapCmd = &cobra.Command{
 			ByCount:     byCount,
 		}
 		str := printer.Print(t)
-		if !svg {
+		if csv {
 			fmt.Print(str)
 			return
 		}
 
-		svgBytes, err := toSvg(str)
+		svgFlags := parseSvgFlags(cmd)
+
+		svgBytes, err := toSvg(str, &svgFlags)
 		if err != nil {
 			panic(err)
 		}
@@ -60,7 +62,9 @@ var treemapCmd = &cobra.Command{
 	},
 }
 
-func toSvg(s string) ([]byte, error) {
+var grey = color.RGBA{128, 128, 128, 255}
+
+func toSvg(s string, flags *svgFlags) ([]byte, error) {
 	parser := parser.CSVTreeParser{}
 	tree, err := parser.ParseString(s)
 	if err != nil || tree == nil {
@@ -68,19 +72,23 @@ func toSvg(s string) ([]byte, error) {
 	}
 
 	treemap.SetNamesFromPaths(tree)
-	//treemap.CollapseLongPaths(tree)
+	if !flags.KeepLongPaths {
+		treemap.CollapseLongPaths(tree)
+	}
 
 	sizeImputer := treemap.SumSizeImputer{EmptyLeafSize: 1}
 	sizeImputer.ImputeSize(*tree)
 
-	heatImputer := treemap.WeightedHeatImputer{EmptyLeafHeat: 0.5}
-	heatImputer.ImputeHeat(*tree)
+	if flags.ImputeHeat {
+		heatImputer := treemap.WeightedHeatImputer{EmptyLeafHeat: 0.5}
+		heatImputer.ImputeHeat(*tree)
+	}
 
 	tree.NormalizeHeat()
 
 	var colorer render.Colorer
 
-	palette, hasPalette := render.GetPalette("balanced")
+	palette, hasPalette := render.GetPalette(flags.ColorScheme)
 	treeHueColorer := render.TreeHueColorer{
 		Offset: 0,
 		Hues:   map[string]float64{},
@@ -100,27 +108,82 @@ func toSvg(s string) ([]byte, error) {
 	borderColor = color.White
 
 	switch {
+	case flags.ColorScheme == "none":
+		colorer = render.NoneColorer{}
+		borderColor = grey
+	case flags.ColorScheme == "balanced":
+		colorer = treeHueColorer
+		borderColor = color.White
 	case hasPalette && tree.HasHeat():
 		colorer = render.HeatColorer{Palette: palette}
 	case tree.HasHeat():
 		palette, _ := render.GetPalette("RdBu")
 		colorer = render.HeatColorer{Palette: palette}
+	default:
+		colorer = treeHueColorer
 	}
 
+	switch {
+	case flags.ColorBorder == "light":
+		borderColor = color.White
+	case flags.ColorBorder == "dark":
+		borderColor = grey
+	}
+	fmt.Fprintln(os.Stderr, flags)
 	uiBuilder := render.UITreeMapBuilder{
 		Colorer:     colorer,
 		BorderColor: borderColor,
 	}
-	spec := uiBuilder.NewUITreeMap(*tree, 1028, 640, 4, 4, 32)
+	spec := uiBuilder.NewUITreeMap(*tree, flags.W, flags.H, flags.MarginBox, flags.PaddingBox, flags.Padding)
 	renderer := render.SVGRenderer{}
 
-	return renderer.Render(spec, 1028, 640), nil
+	return renderer.Render(spec, flags.W, flags.H), nil
 }
 
 func init() {
+	treemapCmd.Flags().Bool("csv", false, "Generate raw CSV output for treemap instead of SVG.")
 	treemapCmd.Flags().BoolP("extensions", "x", false, "Group deepest directory level by file extensions.")
 	treemapCmd.Flags().BoolP("count", "c", false, "Size boxes by file count instead of disk memory.")
-	treemapCmd.Flags().Bool("svg", false, "Directly greates SVG output with default treemap settings.")
+
+	treemapCmd.Flags().Float64("w", 1028, "width of output")
+	treemapCmd.Flags().Float64("h", 640, "height of output")
+	treemapCmd.Flags().Float64("margin-box", 4, "margin between boxes")
+	treemapCmd.Flags().Float64("padding-box", 4, "padding between box border and content")
+	treemapCmd.Flags().Float64("padding", 32, "padding around root content")
+	treemapCmd.Flags().String("color", "balance", "color scheme (RdBu, balance, RdYlGn, none)")
+	treemapCmd.Flags().String("color-border", "auto", "color of borders (light, dark, auto)")
+	treemapCmd.Flags().Bool("impute-heat", false, "impute heat for parents(weighted sum) and leafs(0.5)")
+	treemapCmd.Flags().Bool("long-paths", false, "keep long paths when paren has single child")
 
 	rootCmd.AddCommand(treemapCmd)
+}
+
+type svgFlags struct {
+	W             float64
+	H             float64
+	MarginBox     float64
+	PaddingBox    float64
+	Padding       float64
+	ColorScheme   string
+	ColorBorder   string
+	ImputeHeat    bool
+	KeepLongPaths bool
+}
+
+func parseSvgFlags(cmd *cobra.Command) svgFlags {
+	var flags svgFlags
+
+	flags.W, _ = cmd.Flags().GetFloat64("w")
+	flags.H, _ = cmd.Flags().GetFloat64("h")
+	flags.MarginBox, _ = cmd.Flags().GetFloat64("margin-box")
+	flags.PaddingBox, _ = cmd.Flags().GetFloat64("padding-box")
+	flags.Padding, _ = cmd.Flags().GetFloat64("padding")
+
+	flags.ColorScheme, _ = cmd.Flags().GetString("color")
+	flags.ColorBorder, _ = cmd.Flags().GetString("color-border")
+
+	flags.ImputeHeat, _ = cmd.Flags().GetBool("impute-heat")
+	flags.KeepLongPaths, _ = cmd.Flags().GetBool("long-paths")
+
+	return flags
 }

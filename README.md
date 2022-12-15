@@ -26,22 +26,22 @@ Run in the current folder, with default settings and JSON output
 dirstat
 ```
 
-Run in the current folder, with default settings and SVG output piped to a file:
+Run in the current folder, with default settings and treemap SVG output piped to a file:
 
 ```shell
-dirstat treemap --svg > out.svg
+dirstat treemap > out.svg
 ```
 
 Statistics over file extensions:
 
 ```shell
-dirstat treemap --svg -x > out.svg
+dirstat treemap -x > out.svg
 ```
 
 Open the created SVG with the default associated program (ideally a web browser):
 
 ```shell
-dirstat treemap --svg > out.svg && out.svg
+dirstat treemap > out.svg && out.svg
 ```
 
 Exclude files and directories by glob patterns:
