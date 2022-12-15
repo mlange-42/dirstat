@@ -164,6 +164,15 @@ func readDir(dirname string) ([]fs.DirEntry, error) {
 	if err != nil {
 		return nil, err
 	}
-	sort.Slice(dirs, func(i, j int) bool { return (dirs[i].IsDir() && !dirs[j].IsDir()) || dirs[i].Name() < dirs[j].Name() })
+	sort.Slice(dirs,
+		func(i, j int) bool {
+			if dirs[i].IsDir() && !dirs[j].IsDir() {
+				return true
+			}
+			if !dirs[i].IsDir() && dirs[j].IsDir() {
+				return false
+			}
+			return dirs[i].Name() < dirs[j].Name()
+		})
 	return dirs, nil
 }
