@@ -80,7 +80,6 @@ func Walk(dir string, exclude []string, maxDepth int, progres chan<- int64, done
 	t.Aggregate(func(parent, child *tree.FileEntry) {
 		if child.IsDir {
 			parent.AddMulti(child.Size, child.Count)
-			parent.AddExtensions(child.Extensions)
 		}
 	})
 

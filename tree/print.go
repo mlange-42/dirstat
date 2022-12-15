@@ -86,7 +86,7 @@ func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 		v2,
 	)
 
-	if p.ByExtension && t.Value.IsDir && len(t.Children) == 0 {
+	if p.ByExtension && t.Value.IsDir {
 		for _, info := range t.Value.Extensions {
 			pth := path + "/" + info.Name
 			if p.ByCount {
@@ -104,9 +104,10 @@ func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 				v2,
 			)
 		}
-		return
 	}
 	for _, child := range t.Children {
-		p.print(child, sb, path)
+		if !p.ByExtension || child.Value.IsDir {
+			p.print(child, sb, path)
+		}
 	}
 }

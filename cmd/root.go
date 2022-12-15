@@ -133,7 +133,13 @@ func treeFromJSON(file string, exclude []string, depth int) (*tree.FileTree, err
 	if err != nil {
 		return nil, err
 	}
-	t.Crop(depth)
+	if depth >= 0 {
+		t.Crop(depth, func(parent, child *tree.FileEntry) {
+			if child.IsDir {
+				parent.AddExtensions(child.Extensions)
+			}
+		})
+	}
 	return t, nil
 }
 

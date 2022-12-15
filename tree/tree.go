@@ -33,13 +33,14 @@ func (t *Tree[T]) Aggregate(fn func(parent, child T)) {
 }
 
 // Crop reduces the tree to a given depth
-func (t *Tree[T]) Crop(depth int) {
+func (t *Tree[T]) Crop(depth int, fn func(parent, child T)) {
 	if depth <= 0 {
+		t.Aggregate(fn)
 		t.Children = nil
 		return
 	}
 	for _, child := range t.Children {
-		child.Crop(depth - 1)
+		child.Crop(depth-1, fn)
 	}
 }
 
