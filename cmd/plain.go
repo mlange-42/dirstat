@@ -14,17 +14,23 @@ var plainCmd = &cobra.Command{
 	Short: "Prints a plain text directory tree",
 	Run: func(cmd *cobra.Command, args []string) {
 		t, err := runRootCommand(cmd, args)
-
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
 
-		printer := tree.PlainPrinter[*tree.FileEntry]{}
+		byExt, err := cmd.Flags().GetBool("extensions")
+		if err != nil {
+			panic(err)
+		}
+
+		printer := tree.FileTreePrinter{ByExtension: byExt}
 		fmt.Print(printer.Print(t))
 	},
 }
 
 func init() {
+	plainCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files.")
+
 	rootCmd.AddCommand(plainCmd)
 }

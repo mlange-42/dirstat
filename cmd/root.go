@@ -18,9 +18,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "dirstat <path> [flags] command",
 	Short: "Analyze or visualize directory contents.",
-	Long: `Analyze or visualize directory contents.
-Path can be a directory or a JSON file of a previously generated directory tree.`,
-	Args: cobra.NoArgs,
+	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		t, err := runRootCommand(cmd, args)
 
@@ -113,7 +111,7 @@ Loop:
 			}
 		case t = <-done:
 			if !quiet {
-				fmt.Fprintf(os.Stderr, "\033[2K\rDone: %s, %s files in %s", util.FormatUnits(size, "B"), util.FormatUnits(int64(count), ""), time.Since(startTime).Round(time.Millisecond))
+				fmt.Fprintf(os.Stderr, "\033[2K\rDone: %s, %s files in %s\n", util.FormatUnits(size, "B"), util.FormatUnits(int64(count), ""), time.Since(startTime).Round(time.Millisecond))
 			}
 			break Loop
 		case err = <-erro:
@@ -133,12 +131,17 @@ func treeFromJSON(file string, exclude []string, depth int) (*tree.FileTree, err
 	if err != nil {
 		return nil, err
 	}
-	t.Crop(depth)
+	if depth >= 0 {
+		t.Crop(depth, func(parent, child *tree.FileEntry) {
+			if child.IsDir {
+				parent.AddExtensions(child.Extensions)
+			}
+		})
+	}
 	return t, nil
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
@@ -149,7 +152,7 @@ func Execute() {
 func init() {
 	rootCmd.PersistentFlags().StringP("path", "p", ".", "Path to scan or JSON file to load.")
 	rootCmd.PersistentFlags().IntP("depth", "d", 2, "Depth of the file tree.")
-	rootCmd.PersistentFlags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns.")
+	rootCmd.PersistentFlags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns. Ignored when reading from JSON.")
 	rootCmd.PersistentFlags().Bool("debug", false, "Debug mode with error traces.")
 	rootCmd.PersistentFlags().Bool("quiet", false, "Don't show progress on stderr.")
 }
