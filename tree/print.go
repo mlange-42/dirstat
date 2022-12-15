@@ -55,18 +55,20 @@ func (p TreemapPrinter) Print(t *FileTree) string {
 }
 
 func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
-	if len(path) == 0 {
-		path = fmt.Sprintf(
-			"%s (%s | %s)", t.Value.Name,
-			util.FormatUnits(t.Value.Size, "B"),
-			util.FormatUnits(int64(t.Value.Count), ""),
+	var sizeCount string
+
+	if t.Value.IsDir {
+		sizeCount = fmt.Sprintf("%s | %s",
+			util.FormatUnits(t.Value.Size, "B"), util.FormatUnits(int64(t.Value.Count), ""),
 		)
 	} else {
-		path = fmt.Sprintf(
-			"%s/%s (%s | %s)", path, t.Value.Name,
-			util.FormatUnits(t.Value.Size, "B"),
-			util.FormatUnits(int64(t.Value.Count), ""),
-		)
+		sizeCount = fmt.Sprintf("%s", util.FormatUnits(t.Value.Size, "B"))
+	}
+
+	if len(path) == 0 {
+		path = fmt.Sprintf("%s (%s)", t.Value.Name, sizeCount)
+	} else {
+		path = fmt.Sprintf("%s/%s (%s)", path, t.Value.Name, sizeCount)
 	}
 
 	var v1, v2 int64
