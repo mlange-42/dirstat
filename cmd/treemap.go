@@ -15,7 +15,7 @@ import (
 // treemapCmd represents the treemap command
 var treemapCmd = &cobra.Command{
 	Use:   "treemap",
-	Short: "Create output in treemap CSV format",
+	Short: "Create output in treemap CSV format or as SVG using treemap",
 	Run: func(cmd *cobra.Command, args []string) {
 		t, err := runRootCommand(cmd, args)
 		if err != nil {

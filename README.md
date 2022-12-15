@@ -18,6 +18,8 @@ Get help:
 dirstat -h
 ```
 
+### Examples
+
 Run in the current folder, with default settings and JSON output
 
 ```shell
@@ -34,6 +36,24 @@ Statistics over file extensions:
 
 ```shell
 dirstat treemap --svg -x > out.svg
+```
+
+Open the created SVG with the default associated program (ideally a web browser):
+
+```shell
+dirstat treemap --svg > out.svg && out.svg
+```
+
+Exclude files and directories by glob patterns:
+
+```shell
+dirstat -e .git,*.exe
+```
+
+Analyze with a different depth than the default of 2:
+
+```shell
+dirstat -d 4
 ```
 
 ## References
