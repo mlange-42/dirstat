@@ -1,8 +1,5 @@
 name: Release
 
-env:
-  REPO: dirstat
-
 on:
   release:
     types: [ created ]
@@ -22,14 +19,14 @@ jobs:
         run: GOOS=linux GOARCH=amd64 go build .
       - name: Compress binaries
         run: |
-          tar -czf $REPO$.tar.gz $REPO$
+          tar -czf dirstat.tar.gz dirstat
         shell: bash
       - name: Upload binaries
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: $REPO$.tar.gz
-          asset_name: ${{ env.REPO }}-${{ env.RELEASE_VERSION }}-linux-amd64.tar.gz
+          file: dirstat.tar.gz
+          asset_name: dirstat-${{ env.RELEASE_VERSION }}-linux-amd64.tar.gz
           tag: ${{ github.ref }}
 
   build-windows:
@@ -46,14 +43,14 @@ jobs:
         run: GOOS=windows GOARCH=amd64 go build .
       - name: Compress binaries
         run: |
-          tar -czf $REPO$.tar.gz $REPO$.exe
+          tar -czf dirstat.tar.gz dirstat.exe
         shell: bash
       - name: Upload binaries
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: $REPO$.tar.gz
-          asset_name: ${{ env.REPO }}-${{ env.RELEASE_VERSION }}-windows-amd64.tar.gz
+          file: dirstat.tar.gz
+          asset_name: dirstat-${{ env.RELEASE_VERSION }}-windows-amd64.tar.gz
           tag: ${{ github.ref }}
 
   build-macos:
@@ -70,12 +67,12 @@ jobs:
         run: GOOS=darwin GOARCH=amd64 go build .
       - name: Compress binaries
         run: |
-          tar -czf $REPO$.tar.gz $REPO$
+          tar -czf dirstat.tar.gz dirstat
         shell: bash
       - name: Upload binaries
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: $REPO$.tar.gz
-          asset_name: ${{ env.REPO }}-${{ env.RELEASE_VERSION }}-macos-amd64.tar.gz
+          file: dirstat.tar.gz
+          asset_name: dirstat-${{ env.RELEASE_VERSION }}-macos-amd64.tar.gz
           tag: ${{ github.ref }}
