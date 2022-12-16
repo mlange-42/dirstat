@@ -1,5 +1,9 @@
 package tree
 
+import (
+	"fmt"
+)
+
 // Tree is a tree data structure
 type Tree[T any] struct {
 	Children []*Tree[T] `json:"children"`
@@ -47,4 +51,20 @@ func (t *Tree[T]) Crop(depth int, fn func(parent, child T)) {
 // String converts the tree to a multiline string
 func (t *Tree[T]) String() string {
 	return PlainPrinter[T]{}.Print(t)
+}
+
+// SubTree selects a sub-tree using a path
+func SubTree[T any, P any](t *Tree[T], path []P, fn func(T, P) bool) (*Tree[T], error) {
+	if len(path) == 0 {
+		return t, nil
+	}
+	for _, child := range t.Children {
+		if fn(child.Value, path[0]) {
+			if len(path) == 1 {
+				return child, nil
+			}
+			return SubTree(child, path[1:], fn)
+		}
+	}
+	return nil, fmt.Errorf("Path element '%v' not found in tree", path[0])
 }

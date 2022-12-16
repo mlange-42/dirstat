@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -70,14 +71,17 @@ func runRootCommand(cmd *cobra.Command, args []string) (*tree.FileTree, error) {
 	var t *tree.FileTree
 
 	if isJSON {
-		t, err = treeFromJSON(dir, exclude, depth)
+		subtree, serr := cmd.Flags().GetString("subtree")
+		if serr != nil {
+			panic(serr)
+		}
+		t, err = treeFromJSON(dir, subtree, exclude, depth)
 	} else {
 		t, err = treeFromDir(dir, exclude, depth, quiet)
 	}
 	if err != nil {
 		return nil, err
 	}
-
 	return t, nil
 }
 
@@ -122,7 +126,7 @@ Loop:
 	return t, err
 }
 
-func treeFromJSON(file string, exclude []string, depth int) (*tree.FileTree, error) {
+func treeFromJSON(file string, subtree string, exclude []string, depth int) (*tree.FileTree, error) {
 	bytes, err := ioutil.ReadFile(file)
 	if err != nil {
 		return nil, err
@@ -138,6 +142,16 @@ func treeFromJSON(file string, exclude []string, depth int) (*tree.FileTree, err
 			}
 		})
 	}
+
+	if len(subtree) != 0 {
+		elems := strings.Split(filepath.ToSlash(subtree), "/")
+		t, err = tree.SubTree(t, elems, func(e *tree.FileEntry, path string) bool {
+			return strings.ToLower(e.Name) == strings.ToLower(path)
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
 	return t, nil
 }
 
@@ -151,8 +165,9 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringP("path", "p", ".", "Path to scan or JSON file to load.")
+	rootCmd.PersistentFlags().StringP("subtree", "s", "", "When reading from JSON, use only this sub-tree.")
 	rootCmd.PersistentFlags().IntP("depth", "d", 2, "Depth of the file tree.")
-	rootCmd.PersistentFlags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns. Ignored when reading from JSON.")
+	rootCmd.PersistentFlags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns. Ignored when reading from JSON.\nRequires a comma-separated list of patterns.")
 	rootCmd.PersistentFlags().Bool("debug", false, "Debug mode with error traces.")
 	rootCmd.PersistentFlags().Bool("quiet", false, "Don't show progress on stderr.")
 }
