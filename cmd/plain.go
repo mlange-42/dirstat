@@ -30,7 +30,7 @@ var plainCmd = &cobra.Command{
 }
 
 func init() {
-	plainCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files.")
+	plainCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
 
 	rootCmd.AddCommand(plainCmd)
 }

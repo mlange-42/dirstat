@@ -17,7 +17,7 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "dirstat <path> [flags] command",
+	Use:   "dirstat [flags] [command]",
 	Short: "Analyze or visualize directory contents.",
 	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -42,19 +42,6 @@ func runRootCommand(cmd *cobra.Command, args []string) (*tree.FileTree, error) {
 	if err != nil {
 		panic(err)
 	}
-	exclude, err := cmd.Flags().GetStringSlice("exclude")
-	if err != nil {
-		panic(err)
-	}
-	depth, err := cmd.Flags().GetInt("depth")
-	if err != nil {
-		panic(err)
-	}
-	quiet, err := cmd.Flags().GetBool("quiet")
-	if err != nil {
-		panic(err)
-	}
-
 	dir = path.Clean(dir)
 	info, err := os.Stat(dir)
 	if err != nil {
@@ -63,9 +50,25 @@ func runRootCommand(cmd *cobra.Command, args []string) (*tree.FileTree, error) {
 		}
 		return nil, err
 	}
+
 	isJSON := strings.ToLower(path.Ext(info.Name())) == ".json"
 	if !info.IsDir() && !isJSON {
 		return nil, fmt.Errorf("%s is neither a directory nor a JSON file", dir)
+	}
+	exclude, err := cmd.Flags().GetStringSlice("exclude")
+	if err != nil {
+		panic(err)
+	}
+	quiet, err := cmd.Flags().GetBool("quiet")
+	if err != nil {
+		panic(err)
+	}
+	depth, err := cmd.Flags().GetInt("depth")
+	if err != nil {
+		panic(err)
+	}
+	if isJSON && !cmd.Flags().Changed("depth") {
+		depth = -1
 	}
 
 	var t *tree.FileTree
@@ -164,10 +167,10 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringP("path", "p", ".", "Path to scan or JSON file to load.")
-	rootCmd.PersistentFlags().StringP("subtree", "s", "", "When reading from JSON, use only this sub-tree.")
-	rootCmd.PersistentFlags().IntP("depth", "d", 2, "Depth of the file tree.")
-	rootCmd.PersistentFlags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns. Ignored when reading from JSON.\nRequires a comma-separated list of patterns.")
-	rootCmd.PersistentFlags().Bool("debug", false, "Debug mode with error traces.")
-	rootCmd.PersistentFlags().Bool("quiet", false, "Don't show progress on stderr.")
+	rootCmd.PersistentFlags().StringP("path", "p", ".", "Path to scan or JSON file to load")
+	rootCmd.PersistentFlags().StringP("subtree", "s", "", "When reading from JSON, use only this sub-tree")
+	rootCmd.PersistentFlags().IntP("depth", "d", 2, "Depth of the generated file tree.\nUse -1 for unlimited depth (use with caution on deeply nested directory trees).\nDefaults to 2 when working on a directory, and to -1 when reading from JSON\n")
+	rootCmd.PersistentFlags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns. Ignored when reading from JSON.\nRequires a comma-separated list of patterns, like \"*.exe,.git\"")
+	rootCmd.PersistentFlags().Bool("debug", false, "Debug mode with error traces")
+	rootCmd.PersistentFlags().Bool("quiet", false, "Don't show progress on stderr")
 }
