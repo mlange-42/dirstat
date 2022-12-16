@@ -4,6 +4,9 @@
 
 A command line tool for analyzing and visualizing disk usage.
 
+![Screenshot](https://user-images.githubusercontent.com/44003176/208201884-13a4675c-10fa-439f-8b28-21f297a08887.svg)  
+*Example visualizing the Go repository*
+
 ## Installation
 
 **Using Go:**
