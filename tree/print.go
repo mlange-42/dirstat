@@ -60,6 +60,12 @@ const (
 	textWidth  int = 24
 )
 
+var (
+	prefixEmpty  string = "│" + strings.Repeat(" ", textIndent-1)
+	prefixNormal string = "├" + strings.Repeat("─", textIndent-1)
+	prefixLast   string = "└" + strings.Repeat("─", textIndent-1)
+)
+
 func (p FileTreePrinter) print(t *FileTree, sb *strings.Builder, depth int, last bool) {
 	var sizeCount string
 	if t.Value.IsDir {
@@ -119,18 +125,13 @@ func (p FileTreePrinter) printExtensions(ext map[string]*ExtensionEntry, sb *str
 }
 
 func createPrefix(depth, indent int, last bool) string {
-	prefix1 := "│" + strings.Repeat(" ", textIndent-1)
-	var prefix2 string
+	if depth <= 0 {
+		return ""
+	}
 	if last {
-		prefix2 = "└" + strings.Repeat("─", textIndent-1)
-	} else {
-		prefix2 = "├" + strings.Repeat("─", textIndent-1)
+		return strings.Repeat(prefixEmpty, depth-1) + prefixLast
 	}
-	prefix := ""
-	if depth > 0 {
-		prefix = strings.Repeat(prefix1, depth-1) + prefix2
-	}
-	return prefix
+	return strings.Repeat(prefixEmpty, depth-1) + prefixNormal
 }
 
 // TreemapPrinter prints a tree in treemap CSV format
