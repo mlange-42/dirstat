@@ -138,13 +138,6 @@ func treeFromJSON(file string, subtree string, exclude []string, depth int) (*tr
 	if err != nil {
 		return nil, err
 	}
-	if depth >= 0 {
-		t.Crop(depth, func(parent, child *tree.FileEntry) {
-			if child.IsDir {
-				parent.AddExtensions(child.Extensions)
-			}
-		})
-	}
 
 	if len(subtree) != 0 {
 		elems := strings.Split(filepath.ToSlash(subtree), "/")
@@ -155,6 +148,15 @@ func treeFromJSON(file string, subtree string, exclude []string, depth int) (*tr
 			return nil, err
 		}
 	}
+
+	if depth >= 0 {
+		t.Crop(depth, func(parent, child *tree.FileEntry) {
+			if child.IsDir {
+				parent.AddExtensions(child.Extensions)
+			}
+		})
+	}
+
 	return t, nil
 }
 

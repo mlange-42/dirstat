@@ -133,16 +133,17 @@ func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 		path = fmt.Sprintf("%s/%s (%s)", path, t.Value.Name, sizeCount)
 	}
 
-	var v1, v2 int64
+	var v1 float64
+	var v2 float64
 	if p.ByCount {
-		v1, v2 = int64(t.Value.Count), t.Value.Size
+		v1, v2 = float64(t.Value.Count), float64(t.Value.Size)
 	} else {
-		v1, v2 = t.Value.Size, int64(t.Value.Count)
+		v1, v2 = float64(t.Value.Size), log(t.Value.Count)
 	}
 
 	fmt.Fprintf(
 		sb,
-		"%s,%d,%d\n",
+		"%s,%f,%f\n",
 		strings.Replace(path, ",", "-", -1),
 		v1,
 		v2,
@@ -152,13 +153,13 @@ func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 		for _, info := range t.Value.Extensions {
 			pth := path + "/" + info.Name
 			if p.ByCount {
-				v1, v2 = int64(info.Count), info.Size
+				v1, v2 = float64(info.Count), float64(info.Size)
 			} else {
-				v1, v2 = info.Size, int64(info.Count)
+				v1, v2 = float64(info.Size), log(info.Count)
 			}
 			fmt.Fprintf(
 				sb,
-				"%s (%s | %s),%d,%d\n",
+				"%s (%s | %s),%f,%f\n",
 				strings.Replace(pth, ",", "-", -1),
 				util.FormatUnits(info.Size, "B"),
 				util.FormatUnits(int64(info.Count), ""),
@@ -172,4 +173,8 @@ func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 			p.print(child, sb, path)
 		}
 	}
+}
+
+func log(n int) float64 {
+	return math.Log10(math.Max(float64(n), 1.0))
 }
