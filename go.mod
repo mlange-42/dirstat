@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/gobwas/glob v0.2.3
-	github.com/nikolaydubina/treemap v1.2.1
+	github.com/nikolaydubina/treemap v1.2.3
 	github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify v1.8.1
 )
