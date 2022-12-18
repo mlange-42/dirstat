@@ -139,11 +139,8 @@ func walkDirRecursive[T any](path string, d fs.DirEntry, parent *tree.Tree[T], d
 	for _, d1 := range dirs {
 		path1 := filepath.Join(path, d1.Name())
 		_, err := walkDirRecursive(path1, d1, t, depth+1, walkDirFn)
-		if err != nil {
-			if err == filepath.SkipDir {
-				break
-			}
-			return t, err
+		if err != nil && err != filepath.SkipDir {
+			return nil, err
 		}
 	}
 	return t, nil
