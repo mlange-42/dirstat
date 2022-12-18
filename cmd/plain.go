@@ -23,14 +23,24 @@ var plainCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
+		sort, err := cmd.Flags().GetString("sort")
+		if err != nil {
+			panic(err)
+		}
+		if sort != "" && sort != tree.BySize && sort != tree.ByCount {
+			fmt.Fprintf(os.Stderr, "Unknown sort field '%s'. Must be one of [size, count]", sort)
+			os.Exit(1)
+		}
 
 		printer := tree.NewFileTreePrinter(byExt, 2)
+		printer.SortBy = sort
 		fmt.Print(printer.Print(t))
 	},
 }
 
 func init() {
 	plainCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
+	plainCmd.Flags().String("sort", "", "Sort by either size or count. Possible values: [size, count]")
 
 	rootCmd.AddCommand(plainCmd)
 }
