@@ -89,7 +89,7 @@ func runRootCommand(cmd *cobra.Command, args []string) (*tree.FileTree, error) {
 }
 
 func treeFromDir(dir string, exclude []string, depth int, quiet bool) (*tree.FileTree, error) {
-	progress := make(chan int64)
+	progress := make(chan int64, 32)
 	done := make(chan *tree.Tree[*tree.FileEntry])
 	erro := make(chan error)
 
