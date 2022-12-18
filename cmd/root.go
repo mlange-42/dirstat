@@ -19,7 +19,24 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "dirstat [flags] [command]",
 	Short: "Analyze or visualize directory contents.",
-	Args:  cobra.NoArgs,
+	Long: `Analyze or visualize directory contents.
+
+When used without a subcommand, the result of the analysis is written to STDOUT in JSON format.
+When piped to a file, it can be used for visualization later by passing as the '--path' argument.
+
+  $ dirstat > out.json
+    (analyzes the current directory and writes JSON to out.json)
+
+  $ dirstat --path out.json plain
+    (reads the JSON instead of running an analysis, and prints the directory tree in text format)
+
+For inspection in the terminal, see subcommand 'plain'.
+  $ dirstat plain -h
+
+For graphical visualization, see subcommand 'treemap'.
+  $ dirstat treemap -h
+`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		t, err := runRootCommand(cmd, args)
 
@@ -171,7 +188,7 @@ func Execute() {
 func init() {
 	rootCmd.PersistentFlags().StringP("path", "p", ".", "Path to scan or JSON file to load")
 	rootCmd.PersistentFlags().StringP("subtree", "s", "", "When reading from JSON, use only this sub-tree")
-	rootCmd.PersistentFlags().IntP("depth", "d", 2, "Depth of the generated file tree.\nUse -1 for unlimited depth (use with caution on deeply nested directory trees).\nDefaults to 2 when working on a directory, and to -1 when reading from JSON\n")
+	rootCmd.PersistentFlags().IntP("depth", "d", 2, "Depth of the generated file tree.\nDeeper files are included, but not individually listed.\nUse -1 for unlimited depth (use with caution on deeply nested directory trees).\nDefaults to 2 when working on a directory, and to -1 when reading from JSON\n")
 	rootCmd.PersistentFlags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns. Ignored when reading from JSON.\nRequires a comma-separated list of patterns, like \"*.exe,.git\"")
 	rootCmd.PersistentFlags().Bool("debug", false, "Debug mode with error traces")
 	rootCmd.PersistentFlags().Bool("quiet", false, "Don't show progress on stderr")

@@ -11,7 +11,7 @@ import (
 // treemapCmd represents the treemap command
 var plainCmd = &cobra.Command{
 	Use:   "plain",
-	Short: "Prints a plain text directory tree",
+	Short: "Prints a plain text directory tree.",
 	Run: func(cmd *cobra.Command, args []string) {
 		byExt, err := cmd.Flags().GetBool("extensions")
 		if err != nil {

@@ -16,7 +16,7 @@ import (
 var treemapCmd = &cobra.Command{
 	Use:     "treemap",
 	Aliases: []string{"tm"},
-	Short:   "Visualize output as SVG treemap, or create CSV for use with github.com/nikolaydubina/treemap",
+	Short:   "Visualize output as SVG treemap.",
 	Run: func(cmd *cobra.Command, args []string) {
 		byExt, err := cmd.Flags().GetBool("extensions")
 		if err != nil {
@@ -147,7 +147,7 @@ func toSvg(s string, flags *svgFlags) ([]byte, error) {
 }
 
 func init() {
-	treemapCmd.Flags().Bool("csv", false, "Generate raw CSV output for treemap instead of SVG")
+	treemapCmd.Flags().Bool("csv", false, "Generate raw CSV output for github.com/nikolaydubina/treemap")
 	treemapCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
 	treemapCmd.Flags().BoolP("count", "c", false, "Size boxes by file count instead of disk memory")
 
