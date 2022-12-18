@@ -24,7 +24,7 @@ var plainCmd = &cobra.Command{
 			panic(err)
 		}
 
-		printer := tree.FileTreePrinter{ByExtension: byExt}
+		printer := tree.NewFileTreePrinter(byExt, 2)
 		fmt.Print(printer.Print(t))
 	},
 }

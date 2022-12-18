@@ -45,28 +45,43 @@ func (p PlainPrinter[T]) print(t *Tree[T], sb *strings.Builder, depth int) {
 
 // FileTreePrinter prints a file tree in plain text format
 type FileTreePrinter struct {
-	ByExtension bool
+	ByExtension  bool
+	Indent       int
+	prefixNone   string
+	prefixEmpty  string
+	prefixNormal string
+	prefixLast   string
+	printWidth   int
+}
+
+// NewFileTreePrinter creates a new FileTreePrinter
+func NewFileTreePrinter(byExt bool, indent int) FileTreePrinter {
+	return FileTreePrinter{
+		ByExtension:  byExt,
+		Indent:       indent,
+		prefixNone:   strings.Repeat(" ", indent),
+		prefixEmpty:  "│" + strings.Repeat(" ", indent-1),
+		prefixNormal: "├" + strings.Repeat("─", indent-1),
+		prefixLast:   "└" + strings.Repeat("─", indent-1),
+		printWidth:   0,
+	}
 }
 
 // Print prints a FileTree
 func (p FileTreePrinter) Print(t *FileTree) string {
+	p.printWidth = p.maxWidth(t, 0) + 2
+	if p.printWidth < 16 {
+		p.printWidth = 16
+	} else if p.printWidth > 64 {
+		p.printWidth = 64
+	}
+
 	sb := strings.Builder{}
-	p.print(t, &sb, 0, false)
+	p.print(t, &sb, 0, false, "")
 	return sb.String()
 }
 
-const (
-	textIndent int = 2
-	textWidth  int = 24
-)
-
-var (
-	prefixEmpty  string = "│" + strings.Repeat(" ", textIndent-1)
-	prefixNormal string = "├" + strings.Repeat("─", textIndent-1)
-	prefixLast   string = "└" + strings.Repeat("─", textIndent-1)
-)
-
-func (p FileTreePrinter) print(t *FileTree, sb *strings.Builder, depth int, last bool) {
+func (p FileTreePrinter) print(t *FileTree, sb *strings.Builder, depth int, last bool, prefix string) {
 	var sizeCount string
 	if t.Value.IsDir {
 		sizeCount = fmt.Sprintf("%-7s (%s)",
@@ -76,38 +91,46 @@ func (p FileTreePrinter) print(t *FileTree, sb *strings.Builder, depth int, last
 		sizeCount = fmt.Sprintf("%s", util.FormatUnits(t.Value.Size, "B"))
 	}
 
-	prefix := createPrefix(depth, textIndent, last)
-	pad := strings.Repeat(" ", int(math.Max(float64(textWidth-depth*textIndent-len([]rune(t.Value.Name))), 0)))
-	fmt.Fprint(sb, prefix)
+	pref := prefix
+
+	if depth > 0 {
+		pref = prefix + p.createPrefixSimple(last)
+	}
+	pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-depth*p.Indent-len([]rune(t.Value.Name))), 0)))
+	fmt.Fprint(sb, pref)
 	if t.Value.IsDir {
 		fmt.Fprintf(sb, "%s/%s%s\n", t.Value.Name, pad, sizeCount)
 	} else {
 		fmt.Fprintf(sb, "%s %s%s\n", t.Value.Name, pad, sizeCount)
 	}
+
+	if depth > 0 {
+		pref = prefix + p.createPrefixEmpty(last)
+	}
 	for i, child := range t.Children {
 		if !p.ByExtension || child.Value.IsDir {
-			p.print(child, sb, depth+1, i == len(t.Children)-1)
+			p.print(child, sb, depth+1, i == len(t.Children)-1, pref)
 		}
 	}
 	if p.ByExtension && t.Value.IsDir {
-		p.printExtensions(t.Value.Extensions, sb, depth+1)
+		p.printExtensions(t.Value.Extensions, sb, depth+1, pref)
 	}
 }
 
-func (p FileTreePrinter) printExtensions(ext map[string]*ExtensionEntry, sb *strings.Builder, depth int) {
+func (p FileTreePrinter) printExtensions(ext map[string]*ExtensionEntry, sb *strings.Builder, depth int, prefix string) {
 	keys := make([]string, 0, len(ext))
 	for k := range ext {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 
-	prefix := createPrefix(depth, textIndent, false)
-	prefixLast := createPrefix(depth, textIndent, true)
+	prefix = prefix + p.createPrefixSimple(false)
+	prefixLast := p.createPrefixSimple(true)
 
 	for i, name := range keys {
 		info := ext[name]
 
-		pad := strings.Repeat(" ", int(math.Max(float64(textWidth-(depth)*textIndent-len([]rune(info.Name))), 0)))
+		pad := strings.Repeat(" ", int(math.Max(float64(p.printWidth-(depth)*p.Indent-len([]rune(info.Name))), 0)))
 		if i == len(keys)-1 {
 			fmt.Fprint(sb, prefixLast)
 		} else {
@@ -124,14 +147,39 @@ func (p FileTreePrinter) printExtensions(ext map[string]*ExtensionEntry, sb *str
 	}
 }
 
-func createPrefix(depth, indent int, last bool) string {
+func (p FileTreePrinter) maxWidth(t *FileTree, depth int) int {
+	max := len([]rune(t.Value.Name)) + depth*p.Indent
+	for _, c := range t.Children {
+		v := p.maxWidth(c, depth+1)
+		if v > max {
+			max = v
+		}
+	}
+	return max
+}
+
+func (p FileTreePrinter) createPrefix(depth, indent int, last bool) string {
 	if depth <= 0 {
 		return ""
 	}
 	if last {
-		return strings.Repeat(prefixEmpty, depth-1) + prefixLast
+		return strings.Repeat(p.prefixEmpty, depth-1) + p.prefixLast
 	}
-	return strings.Repeat(prefixEmpty, depth-1) + prefixNormal
+	return strings.Repeat(p.prefixEmpty, depth-1) + p.prefixNormal
+}
+
+func (p FileTreePrinter) createPrefixSimple(last bool) string {
+	if last {
+		return p.prefixLast
+	}
+	return p.prefixNormal
+}
+
+func (p FileTreePrinter) createPrefixEmpty(last bool) string {
+	if last {
+		return p.prefixNone
+	}
+	return p.prefixEmpty
 }
 
 // TreemapPrinter prints a tree in treemap CSV format
