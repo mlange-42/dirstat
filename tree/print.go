@@ -16,6 +16,8 @@ const (
 	BySize string = "size"
 	// ByCount is for sorting by count
 	ByCount string = "count"
+	// ByName is for sorting by name
+	ByName string = "name"
 )
 
 // Printer interface
