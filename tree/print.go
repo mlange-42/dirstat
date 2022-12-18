@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/mlange-42/dirstat/util"
+	"golang.org/x/exp/maps"
 )
 
 const (
@@ -144,21 +145,33 @@ func (p FileTreePrinter) printExtensions(ext map[string]*ExtensionEntry, sb *str
 	}
 	sort.Strings(keys)
 
-	prefix = prefix + p.createPrefix(false)
-	prefixLast := p.createPrefix(true)
+	values := maps.Values(ext)
+	switch p.SortBy {
+	case BySize:
+		sorter := SortDesc[ExtensionEntry]{values, func(e *ExtensionEntry) float64 { return float64(e.Size) }}
+		sort.Sort(sorter)
+	case ByCount:
+		sorter := SortDesc[ExtensionEntry]{values, func(e *ExtensionEntry) float64 { return float64(e.Count) }}
+		sort.Sort(sorter)
+	default:
+		sort.Slice(values, func(i, j int) bool {
+			return values[i].Name < values[j].Name
+		})
+	}
 
-	for i, name := range keys {
-		info := ext[name]
+	pref := prefix + p.createPrefix(false)
+	prefLast := prefix + p.createPrefix(true)
 
-		pad := strings.Repeat(" ", int(math.Max(float64(p.printWidth-(depth)*p.Indent-len([]rune(info.Name))), 0)))
+	for i, info := range values {
+		pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-(depth)*p.Indent-len([]rune(info.Name))), 0)))
 		if i == len(keys)-1 {
-			fmt.Fprint(sb, prefixLast)
+			fmt.Fprint(sb, prefLast)
 		} else {
-			fmt.Fprint(sb, prefix)
+			fmt.Fprint(sb, pref)
 		}
 		fmt.Fprintf(
 			sb,
-			"%s %s%-7s (%s)\n",
+			"%s .%s %-6s (%s)\n",
 			info.Name,
 			pad,
 			util.FormatUnits(info.Size, "B"),
