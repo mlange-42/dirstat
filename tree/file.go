@@ -23,6 +23,26 @@ func NewFile(name string, size int64) *FileTree {
 	return t
 }
 
+// GetSize returns the size
+func (t *FileTree) GetSize() int64 {
+	return t.Value.Size
+}
+
+// GetCount returns the count
+func (t *FileTree) GetCount() int {
+	return t.Value.Count
+}
+
+// Sized has a size
+type Sized interface {
+	GetSize() int64
+}
+
+// Counted has a count
+type Counted interface {
+	GetCount() int
+}
+
 // FileEntry is a file tree entry
 type FileEntry struct {
 	Name       string                     `json:"name"`
@@ -57,6 +77,16 @@ func NewFileEntry(name string, size int64, isDir bool) FileEntry {
 	}
 }
 
+// GetSize returns the size
+func (e *FileEntry) GetSize() int64 {
+	return e.Size
+}
+
+// GetCount returns the count
+func (e *FileEntry) GetCount() int {
+	return e.Count
+}
+
 // Add adds size and a count of one
 func (e *FileEntry) Add(size int64) {
 	e.Count++
@@ -67,6 +97,16 @@ func (e *FileEntry) Add(size int64) {
 func (e *FileEntry) AddMulti(size int64, count int) {
 	e.Count += count
 	e.Size += size
+}
+
+// GetSize returns the size
+func (e *ExtensionEntry) GetSize() int64 {
+	return e.Size
+}
+
+// GetCount returns the count
+func (e *ExtensionEntry) GetCount() int {
+	return e.Count
 }
 
 // AddMulti adds size and a count

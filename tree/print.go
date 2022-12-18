@@ -94,7 +94,7 @@ func (p FileTreePrinter) print(t *FileTree, sb *strings.Builder, depth int, last
 	pref := prefix
 
 	if depth > 0 {
-		pref = prefix + p.createPrefixSimple(last)
+		pref = prefix + p.createPrefix(last)
 	}
 	pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-depth*p.Indent-len([]rune(t.Value.Name))), 0)))
 	fmt.Fprint(sb, pref)
@@ -124,8 +124,8 @@ func (p FileTreePrinter) printExtensions(ext map[string]*ExtensionEntry, sb *str
 	}
 	sort.Strings(keys)
 
-	prefix = prefix + p.createPrefixSimple(false)
-	prefixLast := p.createPrefixSimple(true)
+	prefix = prefix + p.createPrefix(false)
+	prefixLast := p.createPrefix(true)
 
 	for i, name := range keys {
 		info := ext[name]
@@ -158,17 +158,7 @@ func (p FileTreePrinter) maxWidth(t *FileTree, depth int) int {
 	return max
 }
 
-func (p FileTreePrinter) createPrefix(depth, indent int, last bool) string {
-	if depth <= 0 {
-		return ""
-	}
-	if last {
-		return strings.Repeat(p.prefixEmpty, depth-1) + p.prefixLast
-	}
-	return strings.Repeat(p.prefixEmpty, depth-1) + p.prefixNormal
-}
-
-func (p FileTreePrinter) createPrefixSimple(last bool) string {
+func (p FileTreePrinter) createPrefix(last bool) string {
 	if last {
 		return p.prefixLast
 	}
@@ -247,6 +237,8 @@ func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 			)
 		}
 	}
+	children := t.Children
+	sort.Sort(BySize{children})
 	for _, child := range t.Children {
 		if !p.ByExtension || child.Value.IsDir {
 			p.print(child, sb, path)
@@ -257,3 +249,22 @@ func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 func log(n int) float64 {
 	return math.Log10(math.Max(float64(n), 1.0))
 }
+
+func sorted[T any](values []T, less func(i, j int) bool) []T {
+	sort.Slice(values, less)
+	return values
+}
+
+// BySize sorts by size
+type BySize []Sized
+
+func (s BySize) Len() int           { return len(s) }
+func (s BySize) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+func (s BySize) Less(i, j int) bool { return s[i].GetSize() > s[j].GetSize() }
+
+// ByCount sorts by count
+type ByCount []Counted
+
+func (s ByCount) Len() int           { return len(s) }
+func (s ByCount) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+func (s ByCount) Less(i, j int) bool { return s[i].GetCount() > s[j].GetCount() }
