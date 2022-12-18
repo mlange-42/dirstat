@@ -69,7 +69,7 @@ func NewFileTreePrinter(byExt bool, indent int) FileTreePrinter {
 
 // Print prints a FileTree
 func (p FileTreePrinter) Print(t *FileTree) string {
-	p.printWidth = p.maxWidth(t, 0) + 2
+	p.printWidth = p.maxWidth(t, 0) + 1
 	if p.printWidth < 16 {
 		p.printWidth = 16
 	} else if p.printWidth > 64 {
@@ -84,7 +84,7 @@ func (p FileTreePrinter) Print(t *FileTree) string {
 func (p FileTreePrinter) print(t *FileTree, sb *strings.Builder, depth int, last bool, prefix string) {
 	var sizeCount string
 	if t.Value.IsDir {
-		sizeCount = fmt.Sprintf("%-7s (%s)",
+		sizeCount = fmt.Sprintf("%-6s (%s)",
 			util.FormatUnits(t.Value.Size, "B"), util.FormatUnits(int64(t.Value.Count), ""),
 		)
 	} else {
@@ -99,9 +99,9 @@ func (p FileTreePrinter) print(t *FileTree, sb *strings.Builder, depth int, last
 	pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-depth*p.Indent-len([]rune(t.Value.Name))), 0)))
 	fmt.Fprint(sb, pref)
 	if t.Value.IsDir {
-		fmt.Fprintf(sb, "%s/%s%s\n", t.Value.Name, pad, sizeCount)
+		fmt.Fprintf(sb, "%s/ %s %s\n", t.Value.Name, pad, sizeCount)
 	} else {
-		fmt.Fprintf(sb, "%s %s%s\n", t.Value.Name, pad, sizeCount)
+		fmt.Fprintf(sb, "%s .%s %s\n", t.Value.Name, pad, sizeCount)
 	}
 
 	if depth > 0 {
