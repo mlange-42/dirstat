@@ -8,6 +8,16 @@ import (
 	"strings"
 
 	"github.com/mlange-42/dirstat/util"
+	"golang.org/x/exp/maps"
+)
+
+const (
+	// BySize is for sorting by size
+	BySize string = "size"
+	// ByCount is for sorting by count
+	ByCount string = "count"
+	// ByName is for sorting by name
+	ByName string = "name"
 )
 
 // Printer interface
@@ -45,6 +55,7 @@ func (p PlainPrinter[T]) print(t *Tree[T], sb *strings.Builder, depth int) {
 
 // FileTreePrinter prints a file tree in plain text format
 type FileTreePrinter struct {
+	SortBy       string
 	ByExtension  bool
 	Indent       int
 	prefixNone   string
@@ -94,7 +105,7 @@ func (p FileTreePrinter) print(t *FileTree, sb *strings.Builder, depth int, last
 	pref := prefix
 
 	if depth > 0 {
-		pref = prefix + p.createPrefixSimple(last)
+		pref = prefix + p.createPrefix(last)
 	}
 	pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-depth*p.Indent-len([]rune(t.Value.Name))), 0)))
 	fmt.Fprint(sb, pref)
@@ -107,11 +118,23 @@ func (p FileTreePrinter) print(t *FileTree, sb *strings.Builder, depth int, last
 	if depth > 0 {
 		pref = prefix + p.createPrefixEmpty(last)
 	}
-	for i, child := range t.Children {
+
+	children := t.Children
+	switch p.SortBy {
+	case BySize:
+		sorter := SortDesc[FileTree]{children, func(t *FileTree) float64 { return float64(t.Value.Size) }}
+		sort.Sort(sorter)
+	case ByCount:
+		sorter := SortDesc[FileTree]{children, func(t *FileTree) float64 { return float64(t.Value.Count) }}
+		sort.Sort(sorter)
+	}
+
+	for i, child := range children {
 		if !p.ByExtension || child.Value.IsDir {
 			p.print(child, sb, depth+1, i == len(t.Children)-1, pref)
 		}
 	}
+
 	if p.ByExtension && t.Value.IsDir {
 		p.printExtensions(t.Value.Extensions, sb, depth+1, pref)
 	}
@@ -124,21 +147,33 @@ func (p FileTreePrinter) printExtensions(ext map[string]*ExtensionEntry, sb *str
 	}
 	sort.Strings(keys)
 
-	prefix = prefix + p.createPrefixSimple(false)
-	prefixLast := p.createPrefixSimple(true)
+	values := maps.Values(ext)
+	switch p.SortBy {
+	case BySize:
+		sorter := SortDesc[ExtensionEntry]{values, func(e *ExtensionEntry) float64 { return float64(e.Size) }}
+		sort.Sort(sorter)
+	case ByCount:
+		sorter := SortDesc[ExtensionEntry]{values, func(e *ExtensionEntry) float64 { return float64(e.Count) }}
+		sort.Sort(sorter)
+	default:
+		sort.Slice(values, func(i, j int) bool {
+			return values[i].Name < values[j].Name
+		})
+	}
 
-	for i, name := range keys {
-		info := ext[name]
+	pref := prefix + p.createPrefix(false)
+	prefLast := prefix + p.createPrefix(true)
 
-		pad := strings.Repeat(" ", int(math.Max(float64(p.printWidth-(depth)*p.Indent-len([]rune(info.Name))), 0)))
+	for i, info := range values {
+		pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-(depth)*p.Indent-len([]rune(info.Name))), 0)))
 		if i == len(keys)-1 {
-			fmt.Fprint(sb, prefixLast)
+			fmt.Fprint(sb, prefLast)
 		} else {
-			fmt.Fprint(sb, prefix)
+			fmt.Fprint(sb, pref)
 		}
 		fmt.Fprintf(
 			sb,
-			"%s %s%-7s (%s)\n",
+			"%s .%s %-6s (%s)\n",
 			info.Name,
 			pad,
 			util.FormatUnits(info.Size, "B"),
@@ -158,17 +193,7 @@ func (p FileTreePrinter) maxWidth(t *FileTree, depth int) int {
 	return max
 }
 
-func (p FileTreePrinter) createPrefix(depth, indent int, last bool) string {
-	if depth <= 0 {
-		return ""
-	}
-	if last {
-		return strings.Repeat(p.prefixEmpty, depth-1) + p.prefixLast
-	}
-	return strings.Repeat(p.prefixEmpty, depth-1) + p.prefixNormal
-}
-
-func (p FileTreePrinter) createPrefixSimple(last bool) string {
+func (p FileTreePrinter) createPrefix(last bool) string {
 	if last {
 		return p.prefixLast
 	}
@@ -256,4 +281,21 @@ func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 
 func log(n int) float64 {
 	return math.Log10(math.Max(float64(n), 1.0))
+}
+
+func sorted[T any](values []T, less func(i, j int) bool) []T {
+	sort.Slice(values, less)
+	return values
+}
+
+// SortDesc sorts by size
+type SortDesc[T any] struct {
+	Slice  []*T
+	Getter func(*T) float64
+}
+
+func (p SortDesc[T]) Len() int      { return len(p.Slice) }
+func (p SortDesc[T]) Swap(i, j int) { p.Slice[i], p.Slice[j] = p.Slice[j], p.Slice[i] }
+func (p SortDesc[T]) Less(i, j int) bool {
+	return p.Getter(p.Slice[i]) > p.Getter(p.Slice[j])
 }

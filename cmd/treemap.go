@@ -18,16 +18,6 @@ var treemapCmd = &cobra.Command{
 	Aliases: []string{"tm"},
 	Short:   "Visualize output as SVG treemap, or create CSV for use with github.com/nikolaydubina/treemap",
 	Run: func(cmd *cobra.Command, args []string) {
-		t, err := runRootCommand(cmd, args)
-		if err != nil {
-			if d, _ := cmd.Flags().GetBool("debug"); d {
-				panic(err)
-			} else {
-				fmt.Fprintln(os.Stderr, err)
-				os.Exit(1)
-			}
-		}
-
 		byExt, err := cmd.Flags().GetBool("extensions")
 		if err != nil {
 			panic(err)
@@ -41,6 +31,21 @@ var treemapCmd = &cobra.Command{
 		csv, err := cmd.Flags().GetBool("csv")
 		if err != nil {
 			panic(err)
+		}
+
+		debug, err := cmd.Flags().GetBool("debug")
+		if err != nil {
+			panic(err)
+		}
+
+		t, err := runRootCommand(cmd, args)
+		if err != nil {
+			if debug {
+				panic(err)
+			} else {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(1)
+			}
 		}
 
 		printer := tree.TreemapPrinter{
