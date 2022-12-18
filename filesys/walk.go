@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/gobwas/glob"
 	"github.com/mlange-42/dirstat/tree"
@@ -169,7 +171,34 @@ func readDir(dirname string) ([]fs.DirEntry, error) {
 			if !dirs[i].IsDir() && dirs[j].IsDir() {
 				return false
 			}
-			return dirs[i].Name() < dirs[j].Name()
+			return lessCaseInsensitive(dirs[i].Name(), dirs[j].Name())
 		})
 	return dirs, nil
+}
+
+// lessCaseInsensitive compares s, t without allocating
+func lessCaseInsensitive(s, t string) bool {
+	for {
+		if len(t) == 0 {
+			return false
+		}
+		if len(s) == 0 {
+			return true
+		}
+		c, sizec := utf8.DecodeRuneInString(s)
+		d, sized := utf8.DecodeRuneInString(t)
+
+		lowerc := unicode.ToLower(c)
+		lowerd := unicode.ToLower(d)
+
+		if lowerc < lowerd {
+			return true
+		}
+		if lowerc > lowerd {
+			return false
+		}
+
+		s = s[sizec:]
+		t = t[sized:]
+	}
 }
