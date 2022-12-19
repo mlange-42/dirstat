@@ -2,6 +2,8 @@ package tree
 
 import (
 	"fmt"
+	"time"
+	tm "time"
 
 	"github.com/mlange-42/dirstat/util"
 )
@@ -11,14 +13,14 @@ type FileTree = Tree[*FileEntry]
 
 // NewDir creates a new FileTree with a directory entry
 func NewDir(name string) *FileTree {
-	e := NewFileEntry(name, 0, true)
+	e := NewFileEntry(name, 0, tm.Time{}, true)
 	t := New(&e)
 	return t
 }
 
 // NewFile creates a new FileTree with a file entry
-func NewFile(name string, size int64) *FileTree {
-	e := NewFileEntry(name, size, false)
+func NewFile(name string, size int64, time tm.Time) *FileTree {
+	e := NewFileEntry(name, size, time, false)
 	t := New(&e)
 	return t
 }
@@ -29,50 +31,54 @@ type FileEntry struct {
 	IsDir      bool                       `json:"is_dir"`
 	Size       int64                      `json:"size"`
 	Count      int                        `json:"count"`
+	Time       time.Time                  `json:"time"`
 	Extensions map[string]*ExtensionEntry `json:"extensions"`
 }
 
 // ExtensionEntry is a file tree entry for extensions
 type ExtensionEntry struct {
-	Name  string `json:"name"`
-	Size  int64  `json:"size"`
-	Count int    `json:"count"`
+	Name  string    `json:"name"`
+	Size  int64     `json:"size"`
+	Count int       `json:"count"`
+	Time  time.Time `json:"time"`
 }
 
 // NewFileEntry creates a new FileEntry
-func NewFileEntry(name string, size int64, isDir bool) FileEntry {
+func NewFileEntry(name string, size int64, time tm.Time, isDir bool) FileEntry {
 	count := 0
 	var ext map[string]*ExtensionEntry = nil
-	if !isDir {
-		count = 1
-	} else {
+	if isDir {
 		ext = map[string]*ExtensionEntry{}
+		time = tm.Time{}
+	} else {
+		count = 1
 	}
 	return FileEntry{
 		Name:       name,
 		IsDir:      isDir,
 		Size:       size,
 		Count:      count,
+		Time:       time,
 		Extensions: ext,
 	}
 }
 
-// Add adds size and a count of one
-func (e *FileEntry) Add(size int64) {
-	e.Count++
+// AddMulti adds size and a count
+func (e *FileEntry) AddMulti(size int64, count int, time tm.Time) {
+	e.Count += count
 	e.Size += size
+	if !time.IsZero() && (e.Time.IsZero() || time.After(e.Time)) {
+		e.Time = time
+	}
 }
 
 // AddMulti adds size and a count
-func (e *FileEntry) AddMulti(size int64, count int) {
+func (e *ExtensionEntry) AddMulti(size int64, count int, time tm.Time) {
 	e.Count += count
 	e.Size += size
-}
-
-// AddMulti adds size and a count
-func (e *ExtensionEntry) AddMulti(size int64, count int) {
-	e.Count += count
-	e.Size += size
+	if !time.IsZero() && (e.Time.IsZero() || time.After(e.Time)) {
+		e.Time = time
+	}
 }
 
 func (e ExtensionEntry) String() string {
@@ -90,9 +96,9 @@ func (e FileEntry) String() string {
 func (e *FileEntry) AddExtensions(ext map[string]*ExtensionEntry) {
 	for k, v := range ext {
 		if inf, ok := e.Extensions[k]; ok {
-			inf.AddMulti(v.Size, v.Count)
+			inf.AddMulti(v.Size, v.Count, v.Time)
 		} else {
-			fe := ExtensionEntry{k, v.Size, v.Count}
+			fe := ExtensionEntry{k, v.Size, v.Count, v.Time}
 			e.Extensions[k] = &fe
 		}
 	}
