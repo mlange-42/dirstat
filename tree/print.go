@@ -80,7 +80,7 @@ func NewFileTreePrinter(byExt bool, indent int) FileTreePrinter {
 
 // Print prints a FileTree
 func (p FileTreePrinter) Print(t *FileTree) string {
-	p.printWidth = p.maxWidth(t, 0) + 1
+	p.printWidth = p.maxWidth(t, 0, p.ByExtension) + 1
 	if p.printWidth < 16 {
 		p.printWidth = 16
 	} else if p.printWidth > 64 {
@@ -182,10 +182,18 @@ func (p FileTreePrinter) printExtensions(ext map[string]*ExtensionEntry, sb *str
 	}
 }
 
-func (p FileTreePrinter) maxWidth(t *FileTree, depth int) int {
+func (p FileTreePrinter) maxWidth(t *FileTree, depth int, extensions bool) int {
 	max := len([]rune(t.Value.Name)) + depth*p.Indent
+	if t.Value.IsDir {
+		for name := range t.Value.Extensions {
+			m := len([]rune(name)) + (depth+1)*p.Indent
+			if m > max {
+				max = m
+			}
+		}
+	}
 	for _, c := range t.Children {
-		v := p.maxWidth(c, depth+1)
+		v := p.maxWidth(c, depth+1, extensions)
 		if v > max {
 			max = v
 		}
@@ -281,11 +289,6 @@ func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 
 func log(n int) float64 {
 	return math.Log10(math.Max(float64(n), 1.0))
-}
-
-func sorted[T any](values []T, less func(i, j int) bool) []T {
-	sort.Slice(values, less)
-	return values
 }
 
 // SortDesc sorts by size
