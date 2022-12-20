@@ -3,10 +3,11 @@ package print
 import "github.com/gookit/color"
 
 var (
-	red       = color.FgRed.Render
-	green     = color.FgGreen.Render
-	lightBlue = color.FgLightBlue.Render
-	yellow    = color.FgYellow.Render
+	directoryColor  = color.C256(39, false).Sprint
+	hiddenDirColor  = color.S256(39, 238).Sprint
+	fileColor       = color.C256(15, false).Sprint
+	hiddenFileColor = color.S256(15, 238).Sprint
+	extensionColor  = color.C256(11, false).Sprint
 )
 
 var defaultColors = []func(a ...interface{}) string{

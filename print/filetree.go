@@ -87,12 +87,22 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 
 		sizeStr = p.sizeRange.Interpolate(float64(t.Value.Size), false)(sizeStr)
 		countStr = p.countRange.Interpolate(float64(t.Value.Count), false)(countStr)
-		fmt.Fprintf(sb, "%s %s %s %s", lightBlue(t.Value.Name+"/"), pad, sizeStr, countStr)
+
+		nameColor := directoryColor
+		if depth > 0 && strings.HasPrefix(t.Value.Name, ".") {
+			nameColor = hiddenDirColor
+		}
+		fmt.Fprintf(sb, "%s %s %s %s", nameColor(t.Value.Name+"/"), pad, sizeStr, countStr)
 	} else {
 		sizeStr := fmt.Sprintf(" %6s ", util.FormatUnits(t.Value.Size, "B"))
 
 		sizeStr = p.sizeRange.Interpolate(float64(t.Value.Size), false)(sizeStr)
-		fmt.Fprintf(sb, "%s .%s %s        ", t.Value.Name, pad, sizeStr)
+
+		nameColor := fileColor
+		if depth > 0 && strings.HasPrefix(t.Value.Name, ".") {
+			nameColor = hiddenFileColor
+		}
+		fmt.Fprintf(sb, "%s .%s %s        ", nameColor(t.Value.Name), pad, sizeStr)
 	}
 
 	if p.PrintTime {
@@ -181,7 +191,7 @@ func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb
 		fmt.Fprintf(
 			sb,
 			"%s .%s %s %s",
-			yellow(info.Name),
+			extensionColor(info.Name),
 			pad,
 			sizeStr,
 			countStr,
