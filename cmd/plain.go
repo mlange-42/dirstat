@@ -26,11 +26,11 @@ var plainCmd = &cobra.Command{
 			panic(err)
 		}
 
-		if sort != "" && sort != tree.BySize && sort != tree.ByCount && sort != tree.ByAge && sort != tree.ByName {
+		if sort != tree.ByName && sort != tree.BySize && sort != tree.ByCount && sort != tree.ByAge {
 			if debug {
 				panic(err)
 			} else {
-				fmt.Fprintf(os.Stderr, "Unknown sort field '%s'. Must be one of [size, count, name].\n", sort)
+				fmt.Fprintf(os.Stderr, "Unknown sort field '%s'. Must be one of [name, size, count, age].\n", sort)
 				os.Exit(1)
 			}
 		}
@@ -53,7 +53,7 @@ var plainCmd = &cobra.Command{
 
 func init() {
 	plainCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
-	plainCmd.Flags().String("sort", "name", "Sort by either size or count. Possible values: [size, count, age]")
+	plainCmd.Flags().String("sort", "name", "Sort by one of [name, size, count, age]")
 
 	rootCmd.AddCommand(plainCmd)
 }
