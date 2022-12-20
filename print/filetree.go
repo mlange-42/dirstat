@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gookit/color"
 	"github.com/mlange-42/dirstat/tree"
 	"github.com/mlange-42/dirstat/util"
 	"golang.org/x/exp/maps"
@@ -21,6 +22,13 @@ const (
 	ByAge string = "age"
 	// ByName is for sorting by name
 	ByName string = "name"
+)
+
+var (
+	red       = color.FgRed.Render
+	green     = color.FgGreen.Render
+	lightBlue = color.FgLightBlue.Render
+	yellow    = color.FgYellow.Render
 )
 
 // FileTreePrinter prints a file tree in plain text format
@@ -85,7 +93,7 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 		sizeStr := fmt.Sprintf("%-6s", util.FormatUnits(t.Value.Size, "B"))
 		countStr := util.FormatUnits(int64(t.Value.Count), "")
 		l := len([]rune(countStr)) + 9
-		fmt.Fprintf(sb, "%s/ %s %s (%s)", t.Value.Name, pad, sizeStr, countStr)
+		fmt.Fprintf(sb, "%s %s %s (%s)", lightBlue(t.Value.Name+"/"), pad, sizeStr, countStr)
 		for l < 15 {
 			fmt.Fprint(sb, " ")
 			l++
@@ -183,7 +191,7 @@ func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb
 		fmt.Fprintf(
 			sb,
 			"%s .%s %s (%s)",
-			info.Name,
+			yellow(info.Name),
 			pad,
 			sizeStr,
 			countStr,
