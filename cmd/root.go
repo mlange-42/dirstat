@@ -112,7 +112,7 @@ func runRootCommand(cmd *cobra.Command, args []string, depth int, hasDepth bool)
 	var t *tree.FileTree
 
 	if isJSON {
-		subtree, serr := cmd.Flags().GetString("subtree")
+		subtree, serr := cmd.Flags().GetString("select")
 		if serr != nil {
 			panic(serr)
 		}
@@ -208,13 +208,12 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringP("path", "p", ".", "Path to scan or JSON file to load")
-	rootCmd.PersistentFlags().StringP("subtree", "s", "", "When reading from JSON, use only this sub-tree")
+	rootCmd.PersistentFlags().String("select", "", "When reading from JSON, use only this sub-tree")
 	rootCmd.PersistentFlags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns. Ignored when reading from JSON.\nRequires a comma-separated list of patterns, like \"*.exe,.git\"")
 	rootCmd.PersistentFlags().Bool("debug", false, "Debug mode with error traces")
 	rootCmd.PersistentFlags().Bool("quiet", false, "Don't show progress on stderr")
 
 	rootCmd.Flags().IntP("depth", "d", 1, "Depth of the generated file tree.\nDeeper files are included, but not individually listed.\nUse -1 for unlimited depth (use with caution on deeply nested directory trees).\nDefaults to -1 when reading from JSON\n")
 	rootCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
-	rootCmd.Flags().String("sort", "name", "Sort by one of [name, size, count, age]")
-
+	rootCmd.Flags().StringP("sort", "s", "name", "Sort by one of [name, size, count, age]")
 }

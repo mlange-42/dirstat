@@ -66,5 +66,5 @@ func SubTree[T any, P any](t *Tree[T], path []P, fn func(T, P) bool) (*Tree[T], 
 			return SubTree(child, path[1:], fn)
 		}
 	}
-	return nil, fmt.Errorf("Path element '%v' not found in tree", path[0])
+	return nil, fmt.Errorf("Can't select sub-tree. Path element '%v' not found in tree", path[0])
 }
