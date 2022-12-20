@@ -23,23 +23,6 @@ const (
 	ByName string = "name"
 )
 
-// PlainPrinter prints a tree in plain text format
-type PlainPrinter[T any] struct{}
-
-func (p PlainPrinter[T]) Print(t *tree.Tree[T]) string {
-	sb := strings.Builder{}
-	p.print(t, &sb, 0)
-	return sb.String()
-}
-
-func (p PlainPrinter[T]) print(t *tree.Tree[T], sb *strings.Builder, depth int) {
-	fmt.Fprint(sb, strings.Repeat(" ", depth*2))
-	fmt.Fprintf(sb, "%v\n", t.Value)
-	for _, child := range t.Children {
-		p.print(child, sb, depth+1)
-	}
-}
-
 // FileTreePrinter prints a file tree in plain text format
 type FileTreePrinter struct {
 	SortBy       string
