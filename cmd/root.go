@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/mlange-42/dirstat/filesys"
+	"github.com/mlange-42/dirstat/print"
 	"github.com/mlange-42/dirstat/tree"
 	"github.com/mlange-42/dirstat/util"
 	"github.com/spf13/cobra"
@@ -49,7 +50,7 @@ For graphical visualization, see subcommand 'treemap'.
 			}
 		}
 
-		printer := tree.JSONPrinter[*tree.FileEntry]{}
+		printer := print.JSONPrinter[*tree.FileEntry]{}
 		fmt.Println(printer.Print(t))
 	},
 }

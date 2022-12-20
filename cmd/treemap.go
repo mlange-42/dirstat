@@ -5,7 +5,7 @@ import (
 	"image/color"
 	"os"
 
-	"github.com/mlange-42/dirstat/tree"
+	"github.com/mlange-42/dirstat/print"
 	"github.com/nikolaydubina/treemap"
 	"github.com/nikolaydubina/treemap/parser"
 	"github.com/nikolaydubina/treemap/render"
@@ -53,7 +53,7 @@ var treemapCmd = &cobra.Command{
 			}
 		}
 
-		printer := tree.NewTreemapPrinter(byExt, byCount, colAge)
+		printer := print.NewTreemapPrinter(byExt, byCount, colAge)
 		str := printer.Print(t)
 		if csv {
 			fmt.Print(str)

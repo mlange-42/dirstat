@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mlange-42/dirstat/tree"
+	"github.com/mlange-42/dirstat/print"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +26,7 @@ var plainCmd = &cobra.Command{
 			panic(err)
 		}
 
-		if sort != tree.ByName && sort != tree.BySize && sort != tree.ByCount && sort != tree.ByAge {
+		if sort != print.ByName && sort != print.BySize && sort != print.ByCount && sort != print.ByAge {
 			if debug {
 				panic(err)
 			} else {
@@ -45,7 +45,7 @@ var plainCmd = &cobra.Command{
 			}
 		}
 
-		printer := tree.NewFileTreePrinter(byExt, 2, true)
+		printer := print.NewFileTreePrinter(byExt, 2, true)
 		printer.SortBy = sort
 		fmt.Print(printer.Print(t))
 	},
