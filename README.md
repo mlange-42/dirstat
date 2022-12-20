@@ -85,13 +85,13 @@ dirstat plain
 Produces output like this:
 
 ```text
-./ .................. 43 kB  (21)
-├─.github/ .......... 3.3 kB (2)
-│ └─workflows/ ...... 3.3 kB (2)
-├─cmd/ .............. 12 kB  (3)
-│ ├─plain.go ........ 1.4 kB
-│ ├─root.go ......... 5.5 kB
-│ └─treemap.go ...... 5.2 kB
+dirstat/ ............ 48 kB  (24)    9 minutes
+├─.github/ .......... 3.3 kB (2)     4 days
+│ └─workflows/ ...... 3.3 kB (2)     4 days
+├─cmd/ .............. 12 kB  (3)     9 minutes
+│ ├─plain.go ........ 1.4 kB         9 minutes
+│ ├─root.go ......... 5.5 kB         15 minutes
+│ └─treemap.go ...... 5.3 kB         9 minutes
 ...
 ```
 
@@ -102,6 +102,8 @@ Aggregate by file extensions and sort by size
 ```shell
 dirstat plain -x --sort size
 ```
+
+For more options, see the CLI help `dirstat plain -h`.
 
 ### Treemap
 
