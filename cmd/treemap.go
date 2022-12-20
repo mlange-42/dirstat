@@ -43,7 +43,13 @@ var treemapCmd = &cobra.Command{
 			panic(err)
 		}
 
-		t, err := runRootCommand(cmd, args)
+		depth, err := cmd.Flags().GetInt("depth")
+		if err != nil {
+			panic(err)
+		}
+		hasDepth := cmd.Flags().Changed("depth")
+
+		t, err := runRootCommand(cmd, args, depth, hasDepth)
 		if err != nil {
 			if debug {
 				panic(err)
@@ -149,6 +155,7 @@ func toSvg(s string, flags *svgFlags) ([]byte, error) {
 }
 
 func init() {
+	treemapCmd.Flags().IntP("depth", "d", 2, "Depth of the generated file tree.\nDeeper files are included, but not individually listed.\nUse -1 for unlimited depth (use with caution on deeply nested directory trees).\nDefaults to -1 when reading from JSON\n")
 	treemapCmd.Flags().Bool("csv", false, "Generate raw CSV output for github.com/nikolaydubina/treemap")
 	treemapCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
 	treemapCmd.Flags().BoolP("count", "c", false, "Size boxes by file count instead of disk memory")
