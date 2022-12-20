@@ -65,7 +65,7 @@ To store the result of the analysis for later re-use, see subcommand 'json'.
 			panic(err)
 		}
 
-		if noColors || !color.SupportColor() || !isTerminal() {
+		if noColors || !color.Support256Color() || !isTerminal() {
 			color.Disable()
 		}
 
