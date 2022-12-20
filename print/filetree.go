@@ -36,6 +36,9 @@ type FileTreePrinter struct {
 	prefixLast   string
 	printWidth   int
 	currTime     time.Time
+	timeRange    minMax
+	countRange   minMax
+	sizeRange    minMax
 }
 
 // NewFileTreePrinter creates a new FileTreePrinter
@@ -56,6 +59,8 @@ func NewFileTreePrinter(byExt bool, indent int, printTime bool, onlyDirs bool) F
 
 // Print prints a FileTree
 func (p FileTreePrinter) Print(t *tree.FileTree) string {
+	p.calcRanges(t)
+
 	p.printWidth = p.maxWidth(t, 0, p.ByExtension) + 1
 	if p.printWidth < 16 {
 		p.printWidth = 16
@@ -198,7 +203,7 @@ func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb
 
 func (p FileTreePrinter) maxWidth(t *tree.FileTree, depth int, extensions bool) int {
 	max := len([]rune(t.Value.Name)) + depth*p.Indent
-	if t.Value.IsDir {
+	if extensions && t.Value.IsDir {
 		for name := range t.Value.Extensions {
 			m := len([]rune(name)) + (depth+1)*p.Indent
 			if m > max {
@@ -213,6 +218,74 @@ func (p FileTreePrinter) maxWidth(t *tree.FileTree, depth int, extensions bool) 
 		}
 	}
 	return max
+}
+
+func (p *FileTreePrinter) calcRanges(t *tree.FileTree) {
+	p.calcTimeRange(t, p.ByExtension)
+	p.calcSizeRange(t, p.ByExtension)
+	p.calcCountRange(t, p.ByExtension)
+}
+
+func (p *FileTreePrinter) calcTimeRange(t *tree.FileTree, extensions bool) {
+	p.timeRange.min, p.timeRange.max = p.calcRange(t, extensions,
+		func(e *tree.FileEntry) float64 {
+			return float64(e.Time.Unix())
+		},
+		func(e *tree.ExtensionEntry) float64 {
+			return float64(e.Time.Unix())
+		})
+}
+
+func (p *FileTreePrinter) calcSizeRange(t *tree.FileTree, extensions bool) {
+	p.sizeRange.min, p.sizeRange.max = p.calcRange(t, extensions,
+		func(e *tree.FileEntry) float64 {
+			return float64(e.Size)
+		},
+		func(e *tree.ExtensionEntry) float64 {
+			return float64(e.Size)
+		})
+}
+
+func (p *FileTreePrinter) calcCountRange(t *tree.FileTree, extensions bool) {
+	p.countRange.min, p.countRange.max = p.calcRange(t, extensions,
+		func(e *tree.FileEntry) float64 {
+			return float64(e.Count)
+		},
+		func(e *tree.ExtensionEntry) float64 {
+			return float64(e.Count)
+		})
+}
+
+func (p FileTreePrinter) calcRange(t *tree.FileTree, extensions bool,
+	fileFn func(*tree.FileEntry) float64,
+	extFn func(*tree.ExtensionEntry) float64) (min float64, max float64) {
+
+	min = fileFn(t.Value)
+	max = min
+
+	if extensions && t.Value.IsDir {
+		for _, ext := range t.Value.Extensions {
+			v := extFn(ext)
+			if v < min {
+				min = v
+			}
+			if v > max {
+				max = v
+			}
+		}
+	}
+
+	for _, c := range t.Children {
+		mn, mx := p.calcRange(c, extensions, fileFn, extFn)
+		if mn < min {
+			min = mn
+		}
+		if mx > max {
+			max = mx
+		}
+	}
+
+	return
 }
 
 func (p FileTreePrinter) createPrefix(last bool) string {
@@ -239,4 +312,9 @@ func (p SortDesc[T]) Len() int      { return len(p.Slice) }
 func (p SortDesc[T]) Swap(i, j int) { p.Slice[i], p.Slice[j] = p.Slice[j], p.Slice[i] }
 func (p SortDesc[T]) Less(i, j int) bool {
 	return p.Getter(p.Slice[i]) > p.Getter(p.Slice[j])
+}
+
+type minMax struct {
+	min float64
+	max float64
 }
