@@ -41,6 +41,10 @@ To store the result of the analysis for later re-use, see subcommand 'json'.
 		if err != nil {
 			panic(err)
 		}
+		dirs, err := cmd.Flags().GetBool("dirs")
+		if err != nil {
+			panic(err)
+		}
 		debug, err := cmd.Flags().GetBool("debug")
 		if err != nil {
 			panic(err)
@@ -73,7 +77,7 @@ To store the result of the analysis for later re-use, see subcommand 'json'.
 			}
 		}
 
-		printer := print.NewFileTreePrinter(byExt, 2, true)
+		printer := print.NewFileTreePrinter(byExt, 2, true, dirs)
 		printer.SortBy = sort
 		fmt.Print(printer.Print(t))
 	},
@@ -216,4 +220,5 @@ func init() {
 	rootCmd.Flags().IntP("depth", "d", 1, "Depth of the generated file tree.\nDeeper files are included, but not individually listed.\nUse -1 for unlimited depth (use with caution on deeply nested directory trees).\nDefaults to -1 when reading from JSON\n")
 	rootCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
 	rootCmd.Flags().StringP("sort", "s", "name", "Sort by one of [name, size, count, age]")
+	rootCmd.Flags().Bool("dirs", false, "List only directories, but no individual files")
 }
