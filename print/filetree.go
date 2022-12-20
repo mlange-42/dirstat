@@ -69,15 +69,6 @@ func (p FileTreePrinter) Print(t *tree.FileTree) string {
 }
 
 func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int, last bool, prefix string) {
-	var sizeCount string
-	if t.Value.IsDir {
-		sizeCount = fmt.Sprintf("%-6s (%s)",
-			util.FormatUnits(t.Value.Size, "B"), util.FormatUnits(int64(t.Value.Count), ""),
-		)
-	} else {
-		sizeCount = fmt.Sprintf("%s", util.FormatUnits(t.Value.Size, "B"))
-	}
-
 	pref := prefix
 
 	if depth > 0 {
@@ -86,9 +77,22 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 	pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-depth*p.Indent-len([]rune(t.Value.Name))), 0)))
 	fmt.Fprint(sb, pref)
 	if t.Value.IsDir {
-		fmt.Fprintf(sb, "%s/ %s %-15s", t.Value.Name, pad, sizeCount)
+		sizeStr := fmt.Sprintf("%-6s", util.FormatUnits(t.Value.Size, "B"))
+		countStr := util.FormatUnits(int64(t.Value.Count), "")
+		l := len([]rune(countStr)) + 9
+		fmt.Fprintf(sb, "%s/ %s %s (%s)", t.Value.Name, pad, sizeStr, countStr)
+		for l < 15 {
+			fmt.Fprint(sb, " ")
+			l++
+		}
 	} else {
-		fmt.Fprintf(sb, "%s .%s %-15s", t.Value.Name, pad, sizeCount)
+		sizeStr := util.FormatUnits(t.Value.Size, "B")
+		l := len([]rune(sizeStr))
+		fmt.Fprintf(sb, "%s .%s %s", t.Value.Name, pad, sizeStr)
+		for l < 15 {
+			fmt.Fprint(sb, " ")
+			l++
+		}
 	}
 
 	if p.PrintTime {
@@ -167,14 +171,22 @@ func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb
 		} else {
 			fmt.Fprint(sb, pref)
 		}
-		sizeCount := fmt.Sprintf("%-6s (%s)", util.FormatUnits(info.Size, "B"), util.FormatUnits(int64(info.Count), ""))
+
+		sizeStr := fmt.Sprintf("%-6s", util.FormatUnits(info.Size, "B"))
+		countStr := util.FormatUnits(int64(info.Count), "")
+		l := len([]rune(countStr)) + 9
 		fmt.Fprintf(
 			sb,
-			"%s .%s %-15s",
+			"%s .%s %s (%s)",
 			info.Name,
 			pad,
-			sizeCount,
+			sizeStr,
+			countStr,
 		)
+		for l < 15 {
+			fmt.Fprint(sb, " ")
+			l++
+		}
 
 		if p.PrintTime {
 			util.FPrintDuration(sb, info.Time, p.currTime)
