@@ -29,6 +29,7 @@ type FileTreePrinter struct {
 	ByExtension  bool
 	Indent       int
 	PrintTime    bool
+	OnlyDirs     bool
 	prefixNone   string
 	prefixEmpty  string
 	prefixNormal string
@@ -38,11 +39,12 @@ type FileTreePrinter struct {
 }
 
 // NewFileTreePrinter creates a new FileTreePrinter
-func NewFileTreePrinter(byExt bool, indent int, printTime bool) FileTreePrinter {
+func NewFileTreePrinter(byExt bool, indent int, printTime bool, onlyDirs bool) FileTreePrinter {
 	return FileTreePrinter{
 		ByExtension:  byExt,
 		Indent:       indent,
 		PrintTime:    printTime,
+		OnlyDirs:     onlyDirs,
 		prefixNone:   strings.Repeat(" ", indent),
 		prefixEmpty:  "│" + strings.Repeat(" ", indent-1),
 		prefixNormal: "├" + strings.Repeat("─", indent-1),
@@ -98,7 +100,12 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 		pref = prefix + p.createPrefixEmpty(last)
 	}
 
-	children := t.Children
+	var children []*tree.FileTree
+	for _, child := range t.Children {
+		if child.Value.IsDir || !(p.OnlyDirs || p.ByExtension) {
+			children = append(children, child)
+		}
+	}
 	switch p.SortBy {
 	case BySize:
 		sorter := SortDesc[tree.FileTree]{children, func(t *tree.FileTree) float64 { return float64(t.Value.Size) }}
@@ -115,9 +122,8 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 	}
 
 	for i, child := range children {
-		if !p.ByExtension || child.Value.IsDir {
-			p.print(child, sb, depth+1, i == len(t.Children)-1, pref)
-		}
+		last := i == len(children)-1 && (!p.ByExtension || len(t.Value.Extensions) == 0)
+		p.print(child, sb, depth+1, last, pref)
 	}
 
 	if p.ByExtension && t.Value.IsDir {

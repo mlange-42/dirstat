@@ -15,15 +15,17 @@ type TreemapPrinter struct {
 	ByExtension bool
 	ByCount     bool
 	HeatAge     bool
+	OnlyDirs    bool
 	currTime    time.Time
 }
 
 // NewTreemapPrinter creates a new TreemapPrinter
-func NewTreemapPrinter(byExtension bool, byCount bool, heatAge bool) TreemapPrinter {
+func NewTreemapPrinter(byExtension, byCount, heatAge, onlyDirs bool) TreemapPrinter {
 	return TreemapPrinter{
 		ByExtension: byExtension,
 		ByCount:     byCount,
 		HeatAge:     heatAge,
+		OnlyDirs:    onlyDirs,
 		currTime:    time.Now(),
 	}
 }
@@ -94,7 +96,7 @@ func (p TreemapPrinter) print(t *tree.FileTree, sb *strings.Builder, path string
 		}
 	}
 	for _, child := range t.Children {
-		if !p.ByExtension || child.Value.IsDir {
+		if child.Value.IsDir || !(p.ByExtension || p.OnlyDirs) {
 			p.print(child, sb, path)
 		}
 	}

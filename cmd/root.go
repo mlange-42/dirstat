@@ -13,36 +13,65 @@ import (
 	"github.com/mlange-42/dirstat/print"
 	"github.com/mlange-42/dirstat/tree"
 	"github.com/mlange-42/dirstat/util"
+	"github.com/pkg/profile"
 	"github.com/spf13/cobra"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "dirstat [flags] [command]",
-	Short: "Analyze or visualize directory contents.",
-	Long: `Analyze or visualize directory contents.
+	Short: "Analyze and visualize directory content and disk usage.",
+	Long: `Analyze and visualize directory content and disk usage.
 
-When used without a subcommand, the result of the analysis is written to STDOUT in JSON format.
-When piped to a file, it can be used for visualization later by passing as the '--path' argument.
-
-  $ dirstat > out.json
-    (analyzes the current directory and writes JSON to out.json)
-
-  $ dirstat --path out.json plain
-    (reads the JSON instead of running an analysis, and prints the directory tree in text format)
-
-For inspection in the terminal, see subcommand 'plain'.
-  $ dirstat plain -h
+When used without a subcommand, prints the result of the analysis as plain-text directory tree.
+Analyzes the current directory by default. Use flag --path to analyze a different location.
 
 For graphical visualization, see subcommand 'treemap'.
   $ dirstat treemap -h
+
+To store the result of the analysis for later re-use, see subcommand 'json'.
+  $ dirstat json -h
 `,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		t, err := runRootCommand(cmd, args)
+
+		byExt, err := cmd.Flags().GetBool("extensions")
+		if err != nil {
+			panic(err)
+		}
+		sort, err := cmd.Flags().GetString("sort")
+		if err != nil {
+			panic(err)
+		}
+		dirs, err := cmd.Flags().GetBool("dirs")
+		if err != nil {
+			panic(err)
+		}
+		debug, err := cmd.Flags().GetBool("debug")
+		if err != nil {
+			panic(err)
+		}
+		depth, err := cmd.Flags().GetInt("depth")
+		if err != nil {
+			panic(err)
+		}
+		hasDepth := cmd.Flags().Changed("depth")
+		if !hasDepth && byExt {
+			depth = 0
+		}
+
+		if sort != print.ByName && sort != print.BySize && sort != print.ByCount && sort != print.ByAge {
+			if debug {
+				panic(err)
+			} else {
+				fmt.Fprintf(os.Stderr, "Unknown sort field '%s'. Must be one of [name, size, count, age].\n", sort)
+				os.Exit(1)
+			}
+		}
+		t, err := runRootCommand(cmd, args, depth, true)
 
 		if err != nil {
-			if d, _ := cmd.Flags().GetBool("debug"); d {
+			if debug {
 				panic(err)
 			} else {
 				fmt.Fprintln(os.Stderr, err)
@@ -50,12 +79,13 @@ For graphical visualization, see subcommand 'treemap'.
 			}
 		}
 
-		printer := print.JSONPrinter[*tree.FileEntry]{}
-		fmt.Println(printer.Print(t))
+		printer := print.NewFileTreePrinter(byExt, 2, true, dirs)
+		printer.SortBy = sort
+		fmt.Print(printer.Print(t))
 	},
 }
 
-func runRootCommand(cmd *cobra.Command, args []string) (*tree.FileTree, error) {
+func runRootCommand(cmd *cobra.Command, args []string, depth int, hasDepth bool) (*tree.FileTree, error) {
 	dir, err := cmd.Flags().GetString("path")
 	if err != nil {
 		panic(err)
@@ -69,7 +99,7 @@ func runRootCommand(cmd *cobra.Command, args []string) (*tree.FileTree, error) {
 		return nil, err
 	}
 
-	isJSON := strings.ToLower(path.Ext(info.Name())) == ".json"
+	isJSON := !info.IsDir() && strings.ToLower(path.Ext(info.Name())) == ".json"
 	if !info.IsDir() && !isJSON {
 		return nil, fmt.Errorf("%s is neither a directory nor a JSON file", dir)
 	}
@@ -81,18 +111,22 @@ func runRootCommand(cmd *cobra.Command, args []string) (*tree.FileTree, error) {
 	if err != nil {
 		panic(err)
 	}
-	depth, err := cmd.Flags().GetInt("depth")
+	doProfiling, err := cmd.Flags().GetBool("profile")
 	if err != nil {
 		panic(err)
 	}
-	if isJSON && !cmd.Flags().Changed("depth") {
+	if isJSON && !hasDepth {
 		depth = -1
 	}
 
 	var t *tree.FileTree
 
+	if doProfiling {
+		defer profile.Start().Stop()
+	}
+
 	if isJSON {
-		subtree, serr := cmd.Flags().GetString("subtree")
+		subtree, serr := cmd.Flags().GetString("select")
 		if serr != nil {
 			panic(serr)
 		}
@@ -188,9 +222,14 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringP("path", "p", ".", "Path to scan or JSON file to load")
-	rootCmd.PersistentFlags().StringP("subtree", "s", "", "When reading from JSON, use only this sub-tree")
-	rootCmd.PersistentFlags().IntP("depth", "d", 2, "Depth of the generated file tree.\nDeeper files are included, but not individually listed.\nUse -1 for unlimited depth (use with caution on deeply nested directory trees).\nDefaults to 2 when working on a directory, and to -1 when reading from JSON\n")
+	rootCmd.PersistentFlags().String("select", "", "When reading from JSON, use only this sub-tree")
 	rootCmd.PersistentFlags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns. Ignored when reading from JSON.\nRequires a comma-separated list of patterns, like \"*.exe,.git\"")
 	rootCmd.PersistentFlags().Bool("debug", false, "Debug mode with error traces")
 	rootCmd.PersistentFlags().Bool("quiet", false, "Don't show progress on stderr")
+	rootCmd.PersistentFlags().Bool("profile", false, "Do CPU profiling of the analysis part")
+
+	rootCmd.Flags().IntP("depth", "d", 1, "Depth of the generated file tree.\nDeeper files are included, but not individually listed.\nUse -1 for unlimited depth (use with caution on deeply nested directory trees).\nDefaults to -1 when reading from JSON\n")
+	rootCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
+	rootCmd.Flags().StringP("sort", "s", "name", "Sort by one of [name, size, count, age]")
+	rootCmd.Flags().Bool("dirs", false, "List only directories, no individual files")
 }
