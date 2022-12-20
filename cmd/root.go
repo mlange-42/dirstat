@@ -13,6 +13,7 @@ import (
 	"github.com/mlange-42/dirstat/print"
 	"github.com/mlange-42/dirstat/tree"
 	"github.com/mlange-42/dirstat/util"
+	"github.com/pkg/profile"
 	"github.com/spf13/cobra"
 )
 
@@ -110,11 +111,19 @@ func runRootCommand(cmd *cobra.Command, args []string, depth int, hasDepth bool)
 	if err != nil {
 		panic(err)
 	}
+	doProfiling, err := cmd.Flags().GetBool("profile")
+	if err != nil {
+		panic(err)
+	}
 	if isJSON && !hasDepth {
 		depth = -1
 	}
 
 	var t *tree.FileTree
+
+	if doProfiling {
+		defer profile.Start().Stop()
+	}
 
 	if isJSON {
 		subtree, serr := cmd.Flags().GetString("select")
@@ -217,6 +226,7 @@ func init() {
 	rootCmd.PersistentFlags().StringSliceP("exclude", "e", []string{}, "Exclusion glob patterns. Ignored when reading from JSON.\nRequires a comma-separated list of patterns, like \"*.exe,.git\"")
 	rootCmd.PersistentFlags().Bool("debug", false, "Debug mode with error traces")
 	rootCmd.PersistentFlags().Bool("quiet", false, "Don't show progress on stderr")
+	rootCmd.PersistentFlags().Bool("profile", false, "Do CPU profiling of the analysis part")
 
 	rootCmd.Flags().IntP("depth", "d", 1, "Depth of the generated file tree.\nDeeper files are included, but not individually listed.\nUse -1 for unlimited depth (use with caution on deeply nested directory trees).\nDefaults to -1 when reading from JSON\n")
 	rootCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
