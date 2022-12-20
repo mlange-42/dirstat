@@ -39,47 +39,36 @@ dirstat <command> -h
 
 ### Basic usage
 
-When used without a subcommand, the result of the analysis is written to STDOUT in JSON format.
-If piped to a file, it can be re-used for visualization by using it in the `--path` flag.
-
-Analyze the current directory and write JSON to `out.json`:
+To view a text-based directory tree, use without a subcommand:
 
 ```shell
-dirstat > out.json
+dirstat
 ```
 
-Run for a different directory (paths can be absolute or relative):
+Produces output like this:
 
-```shell
-dirstat --path ../.. > out.json
-```
-
-Read the JSON instead of running an analysis, and print the directory tree in plain text format:
-
-```shell
-dirstat --path out.json plain
+```text
+./ ............... 5.9 MB (26)    0 minutes
+├─.github/ ....... 3.3 kB (2)     5 days
+├─cmd/ ........... 13 kB  (3)     8 minutes
+├─filesys/ ....... 4.9 kB (1)     1 hours
+├─print/ ......... 8.7 kB (3)     1 hours
+├─tree/ .......... 8.1 kB (7)     8 minutes
+...
 ```
 
 #### Options
 
-Exclude files and directories by glob patterns:
+Run for a different directory (paths can be absolute or relative):
 
 ```shell
-dirstat --exclude .git,*.exe
+dirstat --path ../..
 ```
 
-Analyze with a different depth than the default of 2:
+Analyze with a different depth than the default plain list:
 
 ```shell
-dirstat --depth 4
-```
-
-### Text output
-
-To view a text-based directory tree, use the `plain` command:
-
-```shell
-dirstat plain
+dirstat --depth 2
 ```
 
 Produces output like this:
@@ -95,15 +84,25 @@ dirstat/ ............ 48 kB  (24)    9 minutes
 ...
 ```
 
-#### Options
-
-Aggregate by file extensions and sort by size
+Exclude files and directories by glob patterns:
 
 ```shell
-dirstat plain -x --sort size
+dirstat --exclude .git,*.exe
 ```
 
-For more options, see the CLI help `dirstat plain -h`.
+Aggregate by file extensions
+
+```shell
+dirstat -x
+```
+
+Sort by size (or count, or age)
+
+```shell
+dirstat --sort size
+```
+
+For more options, see the CLI help `dirstat -h`.
 
 ### Treemap
 
@@ -142,6 +141,23 @@ dirstat treemap --csv
 ```
 
 For more options to customize the treemap, see the CLI help `dirstat treemap -h`.
+
+### JSON
+
+With subcommand `json`, the result of the analysis is written to STDOUT in JSON format.
+If piped to a file, it can be re-used for visualization by using it in the `--path` flag.
+
+Analyze the current directory and write JSON to `out.json`:
+
+```shell
+dirstat json > out.json
+```
+
+Read the JSON instead of running an analysis, and print the directory tree in plain text format:
+
+```shell
+dirstat --path out.json
+```
 
 ## References
 
