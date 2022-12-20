@@ -17,6 +17,8 @@ const (
 	BySize string = "size"
 	// ByCount is for sorting by count
 	ByCount string = "count"
+	// ByAge is for sorting by age
+	ByAge string = "age"
 	// ByName is for sorting by name
 	ByName string = "name"
 )
@@ -137,6 +139,12 @@ func (p FileTreePrinter) print(t *FileTree, sb *strings.Builder, depth int, last
 	case ByCount:
 		sorter := SortDesc[FileTree]{children, func(t *FileTree) float64 { return float64(t.Value.Count) }}
 		sort.Sort(sorter)
+	case ByAge:
+		sorter := SortDesc[FileTree]{children, func(t *FileTree) float64 { return -float64(t.Value.Time.Unix()) }}
+		sort.Sort(sorter)
+	case ByName:
+	default:
+		panic(fmt.Errorf("Unknown sort field '%s'", p.SortBy))
 	}
 
 	for i, child := range children {
@@ -165,10 +173,15 @@ func (p FileTreePrinter) printExtensions(ext map[string]*ExtensionEntry, sb *str
 	case ByCount:
 		sorter := SortDesc[ExtensionEntry]{values, func(e *ExtensionEntry) float64 { return float64(e.Count) }}
 		sort.Sort(sorter)
-	default:
+	case ByAge:
+		sorter := SortDesc[ExtensionEntry]{values, func(e *ExtensionEntry) float64 { return -float64(e.Time.Unix()) }}
+		sort.Sort(sorter)
+	case ByName:
 		sort.Slice(values, func(i, j int) bool {
 			return values[i].Name < values[j].Name
 		})
+	default:
+		panic(fmt.Errorf("Unknown sort field '%s'", p.SortBy))
 	}
 
 	pref := prefix + p.createPrefix(false)

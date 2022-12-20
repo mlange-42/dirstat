@@ -26,7 +26,7 @@ var plainCmd = &cobra.Command{
 			panic(err)
 		}
 
-		if sort != "" && sort != tree.BySize && sort != tree.ByCount && sort != tree.ByName {
+		if sort != "" && sort != tree.BySize && sort != tree.ByCount && sort != tree.ByAge && sort != tree.ByName {
 			if debug {
 				panic(err)
 			} else {
@@ -53,7 +53,7 @@ var plainCmd = &cobra.Command{
 
 func init() {
 	plainCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
-	plainCmd.Flags().String("sort", "", "Sort by either size or count. Possible values: [size, count]")
+	plainCmd.Flags().String("sort", "name", "Sort by either size or count. Possible values: [size, count, age]")
 
 	rootCmd.AddCommand(plainCmd)
 }
