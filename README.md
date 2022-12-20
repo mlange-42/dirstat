@@ -9,7 +9,7 @@ A command line tool for analyzing and visualizing disk usage.
 ![Screenshot](https://user-images.githubusercontent.com/44003176/208201884-13a4675c-10fa-439f-8b28-21f297a08887.svg)  
 *Example visualizing the Go repository using a treemap*
 
-<img width=450 src="https://user-images.githubusercontent.com/44003176/208759141-7e2433f5-d607-4a95-abbe-f32569586fc9.png" />
+<img width=450 src="https://user-images.githubusercontent.com/44003176/208779980-c366184f-f38c-4b13-b266-fa203e068962.png" />
 
 *Example visualizing the dirstat repository using a text-based directory tree*
 </div>
@@ -52,10 +52,6 @@ To view a text-based directory tree, use without a subcommand:
 dirstat
 ```
 
-Produces output like this:
-
-![Screenshot](https://user-images.githubusercontent.com/44003176/208758818-b37165b6-62db-4895-b7e8-31d4e770004e.png)
-
 #### Options
 
 Run for a different directory (paths can be absolute or relative):
@@ -69,10 +65,6 @@ Analyze with a different depth than the default plain list:
 ```shell
 dirstat --depth 2
 ```
-
-Produces output like this:
-
-![Screenshot](https://user-images.githubusercontent.com/44003176/208759141-7e2433f5-d607-4a95-abbe-f32569586fc9.png)
 
 Exclude files and directories by glob patterns:
 
