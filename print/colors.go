@@ -10,12 +10,16 @@ var (
 )
 
 var defaultColors = []func(a ...interface{}) string{
-	color.FgBlue.Render,
-	color.FgLightBlue.Render,
-	color.FgCyan.Render,
-	color.FgGreen.Render,
-	color.FgYellow.Render,
-	color.FgRed.Render,
+	color.C256(17, true).Sprint,
+	color.C256(17, true).Sprint,
+	color.C256(18, true).Sprint,
+	color.C256(18, true).Sprint,
+	color.C256(23, true).Sprint,
+	color.C256(22, true).Sprint,
+	color.C256(58, true).Sprint,
+	color.C256(94, true).Sprint,
+	color.C256(88, true).Sprint,
+	color.C256(52, true).Sprint,
 }
 
 var colorMaps = map[string][]func(a ...interface{}) string{
