@@ -17,6 +17,14 @@ var treemapCmd = &cobra.Command{
 	Use:     "treemap",
 	Aliases: []string{"tm"},
 	Short:   "Visualize output as SVG treemap.",
+	Long: `Visualize output as SVG treemap.
+
+Generate the treemap and pipe it to a file (can be viewed with any web browser):
+  $ dirstat treemap > out.svg
+
+Immediately open the created SVG with the default associated program (ideally a web browser):
+  $ dirstat treemap > out.svg && out.svg
+	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		byExt, err := cmd.Flags().GetBool("extensions")
 		if err != nil {

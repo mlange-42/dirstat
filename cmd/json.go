@@ -13,11 +13,11 @@ import (
 var jsonCmd = &cobra.Command{
 	Use:     "json",
 	Aliases: []string{"js"},
-	Short:   "Prints the tree as JSON for later re-use.",
-	Long: `Prints the tree as JSON for later re-use.
+	Short:   "Prints the result of the analysis as JSON for later re-use.",
+	Long: `Prints the result of the analysis as JSON for later re-use.
 
 Writes the result of the analysis to STDOUT in JSON format.
-When piped to a file, it can be used for visualization later by passing as the '--path' argument.
+When piped to a file, it can be used for visualization via the '--path' argument.
 
   $ dirstat json > out.json
     (analyzes the current directory and writes JSON to out.json)

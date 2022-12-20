@@ -19,10 +19,11 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "dirstat [flags] [command]",
-	Short: "Analyze or visualize directory contents.",
-	Long: `Analyze or visualize directory contents.
+	Short: "Analyze and visualize directory content and disk usage.",
+	Long: `Analyze and visualize directory content and disk usage.
 
-Prints the result of the analysis as plain-text directory tree.
+When used without a subcommand, prints the result of the analysis as plain-text directory tree.
+Analyzes the current directory by default. Use flag --path to analyze a different location.
 
 For graphical visualization, see subcommand 'treemap'.
   $ dirstat treemap -h
