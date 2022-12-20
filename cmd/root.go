@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gookit/color"
 	"github.com/mlange-42/dirstat/filesys"
 	"github.com/mlange-42/dirstat/print"
 	"github.com/mlange-42/dirstat/tree"
@@ -58,6 +59,14 @@ To store the result of the analysis for later re-use, see subcommand 'json'.
 		hasDepth := cmd.Flags().Changed("depth")
 		if !hasDepth && byExt {
 			depth = 0
+		}
+		noColors, err := cmd.Flags().GetBool("no-colors")
+		if err != nil {
+			panic(err)
+		}
+
+		if noColors || !color.SupportColor() || !isTerminal() {
+			color.Disable()
 		}
 
 		if sort != print.ByName && sort != print.BySize && sort != print.ByCount && sort != print.ByAge {
@@ -212,6 +221,11 @@ func treeFromJSON(file string, subtree string, exclude []string, depth int) (*tr
 	return t, nil
 }
 
+func isTerminal() bool {
+	o, _ := os.Stdout.Stat()
+	return (o.Mode() & os.ModeCharDevice) == os.ModeCharDevice
+}
+
 // Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
 	err := rootCmd.Execute()
@@ -232,4 +246,5 @@ func init() {
 	rootCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
 	rootCmd.Flags().StringP("sort", "s", "name", "Sort by one of [name, size, count, age]")
 	rootCmd.Flags().Bool("dirs", false, "List only directories, no individual files")
+	rootCmd.Flags().BoolP("no-colors", "C", false, "Print without colors")
 }
