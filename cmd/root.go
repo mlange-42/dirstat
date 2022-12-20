@@ -60,6 +60,15 @@ To store the result of the analysis for later re-use, see subcommand 'json'.
 		if !hasDepth && byExt {
 			depth = 0
 		}
+		colorExp, err := cmd.Flags().GetFloat64("exp")
+		if err != nil {
+			panic(err)
+		}
+		if colorExp <= 0 {
+			fmt.Fprint(os.Stderr, "ERROR: Color exponent --exp must be greater than 0.0\n")
+			os.Exit(1)
+		}
+
 		noColors, err := cmd.Flags().GetBool("no-colors")
 		if err != nil {
 			panic(err)
@@ -73,7 +82,7 @@ To store the result of the analysis for later re-use, see subcommand 'json'.
 			if debug {
 				panic(err)
 			} else {
-				fmt.Fprintf(os.Stderr, "Unknown sort field '%s'. Must be one of [name, size, count, age].\n", sort)
+				fmt.Fprintf(os.Stderr, "ERROR: Unknown sort field '%s'. Must be one of [name, size, count, age].\n", sort)
 				os.Exit(1)
 			}
 		}
@@ -83,12 +92,12 @@ To store the result of the analysis for later re-use, see subcommand 'json'.
 			if debug {
 				panic(err)
 			} else {
-				fmt.Fprintln(os.Stderr, err)
+				fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 				os.Exit(1)
 			}
 		}
 
-		printer := print.NewFileTreePrinter(byExt, 2, true, dirs)
+		printer := print.NewFileTreePrinter(byExt, 2, true, dirs, colorExp)
 		printer.SortBy = sort
 		fmt.Print(printer.Print(t))
 	},
@@ -246,5 +255,6 @@ func init() {
 	rootCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
 	rootCmd.Flags().StringP("sort", "s", "name", "Sort by one of [name, size, count, age]")
 	rootCmd.Flags().Bool("dirs", false, "List only directories, no individual files")
+	rootCmd.Flags().Float64("exp", 5.0, "Color scale exponent.\n1.0 is linear. Higher values look more log-like.")
 	rootCmd.Flags().BoolP("no-colors", "C", false, "Print without colors")
 }

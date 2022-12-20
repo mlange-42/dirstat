@@ -25,35 +25,37 @@ const (
 
 // FileTreePrinter prints a file tree in plain text format
 type FileTreePrinter struct {
-	SortBy       string
-	ByExtension  bool
-	Indent       int
-	PrintTime    bool
-	OnlyDirs     bool
-	prefixNone   string
-	prefixEmpty  string
-	prefixNormal string
-	prefixLast   string
-	printWidth   int
-	currTime     time.Time
-	timeRange    minMax
-	countRange   minMax
-	sizeRange    minMax
+	SortBy        string
+	ByExtension   bool
+	Indent        int
+	PrintTime     bool
+	OnlyDirs      bool
+	ColorExponent float64
+	prefixNone    string
+	prefixEmpty   string
+	prefixNormal  string
+	prefixLast    string
+	printWidth    int
+	currTime      time.Time
+	ageRange      minMax
+	countRange    minMax
+	sizeRange     minMax
 }
 
 // NewFileTreePrinter creates a new FileTreePrinter
-func NewFileTreePrinter(byExt bool, indent int, printTime bool, onlyDirs bool) FileTreePrinter {
+func NewFileTreePrinter(byExt bool, indent int, printTime bool, onlyDirs bool, colorExponent float64) FileTreePrinter {
 	return FileTreePrinter{
-		ByExtension:  byExt,
-		Indent:       indent,
-		PrintTime:    printTime,
-		OnlyDirs:     onlyDirs,
-		prefixNone:   strings.Repeat(" ", indent),
-		prefixEmpty:  "│" + strings.Repeat(" ", indent-1),
-		prefixNormal: "├" + strings.Repeat("─", indent-1),
-		prefixLast:   "└" + strings.Repeat("─", indent-1),
-		printWidth:   0,
-		currTime:     time.Now(),
+		ByExtension:   byExt,
+		Indent:        indent,
+		PrintTime:     printTime,
+		OnlyDirs:      onlyDirs,
+		ColorExponent: colorExponent,
+		prefixNone:    strings.Repeat(" ", indent),
+		prefixEmpty:   "│" + strings.Repeat(" ", indent-1),
+		prefixNormal:  "├" + strings.Repeat("─", indent-1),
+		prefixLast:    "└" + strings.Repeat("─", indent-1),
+		printWidth:    0,
+		currTime:      time.Now(),
 	}
 }
 
@@ -85,8 +87,8 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 		sizeStr := fmt.Sprintf(" %6s ", util.FormatUnits(t.Value.Size, "B"))
 		countStr := fmt.Sprintf(" %5s ", util.FormatUnits(int64(t.Value.Count), ""))
 
-		sizeStr = p.sizeRange.Interpolate(float64(t.Value.Size), false)(sizeStr)
-		countStr = p.countRange.Interpolate(float64(t.Value.Count), false)(countStr)
+		sizeStr = p.sizeRange.Interpolate(float64(t.Value.Size), p.ColorExponent)(sizeStr)
+		countStr = p.countRange.Interpolate(float64(t.Value.Count), p.ColorExponent)(countStr)
 
 		nameColor := directoryColor
 		if depth > 0 && strings.HasPrefix(t.Value.Name, ".") {
@@ -96,7 +98,7 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 	} else {
 		sizeStr := fmt.Sprintf(" %6s ", util.FormatUnits(t.Value.Size, "B"))
 
-		sizeStr = p.sizeRange.Interpolate(float64(t.Value.Size), false)(sizeStr)
+		sizeStr = p.sizeRange.Interpolate(float64(t.Value.Size), p.ColorExponent)(sizeStr)
 
 		nameColor := fileColor
 		if depth > 0 && strings.HasPrefix(t.Value.Name, ".") {
@@ -107,7 +109,7 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 
 	if p.PrintTime {
 		val := fmt.Sprintf(" %11s ", util.FormatDuration(t.Value.Time, p.currTime))
-		fmt.Fprintf(sb, " %s", p.timeRange.Interpolate(float64(t.Value.Time.Unix()), true)(val))
+		fmt.Fprintf(sb, " %s", p.ageRange.Interpolate(float64(p.currTime.Unix()-t.Value.Time.Unix()), p.ColorExponent)(val))
 	}
 	fmt.Fprint(sb, "\n")
 
@@ -186,8 +188,8 @@ func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb
 		sizeStr := fmt.Sprintf(" %6s ", util.FormatUnits(info.Size, "B"))
 		countStr := fmt.Sprintf(" %5s ", util.FormatUnits(int64(info.Count), ""))
 
-		sizeStr = p.sizeRange.Interpolate(float64(info.Size), false)(sizeStr)
-		countStr = p.countRange.Interpolate(float64(info.Count), false)(countStr)
+		sizeStr = p.sizeRange.Interpolate(float64(info.Size), p.ColorExponent)(sizeStr)
+		countStr = p.countRange.Interpolate(float64(info.Count), p.ColorExponent)(countStr)
 		fmt.Fprintf(
 			sb,
 			"%s .%s %s %s",
@@ -199,7 +201,7 @@ func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb
 
 		if p.PrintTime {
 			val := fmt.Sprintf(" %11s ", util.FormatDuration(info.Time, p.currTime))
-			fmt.Fprintf(sb, " %s", p.timeRange.Interpolate(float64(info.Time.Unix()), true)(val))
+			fmt.Fprintf(sb, " %s", p.ageRange.Interpolate(float64(p.currTime.Unix()-info.Time.Unix()), p.ColorExponent)(val))
 		}
 		fmt.Fprint(sb, "\n")
 
@@ -226,24 +228,25 @@ func (p FileTreePrinter) maxWidth(t *tree.FileTree, depth int, extensions bool) 
 }
 
 func (p *FileTreePrinter) calcRanges(t *tree.FileTree) {
-	p.calcTimeRange(t, p.ByExtension)
+	p.calcAgeRange(t, p.ByExtension)
 	p.calcSizeRange(t, p.ByExtension)
 	p.calcCountRange(t, p.ByExtension)
 }
 
-func (p *FileTreePrinter) calcTimeRange(t *tree.FileTree, extensions bool) {
-	p.timeRange.min, p.timeRange.max, _ = p.calcRange(t, extensions, true,
+func (p *FileTreePrinter) calcAgeRange(t *tree.FileTree, extensions bool) {
+	unix := p.currTime.Unix()
+	p.ageRange.min, p.ageRange.max, _ = p.calcRange(t, extensions, true,
 		func(e *tree.FileEntry) (float64, bool) {
 			if e.Time.IsZero() {
-				return 0, false
+				return 1, false
 			}
-			return float64(e.Time.Unix()), true
+			return math.Max(1, float64(unix-e.Time.Unix())), true
 		},
 		func(e *tree.ExtensionEntry) (float64, bool) {
 			if e.Time.IsZero() {
-				return 0, false
+				return 1, false
 			}
-			return float64(e.Time.Unix()), true
+			return math.Max(1, float64(unix-e.Time.Unix())), true
 		})
 }
 
@@ -348,14 +351,13 @@ type minMax struct {
 	max float64
 }
 
-func (r minMax) Interpolate(value float64, inverse bool) func(a ...interface{}) string {
+func (r minMax) Interpolate(value float64, exponent float64) func(a ...interface{}) string {
 	if r.min >= r.max {
 		return defaultColors[0]
 	}
-	rel := (value - r.min) / (r.max - r.min)
-	if inverse {
-		rel = 1.0 - rel
-	}
+
+	rel := math.Pow(math.Max(0, value), 1.0/exponent) / math.Pow(math.Max(0, r.max), 1.0/exponent)
+
 	index := int(rel * float64(len(defaultColors)+1))
 	if index < 0 {
 		index = 0
