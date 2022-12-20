@@ -22,13 +22,15 @@ var treemapCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-
 		byCount, err := cmd.Flags().GetBool("count")
 		if err != nil {
 			panic(err)
 		}
-
 		colAge, err := cmd.Flags().GetBool("mod")
+		if err != nil {
+			panic(err)
+		}
+		dirs, err := cmd.Flags().GetBool("dirs")
 		if err != nil {
 			panic(err)
 		}
@@ -59,7 +61,7 @@ var treemapCmd = &cobra.Command{
 			}
 		}
 
-		printer := print.NewTreemapPrinter(byExt, byCount, colAge)
+		printer := print.NewTreemapPrinter(byExt, byCount, colAge, dirs)
 		str := printer.Print(t)
 		if csv {
 			fmt.Print(str)
@@ -160,6 +162,7 @@ func init() {
 	treemapCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
 	treemapCmd.Flags().BoolP("count", "c", false, "Size boxes by file count instead of disk memory")
 	treemapCmd.Flags().BoolP("mod", "m", false, "Color boxes by last file modification")
+	treemapCmd.Flags().Bool("dirs", false, "List only directories, no individual files")
 
 	treemapCmd.Flags().Float64("w", 1028, "width of output")
 	treemapCmd.Flags().Float64("h", 640, "height of output")
