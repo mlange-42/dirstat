@@ -22,20 +22,13 @@ var rootCmd = &cobra.Command{
 	Short: "Analyze or visualize directory contents.",
 	Long: `Analyze or visualize directory contents.
 
-When used without a subcommand, the result of the analysis is written to STDOUT in JSON format.
-When piped to a file, it can be used for visualization later by passing as the '--path' argument.
-
-  $ dirstat > out.json
-    (analyzes the current directory and writes JSON to out.json)
-
-  $ dirstat --path out.json plain
-    (reads the JSON instead of running an analysis, and prints the directory tree in text format)
-
-For inspection in the terminal, see subcommand 'plain'.
-  $ dirstat plain -h
+Prints the result of the analysis as plain-text directory tree.
 
 For graphical visualization, see subcommand 'treemap'.
   $ dirstat treemap -h
+
+To store the result of the analysis for later re-use, see subcommand 'json'.
+  $ dirstat json -h
 `,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {

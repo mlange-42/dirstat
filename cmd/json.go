@@ -11,8 +11,20 @@ import (
 
 // treemapCmd represents the treemap command
 var jsonCmd = &cobra.Command{
-	Use:   "json",
-	Short: "Prints the tree as JSON for later re-use.",
+	Use:     "json",
+	Aliases: []string{"js"},
+	Short:   "Prints the tree as JSON for later re-use.",
+	Long: `Prints the tree as JSON for later re-use.
+
+Writes the result of the analysis to STDOUT in JSON format.
+When piped to a file, it can be used for visualization later by passing as the '--path' argument.
+
+  $ dirstat json > out.json
+    (analyzes the current directory and writes JSON to out.json)
+
+  $ dirstat --path out.json
+    (reads the JSON instead of running an analysis, and prints the directory tree in text format)
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		debug, err := cmd.Flags().GetBool("debug")
 		if err != nil {
