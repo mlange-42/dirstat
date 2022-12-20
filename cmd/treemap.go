@@ -5,7 +5,7 @@ import (
 	"image/color"
 	"os"
 
-	"github.com/mlange-42/dirstat/tree"
+	"github.com/mlange-42/dirstat/print"
 	"github.com/nikolaydubina/treemap"
 	"github.com/nikolaydubina/treemap/parser"
 	"github.com/nikolaydubina/treemap/render"
@@ -24,6 +24,11 @@ var treemapCmd = &cobra.Command{
 		}
 
 		byCount, err := cmd.Flags().GetBool("count")
+		if err != nil {
+			panic(err)
+		}
+
+		colAge, err := cmd.Flags().GetBool("mod")
 		if err != nil {
 			panic(err)
 		}
@@ -48,10 +53,7 @@ var treemapCmd = &cobra.Command{
 			}
 		}
 
-		printer := tree.TreemapPrinter{
-			ByExtension: byExt,
-			ByCount:     byCount,
-		}
+		printer := print.NewTreemapPrinter(byExt, byCount, colAge)
 		str := printer.Print(t)
 		if csv {
 			fmt.Print(str)
@@ -150,6 +152,7 @@ func init() {
 	treemapCmd.Flags().Bool("csv", false, "Generate raw CSV output for github.com/nikolaydubina/treemap")
 	treemapCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
 	treemapCmd.Flags().BoolP("count", "c", false, "Size boxes by file count instead of disk memory")
+	treemapCmd.Flags().BoolP("mod", "m", false, "Color boxes by last file modification")
 
 	treemapCmd.Flags().Float64("w", 1028, "width of output")
 	treemapCmd.Flags().Float64("h", 640, "height of output")

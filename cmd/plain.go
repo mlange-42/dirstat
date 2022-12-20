@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mlange-42/dirstat/tree"
+	"github.com/mlange-42/dirstat/print"
 	"github.com/spf13/cobra"
 )
 
@@ -26,11 +26,11 @@ var plainCmd = &cobra.Command{
 			panic(err)
 		}
 
-		if sort != "" && sort != tree.BySize && sort != tree.ByCount && sort != tree.ByName {
+		if sort != print.ByName && sort != print.BySize && sort != print.ByCount && sort != print.ByAge {
 			if debug {
 				panic(err)
 			} else {
-				fmt.Fprintf(os.Stderr, "Unknown sort field '%s'. Must be one of [size, count, name].\n", sort)
+				fmt.Fprintf(os.Stderr, "Unknown sort field '%s'. Must be one of [name, size, count, age].\n", sort)
 				os.Exit(1)
 			}
 		}
@@ -45,7 +45,7 @@ var plainCmd = &cobra.Command{
 			}
 		}
 
-		printer := tree.NewFileTreePrinter(byExt, 2)
+		printer := print.NewFileTreePrinter(byExt, 2, true)
 		printer.SortBy = sort
 		fmt.Print(printer.Print(t))
 	},
@@ -53,7 +53,7 @@ var plainCmd = &cobra.Command{
 
 func init() {
 	plainCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
-	plainCmd.Flags().String("sort", "", "Sort by either size or count. Possible values: [size, count]")
+	plainCmd.Flags().String("sort", "name", "Sort by one of [name, size, count, age]")
 
 	rootCmd.AddCommand(plainCmd)
 }

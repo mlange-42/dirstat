@@ -2,12 +2,13 @@ package tree
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestEntryCreate(t *testing.T) {
-	file := NewFile("f", 1)
+	file := NewFile("f", 1, time.Time{})
 	dir := NewDir("d")
 
 	assert.Equal(t, "f", file.Value.Name)
@@ -20,16 +21,22 @@ func TestEntryCreate(t *testing.T) {
 }
 
 func TestEntryAdd(t *testing.T) {
-	dir := NewDir("d")
+	tm := time.Date(2000, 1, 2, 0, 0, 0, 0, time.UTC)
 
-	dir.Value.Add(100)
+	dir := NewDir("d")
+	assert.Equal(t, true, dir.Value.Time.IsZero())
+
+	dir.Value.AddMulti(100, 1, tm)
 	assert.Equal(t, int64(100), dir.Value.Size)
 	assert.Equal(t, 1, dir.Value.Count)
+	assert.Equal(t, tm, dir.Value.Time)
 }
 
 func TestEntryAddExtensions(t *testing.T) {
+	tm := time.Date(2000, 1, 2, 0, 0, 0, 0, time.UTC)
+
 	dir := NewDir("d")
 
-	dir.Value.AddExtensions(map[string]*ExtensionEntry{".exe": {Name: ".exe", Size: 100, Count: 10}})
-	assert.Equal(t, map[string]*ExtensionEntry{".exe": {Name: ".exe", Size: 100, Count: 10}}, dir.Value.Extensions)
+	dir.Value.AddExtensions(map[string]*ExtensionEntry{".exe": {Name: ".exe", Size: 100, Count: 10, Time: tm}})
+	assert.Equal(t, map[string]*ExtensionEntry{".exe": {Name: ".exe", Size: 100, Count: 10, Time: tm}}, dir.Value.Extensions)
 }

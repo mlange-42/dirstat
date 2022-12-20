@@ -2,7 +2,9 @@ package util
 
 import (
 	"fmt"
+	"io"
 	"math"
+	"time"
 )
 
 var unitPrefixes []string = []string{
@@ -41,4 +43,38 @@ func FormatUnits(b int64, unit string) string {
 		return fmt.Sprintf("%d %s%s", int(value), unitPrefixes[exp1k], unit)
 	}
 	return fmt.Sprintf("%.1f %s%s", value, unitPrefixes[exp1k], unit)
+}
+
+// FPrintDuration prints a foratter duration to a Writer
+func FPrintDuration(w io.Writer, from time.Time, to time.Time) {
+	if from.IsZero() || to.IsZero() {
+		fmt.Fprint(w, "---")
+		return
+	}
+	dur := to.Sub(from)
+	minutes := dur.Minutes()
+	if minutes <= 60 {
+		fmt.Fprintf(w, "%.0f minutes", minutes)
+		return
+	}
+	hours := dur.Hours()
+	if hours <= 24 {
+		fmt.Fprintf(w, "%.0f hours", hours)
+		return
+	}
+	days := hours / 24
+	if days <= 14 {
+		fmt.Fprintf(w, "%.0f days", days)
+		return
+	}
+	if days <= 60 {
+		fmt.Fprintf(w, "%.0f weeks", days/7)
+		return
+	}
+	if days <= 2*365 {
+		fmt.Fprintf(w, "%.0f months", days/30.42)
+		return
+	}
+	years := days / 365
+	fmt.Fprintf(w, "%.0f years", years)
 }

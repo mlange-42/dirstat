@@ -43,12 +43,12 @@ func Walk(dir string, exclude []string, maxDepth int, progres chan<- int64, done
 				v := parent.Value
 				ext := filepath.Ext(info.Name())
 				if inf, ok := v.Extensions[ext]; ok {
-					inf.AddMulti(info.Size(), 1)
+					inf.AddMulti(info.Size(), 1, info.ModTime())
 				} else {
-					e := tree.ExtensionEntry{Name: ext, Size: info.Size(), Count: 1}
+					e := tree.ExtensionEntry{Name: ext, Size: info.Size(), Count: 1, Time: info.ModTime()}
 					v.Extensions[ext] = &e
 				}
-				v.Add(info.Size())
+				v.AddMulti(info.Size(), 1, info.ModTime())
 			}
 
 			progres <- info.Size()
@@ -60,7 +60,7 @@ func Walk(dir string, exclude []string, maxDepth int, progres chan<- int64, done
 			if info.IsDir() {
 				subTree = tree.NewDir(info.Name())
 			} else {
-				subTree = tree.NewFile(info.Name(), info.Size())
+				subTree = tree.NewFile(info.Name(), info.Size(), info.ModTime())
 			}
 
 			if parent != nil {
@@ -81,7 +81,7 @@ func Walk(dir string, exclude []string, maxDepth int, progres chan<- int64, done
 
 	t.Aggregate(func(parent, child *tree.FileEntry) {
 		if child.IsDir {
-			parent.AddMulti(child.Size, child.Count)
+			parent.AddMulti(child.Size, child.Count, child.Time)
 		}
 	})
 
