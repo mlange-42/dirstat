@@ -121,7 +121,7 @@ func (p FileTreePrinter) print(t *FileTree, sb *strings.Builder, depth int, last
 	}
 
 	if p.PrintTime {
-		util.FPrintDuration(sb, p.currTime.Sub(t.Value.Time))
+		util.FPrintDuration(sb, t.Value.Time, p.currTime)
 	}
 	fmt.Fprint(sb, "\n")
 
@@ -191,7 +191,7 @@ func (p FileTreePrinter) printExtensions(ext map[string]*ExtensionEntry, sb *str
 		)
 
 		if p.PrintTime {
-			util.FPrintDuration(sb, p.currTime.Sub(info.Time))
+			util.FPrintDuration(sb, info.Time, p.currTime)
 		}
 		fmt.Fprint(sb, "\n")
 

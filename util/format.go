@@ -46,7 +46,12 @@ func FormatUnits(b int64, unit string) string {
 }
 
 // FPrintDuration prints a foratter duration to a Writer
-func FPrintDuration(w io.Writer, dur time.Duration) {
+func FPrintDuration(w io.Writer, from time.Time, to time.Time) {
+	if from.IsZero() || to.IsZero() {
+		fmt.Fprint(w, "---")
+		return
+	}
+	dur := to.Sub(from)
 	minutes := dur.Minutes()
 	if minutes <= 60 {
 		fmt.Fprintf(w, "%.0f minutes", minutes)
@@ -66,7 +71,7 @@ func FPrintDuration(w io.Writer, dur time.Duration) {
 		fmt.Fprintf(w, "%.0f weeks", days/7)
 		return
 	}
-	if days <= 24 {
+	if days <= 2*365 {
 		fmt.Fprintf(w, "%.0f months", days/30.42)
 		return
 	}
