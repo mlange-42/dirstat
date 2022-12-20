@@ -174,12 +174,12 @@ Loop:
 			if !quiet {
 				if count%10 == 0 && time.Since(prevTime) >= minElapsed {
 					prevTime = time.Now()
-					fmt.Fprintf(os.Stderr, "\rScan: %s, %d files in %s    ", util.FormatUnits(size, "B"), count, time.Since(startTime).Round(time.Millisecond))
+					fmt.Fprintf(os.Stderr, "\rScan: %6s, %d files in %s    ", util.FormatUnits(size, "B"), count, time.Since(startTime).Round(time.Millisecond))
 				}
 			}
 		case t = <-done:
 			if !quiet {
-				fmt.Fprintf(os.Stderr, "\rDone: %s, %d (%s) files in %s    \n", util.FormatUnits(size, "B"), count, util.FormatUnits(int64(count), ""), time.Since(startTime).Round(time.Millisecond))
+				fmt.Fprintf(os.Stderr, "\rDone: %6s, %d (%s) files in %s    \n", util.FormatUnits(size, "B"), count, util.FormatUnitsSimple(int64(count), ""), time.Since(startTime).Round(time.Millisecond))
 			}
 			break Loop
 		case err = <-erro:

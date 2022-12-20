@@ -82,32 +82,22 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 	pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-depth*p.Indent-len([]rune(t.Value.Name))), 0)))
 	fmt.Fprint(sb, pref)
 	if t.Value.IsDir {
-		sizeStr := fmt.Sprintf("%-6s", util.FormatUnits(t.Value.Size, "B"))
-		countStr := util.FormatUnits(int64(t.Value.Count), "")
-		l := len([]rune(countStr)) + 9
+		sizeStr := fmt.Sprintf(" %6s ", util.FormatUnits(t.Value.Size, "B"))
+		countStr := fmt.Sprintf(" %5s ", util.FormatUnits(int64(t.Value.Count), ""))
 
 		sizeStr = p.sizeRange.Interpolate(float64(t.Value.Size), false)(sizeStr)
 		countStr = p.countRange.Interpolate(float64(t.Value.Count), false)(countStr)
-		fmt.Fprintf(sb, "%s %s %s (%s)", lightBlue(t.Value.Name+"/"), pad, sizeStr, countStr)
-		for l < 15 {
-			fmt.Fprint(sb, " ")
-			l++
-		}
+		fmt.Fprintf(sb, "%s %s %s %s", lightBlue(t.Value.Name+"/"), pad, sizeStr, countStr)
 	} else {
-		sizeStr := util.FormatUnits(t.Value.Size, "B")
-		l := len([]rune(sizeStr))
+		sizeStr := fmt.Sprintf(" %6s ", util.FormatUnits(t.Value.Size, "B"))
 
 		sizeStr = p.sizeRange.Interpolate(float64(t.Value.Size), false)(sizeStr)
-		fmt.Fprintf(sb, "%s .%s %s", t.Value.Name, pad, sizeStr)
-		for l < 15 {
-			fmt.Fprint(sb, " ")
-			l++
-		}
+		fmt.Fprintf(sb, "%s .%s %s        ", t.Value.Name, pad, sizeStr)
 	}
 
 	if p.PrintTime {
-		val := util.FormatDuration(t.Value.Time, p.currTime)
-		fmt.Fprint(sb, p.timeRange.Interpolate(float64(t.Value.Time.Unix()), true)(val))
+		val := fmt.Sprintf(" %11s ", util.FormatDuration(t.Value.Time, p.currTime))
+		fmt.Fprintf(sb, " %s", p.timeRange.Interpolate(float64(t.Value.Time.Unix()), true)(val))
 	}
 	fmt.Fprint(sb, "\n")
 
@@ -183,28 +173,23 @@ func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb
 			fmt.Fprint(sb, pref)
 		}
 
-		sizeStr := fmt.Sprintf("%-6s", util.FormatUnits(info.Size, "B"))
-		countStr := util.FormatUnits(int64(info.Count), "")
-		l := len([]rune(countStr)) + 9
+		sizeStr := fmt.Sprintf(" %6s ", util.FormatUnits(info.Size, "B"))
+		countStr := fmt.Sprintf(" %5s ", util.FormatUnits(int64(info.Count), ""))
 
 		sizeStr = p.sizeRange.Interpolate(float64(info.Size), false)(sizeStr)
 		countStr = p.countRange.Interpolate(float64(info.Count), false)(countStr)
 		fmt.Fprintf(
 			sb,
-			"%s .%s %s (%s)",
+			"%s .%s %s %s",
 			yellow(info.Name),
 			pad,
 			sizeStr,
 			countStr,
 		)
-		for l < 15 {
-			fmt.Fprint(sb, " ")
-			l++
-		}
 
 		if p.PrintTime {
-			val := util.FormatDuration(info.Time, p.currTime)
-			fmt.Fprint(sb, p.timeRange.Interpolate(float64(info.Time.Unix()), true)(val))
+			val := fmt.Sprintf(" %11s ", util.FormatDuration(info.Time, p.currTime))
+			fmt.Fprintf(sb, " %s", p.timeRange.Interpolate(float64(info.Time.Unix()), true)(val))
 		}
 		fmt.Fprint(sb, "\n")
 
