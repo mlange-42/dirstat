@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gookit/color"
 	"github.com/mlange-42/dirstat/tree"
 	"github.com/mlange-42/dirstat/util"
 	"golang.org/x/exp/maps"
@@ -22,13 +21,6 @@ const (
 	ByAge string = "age"
 	// ByName is for sorting by name
 	ByName string = "name"
-)
-
-var (
-	red       = color.FgRed.Render
-	green     = color.FgGreen.Render
-	lightBlue = color.FgLightBlue.Render
-	yellow    = color.FgYellow.Render
 )
 
 // FileTreePrinter prints a file tree in plain text format
@@ -93,6 +85,9 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 		sizeStr := fmt.Sprintf("%-6s", util.FormatUnits(t.Value.Size, "B"))
 		countStr := util.FormatUnits(int64(t.Value.Count), "")
 		l := len([]rune(countStr)) + 9
+
+		sizeStr = p.sizeRange.Interpolate(float64(t.Value.Size), false)(sizeStr)
+		countStr = p.countRange.Interpolate(float64(t.Value.Count), false)(countStr)
 		fmt.Fprintf(sb, "%s %s %s (%s)", lightBlue(t.Value.Name+"/"), pad, sizeStr, countStr)
 		for l < 15 {
 			fmt.Fprint(sb, " ")
@@ -101,6 +96,8 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 	} else {
 		sizeStr := util.FormatUnits(t.Value.Size, "B")
 		l := len([]rune(sizeStr))
+
+		sizeStr = p.sizeRange.Interpolate(float64(t.Value.Size), false)(sizeStr)
 		fmt.Fprintf(sb, "%s .%s %s", t.Value.Name, pad, sizeStr)
 		for l < 15 {
 			fmt.Fprint(sb, " ")
@@ -109,7 +106,8 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 	}
 
 	if p.PrintTime {
-		util.FPrintDuration(sb, t.Value.Time, p.currTime)
+		val := util.FormatDuration(t.Value.Time, p.currTime)
+		fmt.Fprint(sb, p.timeRange.Interpolate(float64(t.Value.Time.Unix()), true)(val))
 	}
 	fmt.Fprint(sb, "\n")
 
@@ -188,6 +186,9 @@ func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb
 		sizeStr := fmt.Sprintf("%-6s", util.FormatUnits(info.Size, "B"))
 		countStr := util.FormatUnits(int64(info.Count), "")
 		l := len([]rune(countStr)) + 9
+
+		sizeStr = p.sizeRange.Interpolate(float64(info.Size), false)(sizeStr)
+		countStr = p.countRange.Interpolate(float64(info.Count), false)(countStr)
 		fmt.Fprintf(
 			sb,
 			"%s .%s %s (%s)",
@@ -202,7 +203,8 @@ func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb
 		}
 
 		if p.PrintTime {
-			util.FPrintDuration(sb, info.Time, p.currTime)
+			val := util.FormatDuration(info.Time, p.currTime)
+			fmt.Fprint(sb, p.timeRange.Interpolate(float64(info.Time.Unix()), true)(val))
 		}
 		fmt.Fprint(sb, "\n")
 
@@ -235,61 +237,85 @@ func (p *FileTreePrinter) calcRanges(t *tree.FileTree) {
 }
 
 func (p *FileTreePrinter) calcTimeRange(t *tree.FileTree, extensions bool) {
-	p.timeRange.min, p.timeRange.max = p.calcRange(t, extensions,
-		func(e *tree.FileEntry) float64 {
-			return float64(e.Time.Unix())
+	p.timeRange.min, p.timeRange.max, _ = p.calcRange(t, extensions, true,
+		func(e *tree.FileEntry) (float64, bool) {
+			if e.Time.IsZero() {
+				return 0, false
+			}
+			return float64(e.Time.Unix()), true
 		},
-		func(e *tree.ExtensionEntry) float64 {
-			return float64(e.Time.Unix())
+		func(e *tree.ExtensionEntry) (float64, bool) {
+			if e.Time.IsZero() {
+				return 0, false
+			}
+			return float64(e.Time.Unix()), true
 		})
 }
 
 func (p *FileTreePrinter) calcSizeRange(t *tree.FileTree, extensions bool) {
-	p.sizeRange.min, p.sizeRange.max = p.calcRange(t, extensions,
-		func(e *tree.FileEntry) float64 {
-			return float64(e.Size)
+	p.sizeRange.min, p.sizeRange.max, _ = p.calcRange(t, extensions, true,
+		func(e *tree.FileEntry) (float64, bool) {
+			return float64(e.Size), true
 		},
-		func(e *tree.ExtensionEntry) float64 {
-			return float64(e.Size)
+		func(e *tree.ExtensionEntry) (float64, bool) {
+			return float64(e.Size), true
 		})
 }
 
 func (p *FileTreePrinter) calcCountRange(t *tree.FileTree, extensions bool) {
-	p.countRange.min, p.countRange.max = p.calcRange(t, extensions,
-		func(e *tree.FileEntry) float64 {
-			return float64(e.Count)
+	p.countRange.min, p.countRange.max, _ = p.calcRange(t, extensions, true,
+		func(e *tree.FileEntry) (float64, bool) {
+			return float64(e.Count), true
 		},
-		func(e *tree.ExtensionEntry) float64 {
-			return float64(e.Count)
+		func(e *tree.ExtensionEntry) (float64, bool) {
+			return float64(e.Count), true
 		})
 }
 
-func (p FileTreePrinter) calcRange(t *tree.FileTree, extensions bool,
-	fileFn func(*tree.FileEntry) float64,
-	extFn func(*tree.ExtensionEntry) float64) (min float64, max float64) {
+func (p FileTreePrinter) calcRange(t *tree.FileTree, extensions bool, isRoot bool,
+	fileFn func(*tree.FileEntry) (value float64, on bool),
+	extFn func(*tree.ExtensionEntry) (value float64, on bool)) (min float64, max float64, isOk bool) {
 
-	min = fileFn(t.Value)
-	max = min
+	isOk = false
+
+	if isRoot {
+		min = math.MaxFloat64
+		max = -math.MaxFloat64
+		isOk = true
+	} else {
+		if v, ok := fileFn(t.Value); ok {
+			min = v
+			max = v
+			isOk = true
+		} else {
+			min = math.MaxFloat64
+			max = -math.MaxFloat64
+		}
+	}
 
 	if extensions && t.Value.IsDir {
 		for _, ext := range t.Value.Extensions {
-			v := extFn(ext)
-			if v < min {
-				min = v
-			}
-			if v > max {
-				max = v
+			if v, ok := extFn(ext); ok {
+				if v < min {
+					min = v
+				}
+				if v > max {
+					max = v
+				}
+				isOk = true
 			}
 		}
 	}
 
 	for _, c := range t.Children {
-		mn, mx := p.calcRange(c, extensions, fileFn, extFn)
-		if mn < min {
-			min = mn
-		}
-		if mx > max {
-			max = mx
+		if mn, mx, ok := p.calcRange(c, extensions, false, fileFn, extFn); ok {
+			if mn < min {
+				min = mn
+			}
+			if mx > max {
+				max = mx
+			}
+			isOk = true
 		}
 	}
 
@@ -325,4 +351,22 @@ func (p SortDesc[T]) Less(i, j int) bool {
 type minMax struct {
 	min float64
 	max float64
+}
+
+func (r minMax) Interpolate(value float64, inverse bool) func(a ...interface{}) string {
+	if r.min >= r.max {
+		return defaultColors[0]
+	}
+	rel := (value - r.min) / (r.max - r.min)
+	if inverse {
+		rel = 1.0 - rel
+	}
+	index := int(rel * float64(len(defaultColors)+1))
+	if index < 0 {
+		index = 0
+	}
+	if index >= len(defaultColors) {
+		index = len(defaultColors) - 1
+	}
+	return defaultColors[index]
 }
