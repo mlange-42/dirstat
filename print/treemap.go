@@ -48,10 +48,14 @@ func (p TreemapPrinter) print(t *tree.FileTree, sb *strings.Builder, path string
 		sizeCount = fmt.Sprintf("%s", util.FormatUnitsSimple(t.Value.Size, "B"))
 	}
 
+	dirSuffix := ""
+	if t.Value.IsDir {
+		dirSuffix = "&sol;"
+	}
 	if len(path) == 0 {
-		path = fmt.Sprintf("%s (%s)", t.Value.Name, sizeCount)
+		path = fmt.Sprintf("%s%s (%s)", t.Value.Name, dirSuffix, sizeCount)
 	} else {
-		path = fmt.Sprintf("%s/%s (%s)", path, t.Value.Name, sizeCount)
+		path = fmt.Sprintf("%s/%s%s (%s)", path, t.Value.Name, dirSuffix, sizeCount)
 	}
 
 	var v1 float64
