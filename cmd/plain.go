@@ -45,7 +45,7 @@ var plainCmd = &cobra.Command{
 			}
 		}
 
-		printer := tree.NewFileTreePrinter(byExt, 2)
+		printer := tree.NewFileTreePrinter(byExt, 2, true)
 		printer.SortBy = sort
 		fmt.Print(printer.Print(t))
 	},

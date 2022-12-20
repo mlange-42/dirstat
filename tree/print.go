@@ -6,6 +6,7 @@ import (
 	"math"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/mlange-42/dirstat/util"
 	"golang.org/x/exp/maps"
@@ -58,23 +59,27 @@ type FileTreePrinter struct {
 	SortBy       string
 	ByExtension  bool
 	Indent       int
+	PrintTime    bool
 	prefixNone   string
 	prefixEmpty  string
 	prefixNormal string
 	prefixLast   string
 	printWidth   int
+	currTime     time.Time
 }
 
 // NewFileTreePrinter creates a new FileTreePrinter
-func NewFileTreePrinter(byExt bool, indent int) FileTreePrinter {
+func NewFileTreePrinter(byExt bool, indent int, printTime bool) FileTreePrinter {
 	return FileTreePrinter{
 		ByExtension:  byExt,
 		Indent:       indent,
+		PrintTime:    printTime,
 		prefixNone:   strings.Repeat(" ", indent),
 		prefixEmpty:  "│" + strings.Repeat(" ", indent-1),
 		prefixNormal: "├" + strings.Repeat("─", indent-1),
 		prefixLast:   "└" + strings.Repeat("─", indent-1),
 		printWidth:   0,
+		currTime:     time.Now(),
 	}
 }
 
@@ -110,10 +115,15 @@ func (p FileTreePrinter) print(t *FileTree, sb *strings.Builder, depth int, last
 	pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-depth*p.Indent-len([]rune(t.Value.Name))), 0)))
 	fmt.Fprint(sb, pref)
 	if t.Value.IsDir {
-		fmt.Fprintf(sb, "%s/ %s %s\n", t.Value.Name, pad, sizeCount)
+		fmt.Fprintf(sb, "%s/ %s %-15s", t.Value.Name, pad, sizeCount)
 	} else {
-		fmt.Fprintf(sb, "%s .%s %s\n", t.Value.Name, pad, sizeCount)
+		fmt.Fprintf(sb, "%s .%s %-15s", t.Value.Name, pad, sizeCount)
 	}
+
+	if p.PrintTime {
+		util.FPrintDuration(sb, p.currTime.Sub(t.Value.Time))
+	}
+	fmt.Fprint(sb, "\n")
 
 	if depth > 0 {
 		pref = prefix + p.createPrefixEmpty(last)
@@ -171,14 +181,20 @@ func (p FileTreePrinter) printExtensions(ext map[string]*ExtensionEntry, sb *str
 		} else {
 			fmt.Fprint(sb, pref)
 		}
+		sizeCount := fmt.Sprintf("%-6s (%s)", util.FormatUnits(info.Size, "B"), util.FormatUnits(int64(info.Count), ""))
 		fmt.Fprintf(
 			sb,
-			"%s .%s %-6s (%s)\n",
+			"%s .%s %-15s",
 			info.Name,
 			pad,
-			util.FormatUnits(info.Size, "B"),
-			util.FormatUnits(int64(info.Count), ""),
+			sizeCount,
 		)
+
+		if p.PrintTime {
+			util.FPrintDuration(sb, p.currTime.Sub(info.Time))
+		}
+		fmt.Fprint(sb, "\n")
+
 	}
 }
 
@@ -219,6 +235,18 @@ func (p FileTreePrinter) createPrefixEmpty(last bool) string {
 type TreemapPrinter struct {
 	ByExtension bool
 	ByCount     bool
+	HeatAge     bool
+	currTime    time.Time
+}
+
+// NewTreemapPrinter creates a new TreemapPrinter
+func NewTreemapPrinter(byExtension bool, byCount bool, heatAge bool) TreemapPrinter {
+	return TreemapPrinter{
+		ByExtension: byExtension,
+		ByCount:     byCount,
+		HeatAge:     heatAge,
+		currTime:    time.Now(),
+	}
 }
 
 // Print prints a FileTree
@@ -252,6 +280,9 @@ func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 	} else {
 		v1, v2 = float64(t.Value.Size), log(t.Value.Count)
 	}
+	if p.HeatAge {
+		v2 = p.currTime.Sub(t.Value.Time).Hours() / 24
+	}
 
 	fmt.Fprintf(
 		sb,
@@ -268,6 +299,9 @@ func (p TreemapPrinter) print(t *FileTree, sb *strings.Builder, path string) {
 				v1, v2 = float64(info.Count), float64(info.Size)
 			} else {
 				v1, v2 = float64(info.Size), log(info.Count)
+			}
+			if p.HeatAge {
+				v2 = p.currTime.Sub(info.Time).Hours() / 24
 			}
 			fmt.Fprintf(
 				sb,
