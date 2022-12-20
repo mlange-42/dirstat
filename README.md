@@ -4,8 +4,15 @@
 
 A command line tool for analyzing and visualizing disk usage.
 
+<div align="center" width="100%">
+
 ![Screenshot](https://user-images.githubusercontent.com/44003176/208201884-13a4675c-10fa-439f-8b28-21f297a08887.svg)  
-*Example visualizing the Go repository*
+*Example visualizing the Go repository using a treemap*
+
+<img width=450 src="https://user-images.githubusercontent.com/44003176/208759141-7e2433f5-d607-4a95-abbe-f32569586fc9.png" />
+
+*Example visualizing the dirstat repository using a text-based directory tree*
+</div>
 
 ## Installation
 
@@ -47,15 +54,7 @@ dirstat
 
 Produces output like this:
 
-```text
-./ ............... 5.9 MB (26)    0 minutes
-├─.github/ ....... 3.3 kB (2)     5 days
-├─cmd/ ........... 13 kB  (3)     8 minutes
-├─filesys/ ....... 4.9 kB (1)     1 hours
-├─print/ ......... 8.7 kB (3)     1 hours
-├─tree/ .......... 8.1 kB (7)     8 minutes
-...
-```
+![Screenshot](https://user-images.githubusercontent.com/44003176/208758818-b37165b6-62db-4895-b7e8-31d4e770004e.png)
 
 #### Options
 
@@ -73,16 +72,7 @@ dirstat --depth 2
 
 Produces output like this:
 
-```text
-dirstat/ ............ 48 kB  (24)    9 minutes
-├─.github/ .......... 3.3 kB (2)     4 days
-│ └─workflows/ ...... 3.3 kB (2)     4 days
-├─cmd/ .............. 12 kB  (3)     9 minutes
-│ ├─plain.go ........ 1.4 kB         9 minutes
-│ ├─root.go ......... 5.5 kB         15 minutes
-│ └─treemap.go ...... 5.3 kB         9 minutes
-...
-```
+![Screenshot](https://user-images.githubusercontent.com/44003176/208759141-7e2433f5-d607-4a95-abbe-f32569586fc9.png)
 
 Exclude files and directories by glob patterns:
 
