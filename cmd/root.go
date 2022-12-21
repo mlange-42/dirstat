@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gookit/color"
 	"github.com/mlange-42/dirstat/filesys"
 	"github.com/mlange-42/dirstat/print"
 	"github.com/mlange-42/dirstat/tree"
@@ -59,12 +60,29 @@ To store the result of the analysis for later re-use, see subcommand 'json'.
 		if !hasDepth && byExt {
 			depth = 0
 		}
+		colorExp, err := cmd.Flags().GetFloat64("exp")
+		if err != nil {
+			panic(err)
+		}
+		if colorExp <= 0 {
+			fmt.Fprint(os.Stderr, "ERROR: Color exponent --exp must be greater than 0.0\n")
+			os.Exit(1)
+		}
+
+		noColors, err := cmd.Flags().GetBool("no-colors")
+		if err != nil {
+			panic(err)
+		}
+
+		if noColors || !color.Support256Color() || !isTerminal() {
+			color.Disable()
+		}
 
 		if sort != print.ByName && sort != print.BySize && sort != print.ByCount && sort != print.ByAge {
 			if debug {
 				panic(err)
 			} else {
-				fmt.Fprintf(os.Stderr, "Unknown sort field '%s'. Must be one of [name, size, count, age].\n", sort)
+				fmt.Fprintf(os.Stderr, "ERROR: Unknown sort field '%s'. Must be one of [name, size, count, age].\n", sort)
 				os.Exit(1)
 			}
 		}
@@ -74,12 +92,12 @@ To store the result of the analysis for later re-use, see subcommand 'json'.
 			if debug {
 				panic(err)
 			} else {
-				fmt.Fprintln(os.Stderr, err)
+				fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 				os.Exit(1)
 			}
 		}
 
-		printer := print.NewFileTreePrinter(byExt, 2, true, dirs)
+		printer := print.NewFileTreePrinter(byExt, 2, true, dirs, colorExp)
 		printer.SortBy = sort
 		fmt.Print(printer.Print(t))
 	},
@@ -165,12 +183,12 @@ Loop:
 			if !quiet {
 				if count%10 == 0 && time.Since(prevTime) >= minElapsed {
 					prevTime = time.Now()
-					fmt.Fprintf(os.Stderr, "\rScan: %s, %d files in %s    ", util.FormatUnits(size, "B"), count, time.Since(startTime).Round(time.Millisecond))
+					fmt.Fprintf(os.Stderr, "\rScan: %6s, %d files in %s    ", util.FormatUnits(size, "B"), count, time.Since(startTime).Round(time.Millisecond))
 				}
 			}
 		case t = <-done:
 			if !quiet {
-				fmt.Fprintf(os.Stderr, "\rDone: %s, %d (%s) files in %s    \n", util.FormatUnits(size, "B"), count, util.FormatUnits(int64(count), ""), time.Since(startTime).Round(time.Millisecond))
+				fmt.Fprintf(os.Stderr, "\rDone: %6s, %d (%s) files in %s    \n", util.FormatUnits(size, "B"), count, util.FormatUnitsSimple(int64(count), ""), time.Since(startTime).Round(time.Millisecond))
 			}
 			break Loop
 		case err = <-erro:
@@ -212,6 +230,11 @@ func treeFromJSON(file string, subtree string, exclude []string, depth int) (*tr
 	return t, nil
 }
 
+func isTerminal() bool {
+	o, _ := os.Stdout.Stat()
+	return (o.Mode() & os.ModeCharDevice) == os.ModeCharDevice
+}
+
 // Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
 	err := rootCmd.Execute()
@@ -232,4 +255,6 @@ func init() {
 	rootCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
 	rootCmd.Flags().StringP("sort", "s", "name", "Sort by one of [name, size, count, age]")
 	rootCmd.Flags().Bool("dirs", false, "List only directories, no individual files")
+	rootCmd.Flags().Float64("exp", 5.0, "Color scale exponent.\n1.0 is linear. Higher values look more log-like.")
+	rootCmd.Flags().BoolP("no-colors", "C", false, "Print without colors")
 }

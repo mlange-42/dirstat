@@ -42,7 +42,7 @@ When piped to a file, it can be used for visualization via the '--path' argument
 			if debug {
 				panic(err)
 			} else {
-				fmt.Fprintln(os.Stderr, err)
+				fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 				os.Exit(1)
 			}
 		}
