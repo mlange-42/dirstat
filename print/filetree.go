@@ -26,6 +26,7 @@ const (
 // FileTreePrinter prints a file tree in plain text format
 type FileTreePrinter struct {
 	SortBy        string
+	Cutoff        float64
 	ByExtension   bool
 	Indent        int
 	PrintTime     bool
@@ -43,9 +44,10 @@ type FileTreePrinter struct {
 }
 
 // NewFileTreePrinter creates a new FileTreePrinter
-func NewFileTreePrinter(byExt bool, indent int, printTime bool, onlyDirs bool, colorExponent float64) FileTreePrinter {
+func NewFileTreePrinter(byExt bool, cutoff float64, indent int, printTime bool, onlyDirs bool, colorExponent float64) FileTreePrinter {
 	return FileTreePrinter{
 		ByExtension:   byExt,
+		Cutoff:        cutoff,
 		Indent:        indent,
 		PrintTime:     printTime,
 		OnlyDirs:      onlyDirs,
@@ -125,14 +127,14 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 	}
 	switch p.SortBy {
 	case BySize:
-		sorter := SortDesc[tree.FileTree]{children, func(t *tree.FileTree) float64 { return float64(t.Value.Size) }}
-		sort.Sort(sorter)
+		sorter := FileEntrySorter{children, func(t *tree.FileTree) float64 { return float64(t.Value.Size) }}
+		children = sorter.Sort(p.Cutoff)
 	case ByCount:
-		sorter := SortDesc[tree.FileTree]{children, func(t *tree.FileTree) float64 { return float64(t.Value.Count) }}
-		sort.Sort(sorter)
+		sorter := FileEntrySorter{children, func(t *tree.FileTree) float64 { return float64(t.Value.Count) }}
+		children = sorter.Sort(p.Cutoff)
 	case ByAge:
-		sorter := SortDesc[tree.FileTree]{children, func(t *tree.FileTree) float64 { return -float64(t.Value.Time.Unix()) }}
-		sort.Sort(sorter)
+		sorter := FileEntrySorter{children, func(t *tree.FileTree) float64 { return -float64(t.Value.Time.Unix()) }}
+		children = sorter.Sort(1.0)
 	case ByName:
 	default:
 		panic(fmt.Errorf("Unknown sort field '%s'", p.SortBy))
@@ -149,23 +151,17 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 }
 
 func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb *strings.Builder, depth int, prefix string) {
-	keys := make([]string, 0, len(ext))
-	for k := range ext {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-
 	values := maps.Values(ext)
 	switch p.SortBy {
 	case BySize:
-		sorter := SortDesc[tree.ExtensionEntry]{values, func(e *tree.ExtensionEntry) float64 { return float64(e.Size) }}
-		sort.Sort(sorter)
+		sorter := ExtensionEntrySorter{values, func(e *tree.ExtensionEntry) float64 { return float64(e.Size) }}
+		values = sorter.Sort(p.Cutoff)
 	case ByCount:
-		sorter := SortDesc[tree.ExtensionEntry]{values, func(e *tree.ExtensionEntry) float64 { return float64(e.Count) }}
-		sort.Sort(sorter)
+		sorter := ExtensionEntrySorter{values, func(e *tree.ExtensionEntry) float64 { return float64(e.Count) }}
+		values = sorter.Sort(p.Cutoff)
 	case ByAge:
-		sorter := SortDesc[tree.ExtensionEntry]{values, func(e *tree.ExtensionEntry) float64 { return -float64(e.Time.Unix()) }}
-		sort.Sort(sorter)
+		sorter := ExtensionEntrySorter{values, func(e *tree.ExtensionEntry) float64 { return -float64(e.Time.Unix()) }}
+		values = sorter.Sort(1.0)
 	case ByName:
 		sort.Slice(values, func(i, j int) bool {
 			return values[i].Name < values[j].Name
@@ -179,7 +175,7 @@ func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb
 
 	for i, info := range values {
 		pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-(depth)*p.Indent-len([]rune(info.Name))), 0)))
-		if i == len(keys)-1 {
+		if i == len(values)-1 {
 			fmt.Fprint(sb, prefLast)
 		} else {
 			fmt.Fprint(sb, pref)
@@ -334,16 +330,110 @@ func (p FileTreePrinter) createPrefixEmpty(last bool) string {
 	return p.prefixEmpty
 }
 
-// SortDesc sorts by size
-type SortDesc[T any] struct {
-	Slice  []*T
-	Getter func(*T) float64
+// FileEntrySorter sorts file entries
+type FileEntrySorter struct {
+	Slice  []*tree.FileTree
+	Getter func(*tree.FileTree) float64
 }
 
-func (p SortDesc[T]) Len() int      { return len(p.Slice) }
-func (p SortDesc[T]) Swap(i, j int) { p.Slice[i], p.Slice[j] = p.Slice[j], p.Slice[i] }
-func (p SortDesc[T]) Less(i, j int) bool {
+func (p FileEntrySorter) Len() int      { return len(p.Slice) }
+func (p FileEntrySorter) Swap(i, j int) { p.Slice[i], p.Slice[j] = p.Slice[j], p.Slice[i] }
+func (p FileEntrySorter) Less(i, j int) bool {
 	return p.Getter(p.Slice[i]) > p.Getter(p.Slice[j])
+}
+
+// Sort sorts with a cutoff
+func (p FileEntrySorter) Sort(cutoff float64) []*tree.FileTree {
+	sort.Sort(p)
+
+	if cutoff >= 1.0 {
+		return p.Slice
+	}
+
+	total := 0.0
+	for _, e := range p.Slice {
+		total += p.Getter(e)
+	}
+	max := total * cutoff
+	isCut := false
+
+	total = 0.0
+	result := []*tree.FileTree{}
+	remainder := tree.NewDir("<cutoff>")
+	skipped := 0
+	for _, e := range p.Slice {
+		value := p.Getter(e)
+		if isCut {
+			remainder.Value.Add(e.Value.Size, e.Value.Count, e.Value.Time)
+			skipped++
+		} else {
+			result = append(result, e)
+		}
+		total += value
+		if !isCut && total > max {
+			isCut = true
+		}
+	}
+
+	if skipped > 0 {
+		remainder.Value.Name = fmt.Sprintf("<skipped %d>", skipped)
+		result = append(result, remainder)
+	}
+
+	return result
+}
+
+// ExtensionEntrySorter sorts file entries
+type ExtensionEntrySorter struct {
+	Slice  []*tree.ExtensionEntry
+	Getter func(*tree.ExtensionEntry) float64
+}
+
+func (p ExtensionEntrySorter) Len() int      { return len(p.Slice) }
+func (p ExtensionEntrySorter) Swap(i, j int) { p.Slice[i], p.Slice[j] = p.Slice[j], p.Slice[i] }
+func (p ExtensionEntrySorter) Less(i, j int) bool {
+	return p.Getter(p.Slice[i]) > p.Getter(p.Slice[j])
+}
+
+// Sort sorts with a cutoff
+func (p ExtensionEntrySorter) Sort(cutoff float64) []*tree.ExtensionEntry {
+	sort.Sort(p)
+
+	if cutoff >= 1.0 {
+		return p.Slice
+	}
+
+	total := 0.0
+	for _, e := range p.Slice {
+		total += p.Getter(e)
+	}
+	max := total * cutoff
+	isCut := false
+
+	total = 0.0
+	result := []*tree.ExtensionEntry{}
+	remainder := tree.ExtensionEntry{Name: "<cutoff>"}
+	skipped := 0
+	for _, e := range p.Slice {
+		value := p.Getter(e)
+		if isCut {
+			remainder.Add(e.Size, e.Count, e.Time)
+			skipped++
+		} else {
+			result = append(result, e)
+		}
+		total += value
+		if !isCut && total > max {
+			isCut = true
+		}
+	}
+
+	if skipped > 0 {
+		remainder.Name = fmt.Sprintf("<skipped %d>", skipped)
+		result = append(result, &remainder)
+	}
+
+	return result
 }
 
 type minMax struct {
