@@ -376,7 +376,7 @@ func (p FileEntrySorter) Sort(cutoff float64) []*tree.FileTree {
 		}
 	}
 
-	if isCut {
+	if skipped > 0 {
 		remainder.Value.Name = fmt.Sprintf("<skipped %d>", skipped)
 		result = append(result, remainder)
 	}
@@ -430,7 +430,7 @@ func (p ExtensionEntrySorter) Sort(cutoff float64) []*tree.ExtensionEntry {
 		}
 	}
 
-	if isCut {
+	if skipped > 0 {
 		remainder.Name = fmt.Sprintf("<skipped %d>", skipped)
 		result = append(result, &remainder)
 	}
