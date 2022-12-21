@@ -44,6 +44,10 @@ To store the result of the analysis for later re-use, see subcommand 'json'.
 		if err != nil {
 			panic(err)
 		}
+		cutoff, err := cmd.Flags().GetFloat64("cutoff")
+		if err != nil {
+			panic(err)
+		}
 		dirs, err := cmd.Flags().GetBool("dirs")
 		if err != nil {
 			panic(err)
@@ -97,7 +101,7 @@ To store the result of the analysis for later re-use, see subcommand 'json'.
 			}
 		}
 
-		printer := print.NewFileTreePrinter(byExt, 2, true, dirs, colorExp)
+		printer := print.NewFileTreePrinter(byExt, 0.01*cutoff, 2, true, dirs, colorExp)
 		printer.SortBy = sort
 		fmt.Print(printer.Print(t))
 	},
@@ -254,6 +258,7 @@ func init() {
 	rootCmd.Flags().IntP("depth", "d", 1, "Depth of the generated file tree.\nDeeper files are included, but not individually listed.\nUse -1 for unlimited depth (use with caution on deeply nested directory trees).\nDefaults to -1 when reading from JSON\n")
 	rootCmd.Flags().BoolP("extensions", "x", false, "Show directory content by file extension instead of individual files")
 	rootCmd.Flags().StringP("sort", "s", "name", "Sort by one of [name, size, count, age]")
+	rootCmd.Flags().Float64P("cutoff", "c", 100.0, "Only show the given top percent when sorted by size or count.\nIgnored otherwise")
 	rootCmd.Flags().Bool("dirs", false, "List only directories, no individual files")
 	rootCmd.Flags().Float64("exp", 5.0, "Color scale exponent.\n1.0 is linear. Higher values look more log-like.")
 	rootCmd.Flags().BoolP("no-colors", "C", false, "Print without colors")
