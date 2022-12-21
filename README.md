@@ -72,16 +72,22 @@ Exclude files and directories by glob patterns:
 dirstat --exclude .git,*.exe
 ```
 
-Aggregate by file extensions
+Aggregate by file extensions:
 
 ```shell
 dirstat -x
 ```
 
-Sort by size (or count, or age)
+Sort by size (or count, or age):
 
 ```shell
 dirstat --sort size
+```
+
+Sort by size and show only the top 90%:
+
+```shell
+dirstat --sort size --cutoff 90
 ```
 
 For more options, see the CLI help `dirstat -h`.
