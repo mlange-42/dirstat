@@ -63,8 +63,8 @@ func NewFileEntry(name string, size int64, time tm.Time, isDir bool) FileEntry {
 	}
 }
 
-// AddMulti adds size and a count
-func (e *FileEntry) AddMulti(size int64, count int, time tm.Time) {
+// Add adds size and a count
+func (e *FileEntry) Add(size int64, count int, time tm.Time) {
 	e.Count += count
 	e.Size += size
 	if !time.IsZero() && (e.Time.IsZero() || time.After(e.Time)) {
@@ -72,8 +72,8 @@ func (e *FileEntry) AddMulti(size int64, count int, time tm.Time) {
 	}
 }
 
-// AddMulti adds size and a count
-func (e *ExtensionEntry) AddMulti(size int64, count int, time tm.Time) {
+// Add adds size and a count
+func (e *ExtensionEntry) Add(size int64, count int, time tm.Time) {
 	e.Count += count
 	e.Size += size
 	if !time.IsZero() && (e.Time.IsZero() || time.After(e.Time)) {
@@ -96,7 +96,7 @@ func (e FileEntry) String() string {
 func (e *FileEntry) AddExtensions(ext map[string]*ExtensionEntry) {
 	for k, v := range ext {
 		if inf, ok := e.Extensions[k]; ok {
-			inf.AddMulti(v.Size, v.Count, v.Time)
+			inf.Add(v.Size, v.Count, v.Time)
 		} else {
 			fe := ExtensionEntry{k, v.Size, v.Count, v.Time}
 			e.Extensions[k] = &fe

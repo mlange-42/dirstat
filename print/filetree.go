@@ -364,8 +364,7 @@ func (p FileEntrySorter) Sort(cutoff float64) []*tree.FileTree {
 	for _, e := range p.Slice {
 		value := p.Getter(e)
 		if isCut {
-			remainder.Value.Size += e.Value.Size
-			remainder.Value.Count += e.Value.Count
+			remainder.Value.Add(e.Value.Size, e.Value.Count, e.Value.Time)
 			skipped++
 		} else {
 			result = append(result, e)
@@ -418,8 +417,7 @@ func (p ExtensionEntrySorter) Sort(cutoff float64) []*tree.ExtensionEntry {
 	for _, e := range p.Slice {
 		value := p.Getter(e)
 		if isCut {
-			remainder.Size += e.Size
-			remainder.Count += e.Count
+			remainder.Add(e.Size, e.Count, e.Time)
 			skipped++
 		} else {
 			result = append(result, e)

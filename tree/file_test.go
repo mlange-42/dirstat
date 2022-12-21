@@ -26,7 +26,7 @@ func TestEntryAdd(t *testing.T) {
 	dir := NewDir("d")
 	assert.Equal(t, true, dir.Value.Time.IsZero())
 
-	dir.Value.AddMulti(100, 1, tm)
+	dir.Value.Add(100, 1, tm)
 	assert.Equal(t, int64(100), dir.Value.Size)
 	assert.Equal(t, 1, dir.Value.Count)
 	assert.Equal(t, tm, dir.Value.Time)
