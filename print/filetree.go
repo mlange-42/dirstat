@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/mlange-42/dirstat/tree"
 	"github.com/mlange-42/dirstat/util"
@@ -83,7 +84,7 @@ func (p FileTreePrinter) print(t *tree.FileTree, sb *strings.Builder, depth int,
 	if depth > 0 {
 		pref = prefix + p.createPrefix(last)
 	}
-	pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-depth*p.Indent-len([]rune(t.Value.Name))), 0)))
+	pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-depth*p.Indent-strLen(t.Value.Name)), 0)))
 	fmt.Fprint(sb, pref)
 	if t.Value.IsDir {
 		sizeStr := fmt.Sprintf(" %6s ", util.FormatUnits(t.Value.Size, "B"))
@@ -174,7 +175,7 @@ func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb
 	prefLast := prefix + p.createPrefix(true)
 
 	for i, info := range values {
-		pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-(depth)*p.Indent-len([]rune(info.Name))), 0)))
+		pad := strings.Repeat(".", int(math.Max(float64(p.printWidth-(depth)*p.Indent-strLen(info.Name)), 0)))
 		if i == len(values)-1 {
 			fmt.Fprint(sb, prefLast)
 		} else {
@@ -205,10 +206,10 @@ func (p FileTreePrinter) printExtensions(ext map[string]*tree.ExtensionEntry, sb
 }
 
 func (p FileTreePrinter) maxWidth(t *tree.FileTree, depth int, extensions bool) int {
-	max := len([]rune(t.Value.Name)) + depth*p.Indent
+	max := strLen(t.Value.Name) + depth*p.Indent
 	if extensions && t.Value.IsDir {
 		for name := range t.Value.Extensions {
-			m := len([]rune(name)) + (depth+1)*p.Indent
+			m := strLen(name) + (depth+1)*p.Indent
 			if m > max {
 				max = m
 			}
@@ -456,4 +457,8 @@ func (r minMax) Interpolate(value float64, exponent float64) func(a ...interface
 		index = len(defaultColors) - 1
 	}
 	return defaultColors[index]
+}
+
+func strLen(str string) int {
+	return utf8.RuneCountInString(str)
 }
