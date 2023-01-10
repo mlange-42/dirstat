@@ -21,7 +21,9 @@ jobs:
       - name: Build MacOS
         run: GOOS=darwin GOARCH=amd64 go build .
       - name: Test
-        run: go test -v ./...
+        run: |
+          go test -v ./... -covermode=count -coverprofile="coverage.out"
+          go tool cover -func="coverage.out"
       - name: Check format
         run: |
           if gofmt -e -l . >&1 | grep '^'; then
