@@ -28,7 +28,7 @@ Download binaries for your OS from the [Releases](https://github.com/mlange-42/d
 
 ## Features
 
-* Visualize disk usage by as text-based tree or as graphical treemap (SVG)
+* Visualize disk usage as text-based tree or as graphical treemap (SVG)
 * Optional visualization of directory content by file extension
 * Exclusion of files and directories by glob patterns
 * Adjustable depth for individual display vs. aggregation
