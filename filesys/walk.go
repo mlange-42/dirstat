@@ -75,7 +75,7 @@ func Walk(dir string, exclude []string, maxDepth int, progres chan<- int64, done
 	}
 
 	if !anyFound {
-		erro <- fmt.Errorf("Nothing found in directoy %s", dir)
+		erro <- fmt.Errorf("Nothing found in directory %s", dir)
 		return
 	}
 
