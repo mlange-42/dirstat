@@ -33,7 +33,8 @@ For graphical visualization, see subcommand 'treemap'.
 To store the result of the analysis for later re-use, see subcommand 'json'.
   $ dirstat json -h
 `,
-	Args: cobra.NoArgs,
+	Args:    cobra.NoArgs,
+	Version: "0.2.2",
 	Run: func(cmd *cobra.Command, args []string) {
 
 		byExt, err := cmd.Flags().GetBool("extensions")
